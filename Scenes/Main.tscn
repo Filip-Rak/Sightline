@@ -85,7 +85,7 @@ shape = SubResource("BoxShape3D_jc1a8")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0754403)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerCamera/YAxisFocal/XAxisFocal/Camera3D/CollisionBoxes/Area3D2"]
-transform = Transform3D(1, 0, 0, 0, 0.906308, -0.422618, 0, 0.422618, 0.906308, 0, 0, 0.025)
+transform = Transform3D(1, 0, 0, 0, 0.906308, -0.422618, 0, 0.422618, 0.906308, 0, 5.96046e-08, 0.0250001)
 shape = SubResource("BoxShape3D_8qm4j")
 
 [node name="PointerX" type="MeshInstance3D" parent="PlayerCamera/YAxisFocal/XAxisFocal"]
