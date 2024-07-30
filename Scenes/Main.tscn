@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://j0iiggn86vj2"]
+[gd_scene load_steps=12 format=3 uid="uid://j0iiggn86vj2"]
 
 [ext_resource type="MeshLibrary" uid="uid://bwweqnq8uhoht" path="res://Assets/Tiles/tiles_ml.tres" id="1_cpyxv"]
 [ext_resource type="Script" path="res://Scripts/PlayerCamera.gd" id="2_7kger"]
@@ -21,6 +21,20 @@ size = Vector2(10, 10)
 
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_oo42i"]
 data = PackedVector3Array(5, 0, 5, -5, 0, 5, 5, 0, -5, -5, 0, 5, -5, 0, -5, 5, 0, -5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_81gt7"]
+albedo_color = Color(0, 0, 1, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_s81pm"]
+material = SubResource("StandardMaterial3D_81gt7")
+size = Vector3(0.1, 0.1, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_khhd1"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_g4ygp"]
+material = SubResource("StandardMaterial3D_khhd1")
+size = Vector3(0.1, 0.1, 0.1)
 
 [node name="MainScene" type="Node3D"]
 
@@ -55,11 +69,17 @@ shape = SubResource("ConcavePolygonShape3D_oo42i")
 
 [node name="PlayerCamera" type="Node3D" parent="."]
 script = ExtResource("2_7kger")
-zoom_min = 0.05
-zoom_dampness = 0.99
 
-[node name="CameraFocal" type="Node3D" parent="PlayerCamera"]
+[node name="YAxisFocal" type="Node3D" parent="PlayerCamera"]
+
+[node name="PointerY" type="MeshInstance3D" parent="PlayerCamera/YAxisFocal"]
+mesh = SubResource("BoxMesh_s81pm")
+
+[node name="XAxisFocal" type="Node3D" parent="PlayerCamera/YAxisFocal"]
 transform = Transform3D(1, 0, 0, 0, 0.906308, 0.422618, 0, -0.422618, 0.906308, 0, 0, 0)
 
-[node name="Camera3D" type="Camera3D" parent="PlayerCamera/CameraFocal"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 1.5)
+[node name="Camera3D" type="Camera3D" parent="PlayerCamera/YAxisFocal/XAxisFocal"]
+transform = Transform3D(1, 0, 0, 0, 1, -5.96046e-08, 0, 5.96046e-08, 1, 0, 0, 1.5)
+
+[node name="PointerX" type="MeshInstance3D" parent="PlayerCamera/YAxisFocal/XAxisFocal"]
+mesh = SubResource("BoxMesh_g4ygp")
