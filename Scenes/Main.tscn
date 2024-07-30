@@ -43,7 +43,7 @@ data = {
 metadata/_editor_floor_ = Vector3(0, 0, 0)
 
 [node name="GroundHitBox" type="MeshInstance3D" parent="Environment/GridMap"]
-transform = Transform3D(1.00883, 0, 0, 0, 1.00883, 0, 0, 0, 1.00883, 0.00497837, 0.0100883, -0.00263566)
+transform = Transform3D(1.00883, 0, 0, 0, 1.00883, 0, 0, 0, 1.00883, -0.00337985, 0.0231158, -0.0171683)
 visible = false
 mesh = SubResource("PlaneMesh_ulhml")
 skeleton = NodePath("../../..")
@@ -55,6 +55,8 @@ shape = SubResource("ConcavePolygonShape3D_oo42i")
 
 [node name="PlayerCamera" type="Node3D" parent="."]
 script = ExtResource("2_7kger")
+zoom_min = 0.05
+zoom_dampness = 0.99
 
 [node name="CameraFocal" type="Node3D" parent="PlayerCamera"]
 transform = Transform3D(1, 0, 0, 0, 0.906308, 0.422618, 0, -0.422618, 0.906308, 0, 0, 0)

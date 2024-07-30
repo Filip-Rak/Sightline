@@ -14,6 +14,7 @@ extends Node3D
 @export var positional_speed_zoom_multiplier : float = 0.5
 @export var mouse_keyboard_blend_factor : float = 0.2
 var target_position : Vector3
+var current_positional_speed : float
 
 # Zoom
 @export var zoom_speed : float = 1.8
@@ -22,6 +23,10 @@ var target_position : Vector3
 @export var zoom_dampness : float = 0.98
 var target_zoom : float
 var zoom_direction = 0
+
+# Panning
+@export var pan_margin : int = 60
+@export var pan_speed_multiplier : float = 0.25
 
 # Ready Functions
 # --------------------
@@ -33,6 +38,8 @@ func _ready():
 func _process(delta:float):
 	handle_positional_movement(delta)
 	handle_zoom(delta)
+	handle_panning(delta)
+	move_focal_point()
 	
 func handle_positional_movement(delta:float):
 	# Read keyboard input
@@ -52,11 +59,11 @@ func handle_positional_movement(delta:float):
 	
 	# Modify speed based on zoom
 	var zoom_factor = normalize_value(camera.position.z, zoom_max, zoom_min)
-	var positional_speed = (positional_speed_max - positional_speed_min) * zoom_factor + positional_speed_min
+	current_positional_speed = (positional_speed_max - positional_speed_min) * zoom_factor + positional_speed_min
 	
 	# Smoothly interpolate focal position to target_position
-	target_position += combination * positional_speed * delta 
-	focal_point.position = focal_point.position.lerp(target_position, positional_smoothing_factor)
+	target_position += combination * current_positional_speed * delta 
+	
 	
 func handle_zoom(delta:float):
 	# Caluclate new zoom
@@ -68,6 +75,42 @@ func handle_zoom(delta:float):
 		
 	# Apply zoom
 	camera.position.z = target_zoom
+	
+func handle_panning(delta:float):
+	if(!Input.is_action_pressed("camera_pan_unlock")): return
+	
+	var current_viewport : Viewport = get_viewport()
+	var pan_direction : Vector2 = Vector2(0, 0)	# Pans by default
+	var viewport_size : Vector2i = Rect2i(current_viewport.get_visible_rect()).size
+	var current_mouse_position : Vector2 = current_viewport.get_mouse_position()
+	
+	var pan_speed = current_positional_speed * pan_speed_multiplier
+	
+	# Panning on X
+	if current_mouse_position.x < pan_margin || current_mouse_position.x > viewport_size.x - pan_margin:
+		if current_mouse_position.x > viewport_size.x * 0.5:	# viewport_size.x / 2
+			pan_direction.x = 1;
+		else:
+			pan_direction.x = -1
+		
+	# translate(Vector3(pan_direction.x * delta * pan_speed, 0, 0))
+	target_position = Vector3(pan_direction.x * delta * pan_speed, 0, 0)
+	
+	
+	# Panning on Y
+	if current_mouse_position.y < pan_margin || current_mouse_position.y > viewport_size.y - pan_margin:
+		if current_mouse_position.y > viewport_size.y * 0.5: 	# viewport_size.y / 2
+			pan_direction.y = 1;
+		else:
+			pan_direction.y = -1
+		
+	# translate(Vector3(0, 0, pan_direction.y * delta * pan_speed))
+	target_position = Vector3(0, 0, pan_direction.y * delta * pan_speed)
+	
+	
+func move_focal_point():
+	print(target_position)
+	focal_point.position = focal_point.position.lerp(target_position, positional_smoothing_factor)
 
 # Special Input Functions
 # --------------------
