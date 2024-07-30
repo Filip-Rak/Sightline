@@ -13,7 +13,6 @@ extends Node3D
 @export var positional_speed_min : float = 2.2
 @export var positional_smoothing_factor : float = 0.02
 @export var positional_speed_zoom_multiplier : float = 0.5
-@export var mouse_keyboard_blend_factor : float = 0.2
 var target_position : Vector3
 var current_positional_speed : float
 
@@ -61,13 +60,8 @@ func handle_positional_movement(delta:float):
 	if Input.is_action_pressed("camera_right"): velocity_direction += focal_y.transform.basis.x
 	if Input.is_action_pressed("camera_left"): velocity_direction -= focal_y.transform.basis.x
 	
-	# Read mouse position
-	# var mouse_pos = screen_point_to_ray()
-	
 	# Combine keyboard and mouse inputs for a target position
 	var combination = velocity_direction.normalized()
-	# if(zoom_direction != 0):
-		# combination = velocity_direction.normalized().lerp(mouse_pos, mouse_keyboard_blend_factor)
 	
 	# Modify speed based on zoom
 	var zoom_factor = normalize_value(camera.position.z, zoom_max, zoom_min)
