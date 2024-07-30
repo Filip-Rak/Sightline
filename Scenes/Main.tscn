@@ -16,18 +16,18 @@ sky = SubResource("Sky_ny5gc")
 tonemap_mode = 2
 glow_enabled = true
 
-[sub_resource type="PlaneMesh" id="PlaneMesh_ulhml"]
-size = Vector2(10, 10)
-
-[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_oo42i"]
-data = PackedVector3Array(5, 0, 5, -5, 0, 5, 5, 0, -5, -5, 0, 5, -5, 0, -5, 5, 0, -5)
-
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_81gt7"]
 albedo_color = Color(0, 0, 1, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_s81pm"]
 material = SubResource("StandardMaterial3D_81gt7")
 size = Vector3(0.1, 0.1, 0.1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jc1a8"]
+size = Vector3(0.15, 0.2, 0.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_8qm4j"]
+size = Vector3(0.2, 0.25, 0.25)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_khhd1"]
 albedo_color = Color(1, 0, 0, 1)
@@ -52,22 +52,12 @@ transform = Transform3D(0.991246, 0, 0, 0, 0.991246, 0, 0, 0, 0.991246, -0.00493
 mesh_library = ExtResource("1_cpyxv")
 cell_size = Vector3(0.603, 0.06, 0.603)
 data = {
-"cells": PackedInt32Array(-2, 65535, 0, -65536, 1, 1048576, -65536, 65534, 0, -1, 65533, 0, -65536, 65533, 0, -2, 65532, 0, -1, 65532, 0, -65536, 65532, 0, -3, 65532, 0, -3, 65533, 0, -3, 65535, 0, -3, 1, 0, -65535, 65534, 0, -65535, 65532, 0, -3, 2, 1441792, -65536, 2, 1441792, -3, 3, 1441792, -2, 3, 1441792, -65536, 3, 1441792, -1, 3, 1441792, -65535, 3, 1441792, -1, 65535, 1048576, -1, 1, 1441792, -65536, 65535, 1441796, -2, 1, 1441796, -1, 0, 1441793, -65535, 0, 1441795, -65535, 65535, 1441794, -65536, 0, 1441794, -2, 65533, 1441794, -1, 65534, 1441794, -2, 65534, 1441793, -3, 65534, 1441795, -65535, 2, 1441793, -1, 2, 1441796, -3, 0, 1441794, -2, 0, 1441792, -65535, 1, 1441792, -65535, 65533, 1441793, -2, 2, 1441794)
+"cells": PackedInt32Array(-2, 65535, 0, -65536, 1, 1048576, -65536, 65534, 0, -1, 65533, 0, -65536, 65533, 0, -2, 65532, 0, -1, 65532, 0, -65536, 65532, 0, -3, 65532, 0, -3, 65533, 0, -3, 65535, 0, -3, 1, 0, -65535, 65534, 0, -65535, 65532, 0, -3, 2, 1441792, -65536, 2, 1441792, -3, 3, 1441792, -2, 3, 1441792, -65536, 3, 1441792, -1, 3, 1441792, -65535, 3, 1441792, -1, 65535, 1048576, -65536, 65535, 1441796, -2, 1, 1441796, -1, 0, 1441793, -65535, 0, 1441795, -65535, 65535, 1441794, -65536, 0, 1441794, -2, 65533, 1441794, -1, 65534, 1441794, -2, 65534, 1441793, -3, 65534, 1441795, -65535, 2, 1441793, -3, 0, 1441794, -2, 0, 1441792, -65535, 1, 1441792, -65535, 65533, 1441793, -2, 2, 1441794, -1, 1, 4, -1, 2, 1441796)
 }
-metadata/_editor_floor_ = Vector3(0, 0, 0)
-
-[node name="GroundHitBox" type="MeshInstance3D" parent="Environment/GridMap"]
-transform = Transform3D(1.00883, 0, 0, 0, 1.00883, 0, 0, 0, 1.00883, -0.00337985, 0.0231158, -0.0171683)
-visible = false
-mesh = SubResource("PlaneMesh_ulhml")
-skeleton = NodePath("../../..")
-
-[node name="StaticBody3D" type="StaticBody3D" parent="Environment/GridMap/GroundHitBox"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/GridMap/GroundHitBox/StaticBody3D"]
-shape = SubResource("ConcavePolygonShape3D_oo42i")
+metadata/_editor_floor_ = Vector3(0, -1, 0)
 
 [node name="PlayerCamera" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0634713, 0, 0.369353)
 script = ExtResource("2_7kger")
 
 [node name="YAxisFocal" type="Node3D" parent="PlayerCamera"]
@@ -81,5 +71,27 @@ transform = Transform3D(1, 0, 0, 0, 0.906308, 0.422618, 0, -0.422618, 0.906308, 
 [node name="Camera3D" type="Camera3D" parent="PlayerCamera/YAxisFocal/XAxisFocal"]
 transform = Transform3D(1, 0, 0, 0, 1, -5.96046e-08, 0, 5.96046e-08, 1, 0, 0, 1.5)
 
+[node name="CollisionBoxes" type="Node3D" parent="PlayerCamera/YAxisFocal/XAxisFocal/Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.19209e-07, -0.0668166)
+
+[node name="Area3D" type="Area3D" parent="PlayerCamera/YAxisFocal/XAxisFocal/Camera3D/CollisionBoxes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0754403)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerCamera/YAxisFocal/XAxisFocal/Camera3D/CollisionBoxes/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 0.906307, -0.422618, 0, 0.422618, 0.906307, 0, 0, 0.025)
+shape = SubResource("BoxShape3D_jc1a8")
+
+[node name="Area3D2" type="Area3D" parent="PlayerCamera/YAxisFocal/XAxisFocal/Camera3D/CollisionBoxes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0754403)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerCamera/YAxisFocal/XAxisFocal/Camera3D/CollisionBoxes/Area3D2"]
+transform = Transform3D(1, 0, 0, 0, 0.906308, -0.422618, 0, 0.422618, 0.906308, 0, 0, 0.025)
+shape = SubResource("BoxShape3D_8qm4j")
+
 [node name="PointerX" type="MeshInstance3D" parent="PlayerCamera/YAxisFocal/XAxisFocal"]
 mesh = SubResource("BoxMesh_g4ygp")
+
+[connection signal="body_entered" from="PlayerCamera/YAxisFocal/XAxisFocal/Camera3D/CollisionBoxes/Area3D" to="PlayerCamera" method="_on_area_3d_body_entered"]
+[connection signal="body_exited" from="PlayerCamera/YAxisFocal/XAxisFocal/Camera3D/CollisionBoxes/Area3D" to="PlayerCamera" method="_on_area_3d_body_exited"]
+[connection signal="body_entered" from="PlayerCamera/YAxisFocal/XAxisFocal/Camera3D/CollisionBoxes/Area3D2" to="PlayerCamera" method="_on_area_3d_2_body_entered"]
+[connection signal="body_exited" from="PlayerCamera/YAxisFocal/XAxisFocal/Camera3D/CollisionBoxes/Area3D2" to="PlayerCamera" method="_on_area_3d_2_body_exited"]

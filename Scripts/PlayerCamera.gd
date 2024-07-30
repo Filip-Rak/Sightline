@@ -23,14 +23,19 @@ var current_positional_speed : float
 @export var min_rotation_offset : float = 0.0
 @export var max_rotation_x : float = 60
 @export var min_rotation_x : float = 25
+@export var collision_avoidance_speed_multiplier : float = 0.2
+@export var collision_avoidance_abruptance_shift : float = 90
 var mouse_twist_input : float = 0.0
 var mouse_pitch_input : float = 0.0
+var inner_collision : bool = false
+var outer_collision : bool = false
 
 # Zoom
 @export var zoom_speed : float = 1.2
 @export var zoom_min : float = 0.7
 @export var zoom_max : float = 2
 @export var zoom_dampness : float = 0.98
+@export var zoom_increase_on_collision = 5
 var target_zoom : float
 var zoom_direction = 0
 
@@ -49,6 +54,7 @@ func _process(delta:float):
 	handle_positional_movement(delta)
 	handle_zoom(delta)
 	handle_panning(delta)
+	handle_collision(delta)
 	handle_rotational_movement(delta)
 	move_focal_point()
 	
@@ -124,8 +130,11 @@ func handle_rotational_movement(delta:float):
 	
 	# print("ITERATION:\n\tTWIST: %s \n\tPitch: %s" % [mouse_twist_input, mouse_pitch_input])
 	
+	if outer_collision && mouse_pitch_input > 0:
+		mouse_pitch_input = 0
+	
 	if abs(mouse_twist_input) > min_rotation_offset: focal_y.rotate_y(mouse_twist_input * delta)
-	if abs(mouse_pitch_input) > min_rotation_offset: focal_x.rotate_x(mouse_pitch_input* delta)
+	if abs(mouse_pitch_input) > min_rotation_offset: focal_x.rotate_x(mouse_pitch_input * delta)
 	
 	# Constrain rotation on x axis
 	var rotation_x = focal_x.rotation_degrees.x
@@ -135,6 +144,23 @@ func handle_rotational_movement(delta:float):
 	# Reset the inputs after applying
 	mouse_twist_input *= rotational_dampness_y
 	mouse_pitch_input *= rotational_dampness_x
+	
+func handle_collision(delta):
+	if inner_collision:
+		# Calculate base rotation speed
+		var base_rotation_speed = collision_avoidance_speed_multiplier * delta
+		
+		# Apply a function
+		var speed_power = 1.0 / (1.0 + exp(-collision_avoidance_abruptance_shift * (current_positional_speed - 1.0)))
+		
+		# Normalize speed_power to a reasonable range
+		var normalized_speed_power = clamp(speed_power, positional_speed_min, positional_speed_max)
+		
+		# Adjust the rotation speed based on normalized power
+		var adjusted_rotation_speed = base_rotation_speed * normalized_speed_power
+		
+		# Apply the rotation
+		focal_x.rotate_x(-adjusted_rotation_speed)
 	
 # Special Input Functions
 # --------------------
@@ -184,6 +210,17 @@ func screen_point_to_ray() -> Vector3:
 	# If no hit, return focal point position
 	return Vector3(focal_x.position)
 	
+
+# Links
+# --------------------
+func _on_area_3d_body_entered(_body):
+	inner_collision = true
 	
-	
-	
+func _on_area_3d_body_exited(_body):
+	inner_collision = false
+
+func _on_area_3d_2_body_entered(_body):
+	outer_collision = true
+
+func _on_area_3d_2_body_exited(_body):
+	outer_collision = false
