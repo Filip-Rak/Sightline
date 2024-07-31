@@ -28,6 +28,7 @@ script = ExtResource("1_jxvd8")
 [node name="YAxisFocal" type="Node3D" parent="."]
 
 [node name="PointerY" type="MeshInstance3D" parent="YAxisFocal"]
+visible = false
 mesh = SubResource("BoxMesh_anhqb")
 
 [node name="XAxisFocal" type="Node3D" parent="YAxisFocal"]
@@ -54,6 +55,7 @@ transform = Transform3D(1, 0, 0, 0, 0.906308, -0.422618, 0, 0.422618, 0.906308, 
 shape = SubResource("BoxShape3D_lk7u0")
 
 [node name="PointerX" type="MeshInstance3D" parent="YAxisFocal/XAxisFocal"]
+visible = false
 mesh = SubResource("BoxMesh_ulxtd")
 
 [connection signal="body_entered" from="YAxisFocal/XAxisFocal/Camera3D/CollisionBoxes/Area3D" to="." method="_on_area_3d_body_entered"]

@@ -32,8 +32,8 @@ func peer_disconnected(id):
 	print("ID: %s disconnected" % [id])
 	
 	# Delete disconnected player's information
-	if GameManager.players.has(id):
-		GameManager.players.erase(id)
+	if PlayerManager.players.has(id):
+		PlayerManager.players.erase(id)
 		
 	rpc("distribute_player_information")
 	rpc("update_player_list")
@@ -96,10 +96,10 @@ func start_game():
 @rpc("any_peer")
 func send_player_information_to_server(player_name : String, id : int):
 	# Send data to server
-	if !GameManager.players.has(id):
-		GameManager.players[id] = {
+	if !PlayerManager.players.has(id):
+		PlayerManager.players[id] = {
 			"player_name": player_name,
-			"id": id
+			"id": id,
 		}
 		
 	# Server sends data to all the clients
@@ -111,13 +111,13 @@ func send_player_information_to_server(player_name : String, id : int):
 	
 @rpc("any_peer", "call_local")
 func distribute_player_information():
-	for i in GameManager.players:
-		rpc("send_player_information_to_server", GameManager.players[i]["player_name"], i)
+	for i in PlayerManager.players:
+		rpc("send_player_information_to_server", PlayerManager.players[i]["player_name"], i)
 	
 @rpc("any_peer", "call_local")
 func update_player_list():
 	player_list_node.text = "Player list:\n"
-	for i in GameManager.players:
-		player_list_node.text += (GameManager.players[i]["player_name"] + "\n")
+	for i in PlayerManager.players:
+		player_list_node.text += (PlayerManager.players[i]["player_name"] + "\n")
 	
 	
