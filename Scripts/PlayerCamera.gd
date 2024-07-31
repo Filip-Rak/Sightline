@@ -8,6 +8,13 @@ extends Node3D
 @onready var focal_x = $YAxisFocal/XAxisFocal
 @onready var camera := $YAxisFocal/XAxisFocal/Camera3D
 
+# Flags
+@export var enable_positional_movement : bool = true
+@export var enable_rotational_movement : bool = true
+@export var enable_zoom : bool = true
+@export var enable_panning : bool = true
+@export var enable_collision_avoidance : bool = true
+
 # Positional Movement
 @export var positional_speed_max : float = 4.0
 @export var positional_speed_min : float = 2.2
@@ -59,6 +66,8 @@ func _process(delta:float):
 	move_focal_point()
 	
 func handle_positional_movement(delta:float):
+	if !enable_positional_movement: return
+	
 	# Read keyboard input
 	var velocity_direction = Vector3.ZERO
 	if Input.is_action_pressed("camera_forward"): velocity_direction -= focal_y.transform.basis.z
@@ -77,6 +86,8 @@ func handle_positional_movement(delta:float):
 	target_position += combination * current_positional_speed * delta 
 	
 func handle_zoom(delta:float):
+	if !enable_zoom: return
+	
 	# Caluclate new zoom
 	target_zoom = camera.position.z + zoom_speed * zoom_direction * delta
 	target_zoom = clamp(target_zoom, zoom_min, zoom_max)
@@ -88,8 +99,8 @@ func handle_zoom(delta:float):
 	camera.position.z = target_zoom
 	
 func handle_panning(delta: float):
-	if !Input.is_action_pressed("camera_pan_unlock"):
-		return
+	if !enable_panning: return
+	if !Input.is_action_pressed("camera_pan_unlock"): return
 		
 	var current_viewport: Viewport = get_viewport()
 	var pan_direction: Vector2 = Vector2(0, 0)  # Default to no panning
@@ -122,6 +133,8 @@ func move_focal_point():
 	focal_y.position = focal_y.position.lerp(target_position, positional_smoothing_factor)
 	
 func handle_rotational_movement(delta:float):
+	if !enable_rotational_movement: return
+	
 	if Input.is_action_pressed("camera_rotation_unlock"):
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	else:
@@ -146,6 +159,8 @@ func handle_rotational_movement(delta:float):
 	mouse_pitch_input *= rotational_dampness_x
 	
 func handle_collision(delta):
+	if !enable_collision_avoidance : return
+	
 	if inner_collision:
 		# Calculate base rotation speed
 		var base_rotation_speed = collision_avoidance_speed_multiplier * delta
