@@ -1,7 +1,7 @@
-[gd_scene load_steps=12 format=3 uid="uid://j0iiggn86vj2"]
+[gd_scene load_steps=6 format=3 uid="uid://j0iiggn86vj2"]
 
 [ext_resource type="MeshLibrary" uid="uid://bwweqnq8uhoht" path="res://Assets/Tiles/tiles_ml.tres" id="1_cpyxv"]
-[ext_resource type="Script" path="res://Scripts/PlayerCamera.gd" id="2_7kger"]
+[ext_resource type="PackedScene" uid="uid://mwr768tf6k4" path="res://Scenes/player_camera.tscn" id="2_rhlhm"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_dmt8q"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -15,26 +15,6 @@ background_mode = 2
 sky = SubResource("Sky_ny5gc")
 tonemap_mode = 2
 glow_enabled = true
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_81gt7"]
-albedo_color = Color(0, 0, 1, 1)
-
-[sub_resource type="BoxMesh" id="BoxMesh_s81pm"]
-material = SubResource("StandardMaterial3D_81gt7")
-size = Vector3(0.1, 0.1, 0.1)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_jc1a8"]
-size = Vector3(0.15, 0.2, 0.35)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_8qm4j"]
-size = Vector3(0.2, 0.25, 0.4)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_khhd1"]
-albedo_color = Color(1, 0, 0, 1)
-
-[sub_resource type="BoxMesh" id="BoxMesh_g4ygp"]
-material = SubResource("StandardMaterial3D_khhd1")
-size = Vector3(0.1, 0.1, 0.1)
 
 [node name="MainScene" type="Node3D"]
 
@@ -56,41 +36,4 @@ data = {
 }
 metadata/_editor_floor_ = Vector3(0, -1, 0)
 
-[node name="PlayerCamera" type="Node3D" parent="."]
-script = ExtResource("2_7kger")
-
-[node name="YAxisFocal" type="Node3D" parent="PlayerCamera"]
-
-[node name="PointerY" type="MeshInstance3D" parent="PlayerCamera/YAxisFocal"]
-mesh = SubResource("BoxMesh_s81pm")
-
-[node name="XAxisFocal" type="Node3D" parent="PlayerCamera/YAxisFocal"]
-transform = Transform3D(1, 0, 0, 0, 0.906308, 0.422618, 0, -0.422618, 0.906308, 0, 0, 0)
-
-[node name="Camera3D" type="Camera3D" parent="PlayerCamera/YAxisFocal/XAxisFocal"]
-transform = Transform3D(1, 0, 0, 0, 1, -5.96046e-08, 0, 5.96046e-08, 1, 0, 4.47035e-08, 1.03101)
-
-[node name="CollisionBoxes" type="Node3D" parent="PlayerCamera/YAxisFocal/XAxisFocal/Camera3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.19209e-07, -0.0668166)
-
-[node name="Area3D" type="Area3D" parent="PlayerCamera/YAxisFocal/XAxisFocal/Camera3D/CollisionBoxes"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0754403)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerCamera/YAxisFocal/XAxisFocal/Camera3D/CollisionBoxes/Area3D"]
-transform = Transform3D(1, 0, 0, 0, 0.906307, -0.422618, 0, 0.422618, 0.906307, 0, 0, 0.04)
-shape = SubResource("BoxShape3D_jc1a8")
-
-[node name="Area3D2" type="Area3D" parent="PlayerCamera/YAxisFocal/XAxisFocal/Camera3D/CollisionBoxes"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0754403)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerCamera/YAxisFocal/XAxisFocal/Camera3D/CollisionBoxes/Area3D2"]
-transform = Transform3D(1, 0, 0, 0, 0.906308, -0.422618, 0, 0.422618, 0.906308, 0, 0, 0.04)
-shape = SubResource("BoxShape3D_8qm4j")
-
-[node name="PointerX" type="MeshInstance3D" parent="PlayerCamera/YAxisFocal/XAxisFocal"]
-mesh = SubResource("BoxMesh_g4ygp")
-
-[connection signal="body_entered" from="PlayerCamera/YAxisFocal/XAxisFocal/Camera3D/CollisionBoxes/Area3D" to="PlayerCamera" method="_on_area_3d_body_entered"]
-[connection signal="body_exited" from="PlayerCamera/YAxisFocal/XAxisFocal/Camera3D/CollisionBoxes/Area3D" to="PlayerCamera" method="_on_area_3d_body_exited"]
-[connection signal="body_entered" from="PlayerCamera/YAxisFocal/XAxisFocal/Camera3D/CollisionBoxes/Area3D2" to="PlayerCamera" method="_on_area_3d_2_body_entered"]
-[connection signal="body_exited" from="PlayerCamera/YAxisFocal/XAxisFocal/Camera3D/CollisionBoxes/Area3D2" to="PlayerCamera" method="_on_area_3d_2_body_exited"]
+[node name="PlayerCamera" parent="." instance=ExtResource("2_rhlhm")]

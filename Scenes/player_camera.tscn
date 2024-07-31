@@ -1,0 +1,62 @@
+[gd_scene load_steps=8 format=3 uid="uid://mwr768tf6k4"]
+
+[ext_resource type="Script" path="res://Scripts/PlayerCamera.gd" id="1_jxvd8"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ukxxf"]
+albedo_color = Color(0, 0, 1, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_anhqb"]
+material = SubResource("StandardMaterial3D_ukxxf")
+size = Vector3(0.1, 0.1, 0.1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_h13wb"]
+size = Vector3(0.15, 0.2, 0.35)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lk7u0"]
+size = Vector3(0.2, 0.25, 0.4)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2h0cg"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ulxtd"]
+material = SubResource("StandardMaterial3D_2h0cg")
+size = Vector3(0.1, 0.1, 0.1)
+
+[node name="PlayerCamera" type="Node3D"]
+script = ExtResource("1_jxvd8")
+
+[node name="YAxisFocal" type="Node3D" parent="."]
+
+[node name="PointerY" type="MeshInstance3D" parent="YAxisFocal"]
+mesh = SubResource("BoxMesh_anhqb")
+
+[node name="XAxisFocal" type="Node3D" parent="YAxisFocal"]
+transform = Transform3D(1, 0, 0, 0, 0.906308, 0.422618, 0, -0.422618, 0.906308, 0, 0, 0)
+
+[node name="Camera3D" type="Camera3D" parent="YAxisFocal/XAxisFocal"]
+transform = Transform3D(1, 0, 0, 0, 1, -5.96046e-08, 0, 5.96046e-08, 1, 0, 4.47035e-08, 1.03101)
+
+[node name="CollisionBoxes" type="Node3D" parent="YAxisFocal/XAxisFocal/Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.19209e-07, -0.0668166)
+
+[node name="Area3D" type="Area3D" parent="YAxisFocal/XAxisFocal/Camera3D/CollisionBoxes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0754403)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="YAxisFocal/XAxisFocal/Camera3D/CollisionBoxes/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 0.906307, -0.422618, 0, 0.422618, 0.906307, 0, 0, 0.04)
+shape = SubResource("BoxShape3D_h13wb")
+
+[node name="Area3D2" type="Area3D" parent="YAxisFocal/XAxisFocal/Camera3D/CollisionBoxes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0754403)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="YAxisFocal/XAxisFocal/Camera3D/CollisionBoxes/Area3D2"]
+transform = Transform3D(1, 0, 0, 0, 0.906308, -0.422618, 0, 0.422618, 0.906308, 0, 0, 0.04)
+shape = SubResource("BoxShape3D_lk7u0")
+
+[node name="PointerX" type="MeshInstance3D" parent="YAxisFocal/XAxisFocal"]
+mesh = SubResource("BoxMesh_ulxtd")
+
+[connection signal="body_entered" from="YAxisFocal/XAxisFocal/Camera3D/CollisionBoxes/Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="body_exited" from="YAxisFocal/XAxisFocal/Camera3D/CollisionBoxes/Area3D" to="." method="_on_area_3d_body_exited"]
+[connection signal="body_entered" from="YAxisFocal/XAxisFocal/Camera3D/CollisionBoxes/Area3D2" to="." method="_on_area_3d_2_body_entered"]
+[connection signal="body_exited" from="YAxisFocal/XAxisFocal/Camera3D/CollisionBoxes/Area3D2" to="." method="_on_area_3d_2_body_exited"]
