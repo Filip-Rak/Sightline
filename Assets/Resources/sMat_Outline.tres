@@ -1,0 +1,10 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://c2snblwhh84lf"]
+
+[ext_resource type="Shader" path="res://Assets/Resources/sMat_Outline.gdshader" id="1_mi7hb"]
+
+[resource]
+render_priority = -6
+shader = ExtResource("1_mi7hb")
+shader_parameter/enable = true
+shader_parameter/outline_thickness = 0.01
+shader_parameter/color = Color(0, 0, 0, 0)
