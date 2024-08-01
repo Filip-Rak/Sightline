@@ -1,7 +1,6 @@
-[gd_scene load_steps=8 format=3 uid="uid://j0iiggn86vj2"]
+[gd_scene load_steps=7 format=3 uid="uid://j0iiggn86vj2"]
 
 [ext_resource type="MeshLibrary" uid="uid://bwweqnq8uhoht" path="res://Assets/Tiles/tiles_ml.tres" id="1_cpyxv"]
-[ext_resource type="Script" path="res://Scripts/GameManager.gd" id="1_gi4s1"]
 [ext_resource type="PackedScene" uid="uid://mwr768tf6k4" path="res://Scenes/player_camera.tscn" id="2_rhlhm"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_dmt8q"]
@@ -21,7 +20,6 @@ glow_enabled = true
 size = Vector3(0.5, 0.5, 0.5)
 
 [node name="MainScene" type="Node3D"]
-script = ExtResource("1_gi4s1")
 
 [node name="Environment" type="Node3D" parent="."]
 
