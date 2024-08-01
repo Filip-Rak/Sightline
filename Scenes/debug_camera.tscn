@@ -1,0 +1,28 @@
+[gd_scene load_steps=2 format=3 uid="uid://c6evktyloe1xd"]
+
+[ext_resource type="Script" path="res://Scripts/DebugCamera.gd" id="1_6xc7k"]
+
+[node name="DebugCamera" type="Node3D"]
+script = ExtResource("1_6xc7k")
+mouse_sensitivity = 0.005
+
+[node name="TwistPivot" type="Node3D" parent="."]
+
+[node name="PitchPivot" type="Node3D" parent="TwistPivot"]
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="TwistPivot/PitchPivot"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="TwistPivot/PitchPivot/SubViewportContainer"]
+handle_input_locally = false
+size = Vector2i(1152, 648)
+render_target_update_mode = 0
+
+[node name="Camera3D" type="Camera3D" parent="TwistPivot/PitchPivot/SubViewportContainer/SubViewport"]
+current = true
