@@ -4,4 +4,3 @@
 
 [node name="GridTile" type="Node3D"]
 script = ExtResource("1_7rpwg")
-type = 2

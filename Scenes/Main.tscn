@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://j0iiggn86vj2"]
 
-[ext_resource type="MeshLibrary" uid="uid://bwweqnq8uhoht" path="res://Assets/Tiles/tiles_ml.tres" id="1_cpyxv"]
+[ext_resource type="MeshLibrary" uid="uid://bwweqnq8uhoht" path="res://Assets/Tiles/MeshLibraries/tiles_ml.tres" id="1_cpyxv"]
 [ext_resource type="PackedScene" uid="uid://mwr768tf6k4" path="res://Scenes/player_camera.tscn" id="2_rhlhm"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_dmt8q"]
@@ -53,3 +53,6 @@ metadata/_editor_floor_ = Vector3(0, -1, 0)
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.34048, 0, 0.303658)
 mesh = SubResource("BoxMesh_u40y4")
+
+[node name="GridTileMap" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 0, 0)
