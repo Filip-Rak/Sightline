@@ -1,11 +1,11 @@
-extends Node3D
+extends Node
 
 class_name GridTile
 
 # Attributes
 # --------------------
 
-enum TileType{
+enum tile_type{
 	DEFAULT,
 	WATER,
 	FOREST,
@@ -17,7 +17,7 @@ enum TileType{
 }
 
 # Exported settings
-@export_enum("Default", "Water", "Forest", "Mountain", "Hill", "Town", "River", "Bridge") var type : int = 0
+@export var type : tile_type = tile_type.DEFAULT
 @export var point_value : int = 1
 @export var player_owner_id : int = -1
 @export var can_spawn : bool = false
@@ -26,33 +26,111 @@ enum TileType{
 var units_in_tile : Array
 var support_calls : Array
 
-# Type-specific properties and scenes
-# "Default", "Water", "Forest", "Mountain", "Hill", "Town", "River", "Bridge"
-var los_block = [false, false, true, true, false, true, false, false]
-var mod_def = [1.0, 0.6, 1.3, 1.5, 1.1, 1.5, 1.3, 0.8]
-var bonus_range = [0, 0, 0, 1, 1, 0, 0, 0]
-var acces_to = [
-	["placeholder", "all units"], 
-	["placeholder", "IFV"], 
-	["placeholder", "all units"], 
-	["placeholder"], 
-	["placeholder", "all units"], 
-	["placeholder", "infantry"], 
-	["placeholder", "all units"], 
-	["placeholder", "all units"]]
+# Dictionaries for type-specific properties and scenes
+var type_properties = {
+	tile_type.DEFAULT: 
+	{ 
+		"blocks_line_of_sight": false,
+		"defense_modifier" : 1.0,
+		"range_bonus": 0,
+		"accesible_to": [
+			PlayerUnit.unit_type.INFANTRY,
+			PlayerUnit.unit_type.AT_INFANTRY,
+			PlayerUnit.unit_type.IMV,
+			PlayerUnit.unit_type.IFV,
+			]
+	},
+	tile_type.WATER: 
+	{ 
+		"blocks_line_of_sight": false,
+		"defense_modifier" : 0.6,
+		"range_bonus": 1,
+		"accesible_to": [
+			PlayerUnit.unit_type.IFV,
+			]
+	},
+	tile_type.FOREST: 
+	{ 
+		"blocks_line_of_sight": true,
+		"defense_modifier" : 1.3,
+		"range_bonus": 0,
+		"accesible_to": [
+			PlayerUnit.unit_type.INFANTRY,
+			PlayerUnit.unit_type.AT_INFANTRY,
+			PlayerUnit.unit_type.IMV,
+			PlayerUnit.unit_type.IFV,
+			]
+	},
+	tile_type.MOUNTAIN: 
+	{ 
+		"blocks_line_of_sight": true,
+		"defense_modifier" : 1,
+		"range_bonus": 1,
+		"accesible_to": [
+
+			]
+	},
+	tile_type.HILL: 
+	{ 
+		"blocks_line_of_sight": true,
+		"defense_modifier" : 1.1,
+		"range_bonus": 1,
+		"accesible_to": [
+			PlayerUnit.unit_type.INFANTRY,
+			PlayerUnit.unit_type.AT_INFANTRY,
+			PlayerUnit.unit_type.IMV,
+			PlayerUnit.unit_type.IFV,
+			]
+	},
+	tile_type.TOWN: 
+	{ 
+		"blocks_line_of_sight": true,
+		"defense_modifier" : 1.5,
+		"range_bonus": 1,
+		"accesible_to": [
+			PlayerUnit.unit_type.INFANTRY,
+			PlayerUnit.unit_type.AT_INFANTRY,
+			]
+	},		
+	tile_type.RIVER: 
+	{ 
+		"blocks_line_of_sight": false,
+		"defense_modifier" : 1.4,
+		"range_bonus": 0,
+		"accesible_to": [
+			PlayerUnit.unit_type.IFV,
+			]
+	},		
+	tile_type.BRIDGE: 
+	{ 
+		"blocks_line_of_sight": false,
+		"defense_modifier" : 1.1,
+		"range_bonus": 0,
+		"accesible_to": [
+			PlayerUnit.unit_type.INFANTRY,
+			PlayerUnit.unit_type.AT_INFANTRY,
+			PlayerUnit.unit_type.IMV,
+			PlayerUnit.unit_type.IFV,
+			]
+	},
+}
 
 func _ready():
+	# print(blocks_line_of_sight())
+	# print(accesible_to())
+	# print(defense_modifier())
+	# print(range_bonus())
 	pass
 
 # Getters
 func blocks_line_of_sight() -> bool:
-	return los_block[type]
-	
-func defense_modifier() -> float:
-	return mod_def[type]
-	
-func range_bonus() -> int:
-	return bonus_range[type]
+	return type_properties[type]["blocks_line_of_sight"]
 	
 func accesible_to() -> Array:
-	return acces_to[type]
+	return type_properties[type]["accesible_to"]
+	
+func defense_modifier() -> float:
+	return type_properties[type]["defense_modifier"]
+	
+func range_bonus() -> int:
+	return type_properties[type]["range_bonus"]

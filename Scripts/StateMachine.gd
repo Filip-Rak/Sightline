@@ -3,18 +3,18 @@ extends Node
 # Attributes
 # --------------------
 
-enum GameState {
+enum game_state {
 	LOBBY,
 	MAP_TEST
 }
 
-var current_state: GameState = GameState.LOBBY
+var current_state: game_state = game_state.LOBBY
 
 # Functions
 # --------------------
 
 # Change the state and load the corresponding scene
-func change_state(new_state: GameState, parameters = {}):
+func change_state(new_state: game_state, parameters = {}):
 	if current_state == new_state:
 		return
 
@@ -22,8 +22,8 @@ func change_state(new_state: GameState, parameters = {}):
 
 	var scene_path = ""
 	match current_state:
-		GameState.LOBBY: scene_path = "res://scenes/LobbyScene.tscn"
-		GameState.MAP_TEST: scene_path = "res://scenes/MapTest.tscn"
+		game_state.LOBBY: scene_path = "res://scenes/LobbyScene.tscn"
+		game_state.MAP_TEST: scene_path = "res://scenes/MapTest.tscn"
 
 	# Load the new scene
 	var new_scene = load(scene_path).instantiate()

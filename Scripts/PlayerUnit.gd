@@ -6,16 +6,16 @@ class_name PlayerUnit
 # --------------------
 
 # Exported settings
-@export var unit_type : UnitType = UnitType.IMV
+@export var type : unit_type = unit_type.IMV
 
 # Gameplay variables
-var action_points_left = type_properties[unit_type]["action_points"]
-var hit_points_left = type_properties[unit_type]["hit_points_max"]
+var action_points_left : int
+var hit_points_left : float
 var tile_position : Vector3
 var transported_unit : PlayerUnit
 
 # Type-specific properties
-enum UnitType{
+enum unit_type{
 	INFANTRY,
 	AT_INFANTRY,
 	IMV,
@@ -23,7 +23,7 @@ enum UnitType{
 }
 
 var type_properties = {
-	UnitType.INFANTRY: 
+	unit_type.INFANTRY: 
 	{ 
 		"price": 1.0,
 		"action_points": 2,
@@ -33,7 +33,7 @@ var type_properties = {
 		"can_be_transported": true,
 		"attacks" : ["placeholder", "for", "attacks"]
 	},
-	UnitType.AT_INFANTRY: 
+	unit_type.AT_INFANTRY: 
 	{ 
 		"price": 2.0,
 		"action_points": 2,
@@ -43,7 +43,7 @@ var type_properties = {
 		"can_be_transported": true,
 		"attacks" : ["placeholder", "for", "attacks"]
 	},
-	UnitType.IMV: 
+	unit_type.IMV: 
 	{ 
 		"price": 2.0,
 		"action_points": 5,
@@ -53,7 +53,7 @@ var type_properties = {
 		"can_be_transported": false,
 		"attacks" : ["placeholder", "for", "attacks"]
 	},
-	UnitType.IFV: 
+	unit_type.IFV: 
 	{ 
 		"price": 5.0,
 		"action_points": 4,
@@ -65,18 +65,28 @@ var type_properties = {
 	},
 }
 
-# Getters
-# --------------------
+# Ready Functions
+func _ready():
+	action_points_left = type_properties[unit_type]["action_points"]
+	hit_points_left = type_properties[unit_type]["hit_points_max"]
+	# print_all()
 
+
+# Type Getters
+# --------------------
 func get_price() -> float: return type_properties[unit_type]["price"]
 func get_action_points_max() -> int: return type_properties[unit_type]["action_points"]
-func get_action_points_left() -> int: return action_points_left
 func get_sight_range() -> int: return type_properties[unit_type]["sight_range"]
 func get_hit_points_max() -> float: return type_properties[unit_type]["hit_points_max"]
-func get_hit_points_left() -> float: return hit_points_left
 func get_can_transport() -> bool: return type_properties[unit_type]["can_transport"]
 func get_can_be_transported() -> bool: return type_properties[unit_type]["can_be_transported"]
 func get_attacks() -> Array: return type_properties[unit_type]["attacks"]
+
+# Instance Getters
+# --------------------
+
+func get_action_points_left() -> int: return action_points_left
+func get_hit_points_left() -> float: return hit_points_left
 func get_tile_position() -> Vector3: return tile_position
 func get_transported_unit() -> PlayerUnit: return transported_unit
 
@@ -84,7 +94,7 @@ func get_transported_unit() -> PlayerUnit: return transported_unit
 # --------------------
 
 # Returns 'true' if action_points are left
-func offset_action_points(offset : float) -> bool:
+func offset_action_points(offset : int) -> bool:
 	action_points_left -= offset
 	return action_points_left > 0
 
@@ -107,5 +117,21 @@ func load_transportable_unit(unit_to_load : PlayerUnit) -> bool:
 # Remember to put y on 0!
 func set_tile_position(new_position : Vector3):
 	tile_position = new_position
+	
+	
+func print_all():
+	print("get_price: " + str(get_price()))
+	print("get_action_points_max: " + str(get_action_points_max()))
+	print("get_sight_range: " + str(get_sight_range()))
+	print("get_hit_points_max: " + str(get_hit_points_max()))
+	print("get_can_transport: " + str(get_can_transport()))
+	print("get_can_be_transported: " + str(get_can_be_transported()))
+	print("get_attacks: " + str(get_attacks()))
+	print("get_action_points_left: " + str(get_action_points_left()))
+	print("get_hit_points_left: " + str(get_hit_points_left()))
+	print("get_tile_position: " + str(get_tile_position()))
+	print("get_transported_unit: " + str(get_transported_unit()))
+	
+	
 	
 	
