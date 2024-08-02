@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://xntxt0yf3qlg"]
+
+[ext_resource type="Script" path="res://Scripts/GridTile.gd" id="1_gwv7o"]
+
+[node name="GridTile" type="Node3D"]
+script = ExtResource("1_gwv7o")
