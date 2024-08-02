@@ -2,7 +2,7 @@
 
 [ext_resource type="MeshLibrary" uid="uid://bwweqnq8uhoht" path="res://Assets/Tiles/MeshLibraries/tiles_ml.tres" id="1_hx3ws"]
 [ext_resource type="PackedScene" uid="uid://mwr768tf6k4" path="res://Scenes/player_camera.tscn" id="2_iywgq"]
-[ext_resource type="PackedScene" path="res://Scenes/grid_tile.tscn" id="3_rj2we"]
+[ext_resource type="PackedScene" uid="uid://xntxt0yf3qlg" path="res://Scenes/grid_tile.tscn" id="3_rj2we"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_dmt8q"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)

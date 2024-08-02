@@ -1,15 +1,87 @@
-[gd_scene load_steps=2 format=3 uid="uid://dhkdj6m4iayww"]
+[gd_scene load_steps=11 format=3 uid="uid://bpxleqntw6wjw"]
 
-[ext_resource type="PackedScene" path="res://Scenes/grid_tile.tscn" id="1_e2xe1"]
+[ext_resource type="PackedScene" uid="uid://detnfrch1wh4d" path="res://Assets/Tiles/Instances/grid_tile_Body_of_water.tscn" id="1_7vihv"]
+[ext_resource type="PackedScene" uid="uid://dhaetwn3aoaik" path="res://Assets/Tiles/Instances/grid_tile_Default.tscn" id="2_f1n7r"]
+[ext_resource type="PackedScene" uid="uid://4lnq37ykrjtc" path="res://Assets/Tiles/Instances/grid_tile_Forest.tscn" id="3_lsupy"]
+[ext_resource type="PackedScene" uid="uid://bfm5ll5553ol" path="res://Assets/Tiles/Instances/grid_tile_Mountain_river.tscn" id="4_ct17t"]
+[ext_resource type="PackedScene" uid="uid://qjx8est1huum" path="res://Assets/Tiles/Instances/grid_tile_Town.tscn" id="5_dbgx1"]
+[ext_resource type="PackedScene" uid="uid://mwr768tf6k4" path="res://Scenes/player_camera.tscn" id="6_mp15b"]
+[ext_resource type="Script" path="res://Scripts/GameManger.gd" id="7_vsd77"]
 
-[node name="GridTileMap" type="Node3D"]
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_74iu0"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
 
-[node name="GridTile" parent="." instance=ExtResource("1_e2xe1")]
+[sub_resource type="Sky" id="Sky_3axsl"]
+sky_material = SubResource("ProceduralSkyMaterial_74iu0")
 
-[node name="GridTile2" parent="." instance=ExtResource("1_e2xe1")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
-type = 2
+[sub_resource type="Environment" id="Environment_7x7cq"]
+background_mode = 2
+sky = SubResource("Sky_3axsl")
+tonemap_mode = 2
+glow_enabled = true
 
-[node name="GridTile3" parent="." instance=ExtResource("1_e2xe1")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2)
-type = 4
+[node name="MapTest" type="Node3D" node_paths=PackedStringArray("map_root")]
+script = ExtResource("7_vsd77")
+map_root = NodePath("GridTileMap")
+
+[node name="Environment" type="Node3D" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment"]
+environment = SubResource("Environment_7x7cq")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment"]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="GridTileMap" type="Node3D" parent="."]
+
+[node name="GridTile" parent="GridTileMap" instance=ExtResource("1_7vihv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 3)
+
+[node name="GridTile2" parent="GridTileMap" instance=ExtResource("2_f1n7r")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 3)
+
+[node name="GridTile5" parent="GridTileMap" instance=ExtResource("2_f1n7r")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 2)
+
+[node name="GridTile4" parent="GridTileMap" instance=ExtResource("2_f1n7r")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
+
+[node name="GridTile6" parent="GridTileMap" instance=ExtResource("2_f1n7r")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2)
+
+[node name="GridTile3" parent="GridTileMap" instance=ExtResource("3_lsupy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 3)
+
+[node name="GridTile7" parent="GridTileMap" instance=ExtResource("4_ct17t")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 2)
+
+[node name="GridTile8" parent="GridTileMap" instance=ExtResource("5_dbgx1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 2)
+
+[node name="GridTile9" parent="GridTileMap" instance=ExtResource("1_7vihv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)
+
+[node name="GridTile10" parent="GridTileMap" instance=ExtResource("2_f1n7r")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0)
+
+[node name="GridTile11" parent="GridTileMap" instance=ExtResource("2_f1n7r")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 1)
+
+[node name="GridTile12" parent="GridTileMap" instance=ExtResource("2_f1n7r")]
+
+[node name="GridTile13" parent="GridTileMap" instance=ExtResource("2_f1n7r")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
+
+[node name="GridTile14" parent="GridTileMap" instance=ExtResource("3_lsupy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 0)
+
+[node name="GridTile15" parent="GridTileMap" instance=ExtResource("4_ct17t")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 1)
+
+[node name="GridTile16" parent="GridTileMap" instance=ExtResource("5_dbgx1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1)
+
+[node name="PlayerCamera" parent="." instance=ExtResource("6_mp15b")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.59917, 0, 4.14529)

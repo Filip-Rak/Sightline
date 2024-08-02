@@ -5,7 +5,7 @@ extends Node
 
 enum GameState {
 	LOBBY,
-	GAME
+	MAP_TEST
 }
 
 var current_state: GameState = GameState.LOBBY
@@ -23,7 +23,7 @@ func change_state(new_state: GameState, parameters = {}):
 	var scene_path = ""
 	match current_state:
 		GameState.LOBBY: scene_path = "res://scenes/LobbyScene.tscn"
-		GameState.GAME: scene_path = "res://scenes/GameScene.tscn"
+		GameState.MAP_TEST: scene_path = "res://scenes/MapTest.tscn"
 
 	# Load the new scene
 	var new_scene = load(scene_path).instantiate()
@@ -36,8 +36,11 @@ func _change_scene(new_scene, parameters):
 	if get_tree().current_scene:
 		get_tree().current_scene.queue_free()
 		
-	get_tree().current_scene = new_scene
+	# Add the new scene to the root node first
 	get_tree().root.add_child(new_scene)
+	
+	# Set the new scene as the current scene
+	get_tree().set_current_scene(new_scene)
 	
 	# Initialize the new scene with the provided parameters
 	if new_scene.has_method("initialize"):

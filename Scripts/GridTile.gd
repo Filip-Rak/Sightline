@@ -1,4 +1,6 @@
-extends Node
+extends Node3D
+
+class_name GridTile
 
 # Attributes
 # --------------------
@@ -15,11 +17,7 @@ enum TileType{
 }
 
 # Exported settings
-@export_enum("Default", "Water", "Forest", "Mountain", "Hill", "Town", "River", "Bridge") var type : int = 0:
-	set(val):
-		type = val
-		print_all()
-		
+@export_enum("Default", "Water", "Forest", "Mountain", "Hill", "Town", "River", "Bridge") var type : int = 0
 @export var point_value : int = 1
 @export var player_owner_id : int = -1
 @export var can_spawn : bool = false
