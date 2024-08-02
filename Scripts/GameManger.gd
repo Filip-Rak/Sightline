@@ -57,8 +57,8 @@ func get_map_dimensions():
 		
 	x_size = max_x - min_x + 1
 	z_size = max_z - min_z + 1
-	print ("SIZE X: %s\tSIZE Z: %s" % [x_size, z_size])
-	print ("OFFSET X: %s\tOFFSET Z: %s" % [positional_offset_x, positional_offset_z])
+	# print ("SIZE X: %s\tSIZE Z: %s" % [x_size, z_size])
+	# print ("OFFSET X: %s\tOFFSET Z: %s" % [positional_offset_x, positional_offset_z])
 	
 func initialize_tile_matrix():
 	for i in x_size:
@@ -73,6 +73,6 @@ func load_tiles_to_matrix():
 		var x : int = int(tile.position.x) - positional_offset_x
 		var z : int = int(tile.position.z) - positional_offset_z
 		tile_matrix[x][z] = tile
-		print ("[%s][%s] = %s" % [x, z, tile.type])
+		# print ("[%s][%s] = %s" % [x, z, tile.type])
 	
 	
