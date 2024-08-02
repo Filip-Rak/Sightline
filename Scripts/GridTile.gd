@@ -43,15 +43,6 @@ var acces_to = [
 
 func _ready():
 	pass
-	
-func print_all():
-	print("LOS BLOCK: " + str(blocks_line_of_sight()))
-	print("DEF MOD: " + str(defense_modifier()))
-	print("RANGE BON: " + str(range_bonus()))
-	print("ACCES TO: " + str(accesible_to()))
-	print("POINT VAL: " + str(point_value))
-	print("OWNER ID: " + str(player_owner_id))
-	print("CAN SPAWN: " + str(can_spawn))
 
 # Getters
 func blocks_line_of_sight() -> bool:

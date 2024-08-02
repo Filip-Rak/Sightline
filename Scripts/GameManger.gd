@@ -60,6 +60,8 @@ func load_tiles_to_matrix():
 	var tiles = map_root.get_children()
 	
 	for tile in tiles:
-		tile_matrix[tile.position.x][tile.position.y] = tile
+		var x : int = int(tile.position.x)
+		var y : int = int(tile.position.y)
+		tile_matrix[x][y] = tile
 	
 	
