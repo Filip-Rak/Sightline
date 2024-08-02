@@ -1,5 +1,12 @@
 extends Node3D
 
+
+@onready var player_camera = $"../PlayerCamera"
+
+
+
+
+
 @onready var twist_pivot := $TwistPivot 
 @onready var pitch_pivot := $TwistPivot/PitchPivot 
 @onready var camera_3d = $TwistPivot/PitchPivot/SubViewportContainer/SubViewport/Camera3D
@@ -45,6 +52,10 @@ func _unhandled_input(event):
 			mouse_twist_input = 0.0
 	if event.is_action_pressed("debug_unlock"):
 		if viewport.is_visible():
+			player_camera.enable_positional_movement = true
+			player_camera.enable_rotational_movement = true
 			viewport.set_visible(false)
 		else:
+			player_camera.enable_positional_movement = false 
+			player_camera.enable_rotational_movement = false
 			viewport.set_visible(true)
