@@ -85,13 +85,22 @@ func _on_start_game_button_button_down():
 # --------------------
 
 @rpc("any_peer", "call_local")
-func start_game():
+func start_game_alt():
 	# Load the playing scene
 	var scene = load("res://Scenes/Main.tscn").instantiate()
 	get_tree().root.add_child(scene)
 	
 	# Hide the lobby UI
 	self.hide()
+	
+@rpc("any_peer", "call_local")
+func start_game():
+	# Load the playing scene
+	var state_machine = get_node("/root/StateMachine")
+	var data = {
+
+	}
+	state_machine.change_state(StateMachine.GameState.GAME, data)
 	
 @rpc("any_peer")
 func send_player_information_to_server(player_name : String, id : int):

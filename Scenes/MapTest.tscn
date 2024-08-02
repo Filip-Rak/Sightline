@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://dhkdj6m4iayww"]
+
+[ext_resource type="PackedScene" path="res://Scenes/grid_tile.tscn" id="1_e2xe1"]
+
+[node name="GridTileMap" type="Node3D"]
+
+[node name="GridTile" parent="." instance=ExtResource("1_e2xe1")]
+
+[node name="GridTile2" parent="." instance=ExtResource("1_e2xe1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+type = 2
+
+[node name="GridTile3" parent="." instance=ExtResource("1_e2xe1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2)
+type = 4
