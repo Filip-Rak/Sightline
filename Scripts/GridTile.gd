@@ -19,8 +19,8 @@ enum tile_type{
 # Exported settings
 @export var type : tile_type = tile_type.DEFAULT
 @export var point_value : int = 1
-@export var player_owner_id : int = -1
-@export var can_spawn : bool = false
+@export var team_id : int = -1
+@export var is_a_spawn : bool = false
 
 # Gamepplay variables
 var units_in_tile : Array
@@ -67,7 +67,7 @@ var type_properties = {
 		"defense_modifier" : 1,
 		"range_bonus": 1,
 		"accesible_to": [
-
+			
 			]
 	},
 	tile_type.HILL: 
@@ -122,15 +122,24 @@ func _ready():
 	# print(range_bonus())
 	pass
 
-# Getters
-func blocks_line_of_sight() -> bool:
+# Type Specific Getters
+# --------------------
+func get_blocks_line_of_sight() -> bool:
 	return type_properties[type]["blocks_line_of_sight"]
 	
-func accesible_to() -> Array:
+func get_accesible_to() -> Array:
 	return type_properties[type]["accesible_to"]
 	
-func defense_modifier() -> float:
+func get_defense_modifier() -> float:
 	return type_properties[type]["defense_modifier"]
 	
-func range_bonus() -> int:
+func get_range_bonus() -> int:
 	return type_properties[type]["range_bonus"]
+
+# Instance Specific Getters
+# --------------------
+func get_team_id():
+	return team_id
+	
+func get_is_a_spawn():
+	return is_a_spawn

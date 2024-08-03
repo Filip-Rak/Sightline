@@ -43,5 +43,5 @@ func _change_scene(new_scene, parameters):
 	get_tree().set_current_scene(new_scene)
 	
 	# Initialize the new scene with the provided parameters
-	if new_scene.has_method("initialize"):
-		new_scene.initialize(parameters)
+	if new_scene.has_method("set_up"):
+		new_scene.set_up(parameters)
