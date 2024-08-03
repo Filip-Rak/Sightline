@@ -13,7 +13,7 @@ var positional_offset_z : int
 var x_size : int
 var z_size : int
 
-# Highlightin a group of tiles
+# Highlighting a group of tiles
 var mass_highlight_group_name : String = "highlighted_tiles"
 var mass_highlight_material : Material = preload("res://Assets/Resources/Mat_move.tres")
 

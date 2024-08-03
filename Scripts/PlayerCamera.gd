@@ -143,8 +143,7 @@ func handle_rotational_movement(delta:float):
 	
 	# print("ITERATION:\n\tTWIST: %s \n\tPitch: %s" % [mouse_twist_input, mouse_pitch_input])
 	
-	if outer_collision && mouse_pitch_input > 0: mouse_pitch_input = 0
-	
+	if outer_collision && enable_collision_avoidance && mouse_pitch_input > 0: mouse_pitch_input = 0
 	if abs(mouse_twist_input) > min_rotation_offset: focal_y.rotate_y(mouse_twist_input * delta)
 	if abs(mouse_pitch_input) > min_rotation_offset: focal_x.rotate_x(mouse_pitch_input * delta)
 	
