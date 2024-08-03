@@ -93,3 +93,4 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1)
 
 [node name="PlayerCamera" parent="." instance=ExtResource("6_mp15b")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.59917, 0, 4.14529)
+enable_collision_avoidance = false

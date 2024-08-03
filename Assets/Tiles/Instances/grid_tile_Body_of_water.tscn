@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://detnfrch1wh4d"]
+[gd_scene load_steps=7 format=3 uid="uid://detnfrch1wh4d"]
 
 [ext_resource type="Script" path="res://Scripts/GridTile.gd" id="1_8hbq6"]
 
@@ -39,6 +39,9 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_ekhty")
 
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_l4sxd"]
+points = PackedVector3Array(0.364932, 0.150763, 0.412674, 0.507924, 0.055568, 0.507937, 0.45731, 0, 0.457322, 0.507924, 0.055568, -0.507937, -0.507937, 0.055568, -0.507937, -0.507937, 0.055568, 0.507937, -0.476116, 0.134902, -0.317411, -0.457322, 0, -0.457322, 0.428473, 0.134902, -0.365042, -0.457322, 0, 0.457322, 0.45731, 0, -0.457322, -0.285593, 0.119026, 0.444395, 0.396752, 0.150763, 0.428484, 0.460293, 0.119026, -0.285689, -0.491927, 0.119026, -0.3015, 0.428473, 0.134902, 0.333321, -0.476116, 0.134902, -0.3015, 0.364932, 0.150763, 0.428484, 0.364932, 0.134902, 0.444395, 0.412662, 0.134902, -0.365042, 0.460293, 0.119026, -0.317411)
+
 [node name="GridTile" type="Node3D"]
 script = ExtResource("1_8hbq6")
 type = 1
@@ -47,3 +50,8 @@ type = 1
 material_override = SubResource("StandardMaterial3D_mu4fi")
 mesh = SubResource("ArrayMesh_0dejj")
 skeleton = NodePath("")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="tile_Body_of_water"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="tile_Body_of_water/StaticBody3D"]
+shape = SubResource("ConvexPolygonShape3D_l4sxd")

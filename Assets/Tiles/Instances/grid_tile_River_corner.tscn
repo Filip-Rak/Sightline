@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://dqycrby8dtxpk"]
+[gd_scene load_steps=7 format=3 uid="uid://dqycrby8dtxpk"]
 
 [ext_resource type="Script" path="res://Scripts/GridTile.gd" id="1_phpbd"]
 
@@ -39,6 +39,9 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_txcf4")
 
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_0qa14"]
+points = PackedVector3Array(0.206237, 0.134921, 0.190426, -0.507937, -0.00793651, -0.507937, -0.507937, -0.00793651, 0.507937, 0.507937, -0.00793651, -0.507937, 0.507937, -0.00793651, 0.507937, -0.269779, 0.119035, -0.333321, 0.412674, 0.134921, -0.3015, -0.507937, 0.0555633, 0.507937, 0.507937, 0.0555633, 0.507937, -0.507937, 0.0555633, -0.507937, -0.365042, 0.119035, 0.3015, 0.507937, 0.0555633, -0.507937, 0.349132, 0.119035, 0.349132, 0.190426, 0.134921, 0.174516, -0.365042, 0.119035, 0.269779, 0.412674, 0.134921, -0.285689, 0.396763, 0.134921, -0.3015, 0.333321, 0.119035, 0.349132, 0.190426, 0.134921, 0.190426)
+
 [node name="GridTile" type="Node3D"]
 script = ExtResource("1_phpbd")
 type = 6
@@ -47,3 +50,8 @@ type = 6
 material_override = SubResource("StandardMaterial3D_4dc8t")
 mesh = SubResource("ArrayMesh_wpq7x")
 skeleton = NodePath("")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="tile_River_corner"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="tile_River_corner/StaticBody3D"]
+shape = SubResource("ConvexPolygonShape3D_0qa14")

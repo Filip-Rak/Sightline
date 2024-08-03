@@ -13,12 +13,18 @@ var positional_offset_z : int
 var x_size : int
 var z_size : int
 
-# Map highlighting
-var highlighted_tiles = []
-var highlight_material : Material = preload("res://Assets/Resources/Mat_move.tres")
+# Highlightin a group of tiles
+var mass_highlight_group_name : String = "highlighted_tiles"
+var mass_highlight_material : Material = preload("res://Assets/Resources/Mat_move.tres")
 
-# Player team
+# Highlighting the tile under the mouse
+var mouse_highlight : Node3D
+# Mouse highlight probably shouldnt use its own materials, but rather amplify the group one's
+# Unless the tile isn't highlited in the first place - only then should it put material on it's own
+
+# Player
 var player_team_id = 1
+@onready var camera = $PlayerCamera
 
 # Ready Functions
 # --------------------
@@ -81,6 +87,7 @@ func load_tiles_to_matrix():
 # --------------------
 func _process(_delta : float):
 	if Input.is_action_just_pressed("function_debug"): highlight_spawnable_tiles(PlayerUnit.unit_type.IMV)
+	# get_hooverd_on_selectable()
 
 # External Interaction Functions
 # --------------------
@@ -99,35 +106,58 @@ func highlight_spawnable_tiles(unit : PlayerUnit.unit_type):
 	var good_tiles = []
 	for i in x_size:
 		for j in z_size:
-				if tile_matrix[i][j].get_accesible_to().find(unit) != -1:
+				if tile_matrix[i][j].get_is_a_spawn():
 					if tile_matrix[i][j].get_team_id() == player_team_id:
-						if tile_matrix[i][j].get_is_a_spawn():
+						if tile_matrix[i][j].get_accesible_to().find(unit) != -1:
 							good_tiles.append(tile_matrix[i][j])
 	
 	# Highlight these tiles
 	highlight_tiles(good_tiles)
 
-func highlight_tiles(tiles : Array):	
-	# Set material to a highlighting one
+func highlight_tiles(tiles : Array):
 	for tile in tiles:
 		# Get the MeshInstance3D child
 		for child in tile.get_children():
 			if child is MeshInstance3D:
 				# Apply the highlight material
-				child.material_overlay = highlight_material
-				# Save highlited tiles to the array
-				highlighted_tiles.append(tile)
+				child.material_overlay = mass_highlight_material
+				
+				# Save highlited tiles to their group
+				tile.add_to_group(mass_highlight_group_name)
 				break
 
 func un_highlight_tiles():
+	# Get all nodes in the group
+	var highlighted = get_tree().get_nodes_in_group(mass_highlight_group_name)
+	
 	# Clear the highlighting material
-	for tile in highlighted_tiles:
+	for tile in highlighted:
+		
 		# Get the MeshInstance3D child
 		for child in tile.get_children():
 			if child is MeshInstance3D:
+				
 				# Clear highlight material
 				child.material_overlay = null
 				break
+				
+		# Remove the tile from the group
+		tile.remove_from_group(mass_highlight_group_name)
+		
+		
+# Utility Functions
+# --------------------
+
+# Return 'false' when no hit, or when the hit is not a selectable
+func get_hooverd_on_selectable():
+	var hit = camera.screen_point_to_ray()
 	
-	# Clear the array
-	highlighted_tiles.clear()
+	if hit:
+		var parent = hit["collider"].get_parent()
+		if parent:
+			var grand_parent = parent.get_parent()
+			if grand_parent:
+				return grand_parent
+		
+	return false
+		

@@ -204,7 +204,7 @@ func normalize_value(value : float, max_val : float, min_val : float) -> float:
 	# Normalize the value to the range [0, 1]
 	return (clamped_value - min_val) / (max_val - min_val)
 	
-func screen_point_to_ray() -> Vector3:
+func screen_point_to_ray():
 	# Get releavnt positions
 	var space_state = get_world_3d().direct_space_state
 	var mouse_pos = get_viewport().get_mouse_position()
@@ -217,12 +217,7 @@ func screen_point_to_ray() -> Vector3:
 	var query = PhysicsRayQueryParameters3D.create(ray_origin, ray_end)
 	var ray_hit = space_state.intersect_ray(query)
 	
-	# Return ray hit position
-	if ray_hit:
-		return ray_hit['position']
-	
-	# If no hit, return focal point position
-	return Vector3(focal_x.position)
+	return ray_hit
 	
 
 # Links

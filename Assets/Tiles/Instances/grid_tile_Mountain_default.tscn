@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://fdgnhhavq205"]
+[gd_scene load_steps=7 format=3 uid="uid://fdgnhhavq205"]
 
 [ext_resource type="Script" path="res://Scripts/GridTile.gd" id="1_q1wf4"]
 
@@ -39,6 +39,9 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_vo8t2")
 
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_4co4y"]
+points = PackedVector3Array(0.374181, 0.292679, -0.0299158, -0.493923, 0, -0.493923, -0.493923, 0, 0.493923, 0.0146265, 0.542092, -0.117472, 0.494019, 0, -0.494019, 0.507937, 0.0556536, 0.507937, -0.476116, 0.150845, -0.460305, -0.507937, 0.0555977, 0.507937, 0.494019, 0, 0.494019, 0.507937, 0.0556536, -0.507937, -0.0724351, 0.49509, -0.0289559, 0.269779, 0.103249, 0.476116, 0.460206, 0.166729, -0.365042, 0.0872437, 0.510541, -0.145497, 0.0278106, 0.444718, 0.0416724, 0.0437281, 0.54008, -0.116578, 0.0317212, 0.0556536, -0.507937, -0.0594242, 0.500764, -0.148654, 0.0872249, 0.495932, -0.159958, 0.0143094, 0.536363, -0.0861266, -0.476116, 0.150845, -0.428484, 0.444395, 0.182613, -0.365042, -0.444395, 0.150845, -0.460305, -0.0724645, 0.495178, -0.115961, 0.285689, 0.103249, 0.476116, 0.460206, 0.166729, -0.349132)
+
 [node name="GridTile" type="Node3D"]
 script = ExtResource("1_q1wf4")
 type = 3
@@ -47,3 +50,8 @@ type = 3
 material_override = SubResource("StandardMaterial3D_gayrv")
 mesh = SubResource("ArrayMesh_p4y7w")
 skeleton = NodePath("")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="tile_Mountain_default"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="tile_Mountain_default/StaticBody3D"]
+shape = SubResource("ConvexPolygonShape3D_4co4y")
