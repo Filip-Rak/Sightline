@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://d1d0lyybr1434"]
+
+[ext_resource type="Script" path="res://Scripts/PlayerUnit.gd" id="1_ok4v5"]
+[ext_resource type="PackedScene" uid="uid://dr7u17s7dmive" path="res://Assets/Units/unit_transport.tscn" id="2_moius"]
+
+[node name="PlayerUnit" type="Node3D"]
+script = ExtResource("1_ok4v5")
+
+[node name="Transport" parent="." instance=ExtResource("2_moius")]

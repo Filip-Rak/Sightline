@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://dmhiqpdhpo1y6"]
+
+[ext_resource type="Script" path="res://Scripts/PlayerUnit.gd" id="1_2q2r8"]
+[ext_resource type="PackedScene" path="res://Assets/Units/unit_infantry.tscn" id="2_6txcg"]
+
+[node name="PlayerUnit" type="Node3D"]
+script = ExtResource("1_2q2r8")
+type = 0
+
+[node name="unit_infantry" parent="." instance=ExtResource("2_6txcg")]

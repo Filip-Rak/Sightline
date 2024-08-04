@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://bqwj3cd5kv2xc"]
+
+[ext_resource type="Script" path="res://Scripts/PlayerUnit.gd" id="1_xkrrk"]
+[ext_resource type="PackedScene" uid="uid://c7qrnbt043qml" path="res://Assets/Units/unit_ifv.tscn" id="2_8um86"]
+
+[node name="PlayerUnit" type="Node3D"]
+script = ExtResource("1_xkrrk")
+type = 3
+
+[node name="ifv_body" parent="." instance=ExtResource("2_8um86")]
