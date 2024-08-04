@@ -8,10 +8,11 @@ class_name PlayerUnit
 # Exported settings
 @export var type : unit_type = unit_type.IMV
 
-# Gameplay variables
+# Instance
 var action_points_left : int
 var hit_points_left : float
 var tile_position : Vector3
+var player_owner_id : int
 var transported_unit : PlayerUnit
 
 # Type-specific properties
@@ -22,7 +23,7 @@ enum unit_type{
 	IFV
 }
 
-var type_properties = {
+static var type_properties = {
 	unit_type.INFANTRY: 
 	{ 
 		"price": 1.0,
@@ -31,6 +32,7 @@ var type_properties = {
 		"hit_points_max": 100,
 		"can_transport": false,
 		"can_be_transported": true,
+		"scene": preload("res://Assets/Units/player_unit_infantry.tscn"),
 		"attacks" : ["placeholder", "for", "attacks"]
 	},
 	unit_type.AT_INFANTRY: 
@@ -41,6 +43,7 @@ var type_properties = {
 		"hit_points_max": 80,
 		"can_transport": false,
 		"can_be_transported": true,
+		"scene": preload("res://Assets/Units/player_unit_AT_infantry.tscn"),
 		"attacks" : ["placeholder", "for", "attacks"]
 	},
 	unit_type.IMV: 
@@ -51,6 +54,7 @@ var type_properties = {
 		"hit_points_max": 40,
 		"can_transport": true,
 		"can_be_transported": false,
+		"scene": preload("res://Assets/Units/player_unit_IMV.tscn"),
 		"attacks" : ["placeholder", "for", "attacks"]
 	},
 	unit_type.IFV: 
@@ -61,26 +65,29 @@ var type_properties = {
 		"hit_points_max": 120,
 		"can_transport": true,
 		"can_be_transported": false,
+		"scene": preload("res://Assets/Units/player_unit_IFV.tscn"),
 		"attacks" : ["placeholder", "for", "attacks"]
 	},
 }
 
 # Ready Functions
 func _ready():
-	action_points_left = type_properties[unit_type]["action_points"]
-	hit_points_left = type_properties[unit_type]["hit_points_max"]
+	action_points_left = type_properties[type]["action_points"]
+	hit_points_left = type_properties[type]["hit_points_max"]
 	# print_all()
 
 
 # Type Getters
 # --------------------
-func get_price() -> float: return type_properties[unit_type]["price"]
-func get_action_points_max() -> int: return type_properties[unit_type]["action_points"]
-func get_sight_range() -> int: return type_properties[unit_type]["sight_range"]
-func get_hit_points_max() -> float: return type_properties[unit_type]["hit_points_max"]
-func get_can_transport() -> bool: return type_properties[unit_type]["can_transport"]
-func get_can_be_transported() -> bool: return type_properties[unit_type]["can_be_transported"]
-func get_attacks() -> Array: return type_properties[unit_type]["attacks"]
+func get_price() -> float: return type_properties[type]["price"]
+func get_action_points_max() -> int: return type_properties[type]["action_points"]
+func get_sight_range() -> int: return type_properties[type]["sight_range"]
+func get_hit_points_max() -> float: return type_properties[type]["hit_points_max"]
+func get_can_transport() -> bool: return type_properties[type]["can_transport"]
+func get_can_be_transported() -> bool: return type_properties[type]["can_be_transported"]
+func get_scene() -> PackedScene: return type_properties[type]["scene"]
+static func get_scene_of_type(given_type : unit_type) -> PackedScene: return type_properties[given_type]["scene"]
+func get_attacks() -> Array: return type_properties[type]["attacks"]
 
 # Instance Getters
 # --------------------
@@ -88,6 +95,7 @@ func get_attacks() -> Array: return type_properties[unit_type]["attacks"]
 func get_action_points_left() -> int: return action_points_left
 func get_hit_points_left() -> float: return hit_points_left
 func get_tile_position() -> Vector3: return tile_position
+func get_player_owner_id() -> int: return player_owner_id
 func get_transported_unit() -> PlayerUnit: return transported_unit
 
 # Interactive Setters
@@ -117,6 +125,9 @@ func load_transportable_unit(unit_to_load : PlayerUnit) -> bool:
 # Remember to put y on 0!
 func set_tile_position(new_position : Vector3):
 	tile_position = new_position
+
+func set_player_owner(id :int):
+	player_owner_id = id
 	
 	
 func print_all():

@@ -103,7 +103,7 @@ func load_tiles_to_matrix():
 # Process Functions
 # --------------------
 func _process(_delta : float):
-	if Input.is_action_just_pressed("function_debug"): 
+	if Input.is_action_just_pressed("function_debug") && false: 
 		# mouse_selection = PlayerUnit.new() # No no, spawn the scene. Var should hold the scene
 		highlight_spawnable_tiles(PlayerUnit.unit_type.INFANTRY)
 		MouseModeManager.current_mouse_mode = MouseModeManager.MOUSE_MODE.SPAWN
@@ -194,10 +194,15 @@ func spawn_selected_unit(target_tile : Node3D):
 	if !target_tile.is_in_group(mass_highlight_group_name): return
 	
 	# Make sure a unit is selected
-	# if !mouse_selection: return # Disabled for testing
+	if !mouse_selection: return
 	
 	# Spawn the unit
 	print("Spawning a unit at: \n\tPosition: x = %s\t z = %s\n\tType of tile: %s\n\tName: %s\n\tType of unit: %s" % [target_tile.position.x, target_tile.position.z, target_tile.type, target_tile.name, mouse_selection])
+	var spawned_unit = mouse_selection.instantiate()
+	spawned_unit.position = target_tile.position
+	target_tile.units_in_tile.append(spawned_unit)
+	add_child(spawned_unit)
+
 		
 	# Clear all selections after spawning - consider not doing so for 'shift' effect
 	clear_mouse_over_highlight()

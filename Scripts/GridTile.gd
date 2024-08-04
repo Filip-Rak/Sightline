@@ -5,7 +5,7 @@ class_name GridTile
 # Attributes
 # --------------------
 
-enum tile_type{
+enum TILE_TYPE{
 	DEFAULT,
 	WATER,
 	FOREST,
@@ -17,7 +17,7 @@ enum tile_type{
 }
 
 # Exported settings
-@export var type : tile_type = tile_type.DEFAULT
+@export var type : TILE_TYPE = TILE_TYPE.DEFAULT
 @export var point_value : int = 1
 @export var team_id : int = -1
 @export var is_a_spawn : bool = false
@@ -28,7 +28,7 @@ var support_calls : Array
 
 # Dictionaries for type-specific properties and scenes
 var type_properties = {
-	tile_type.DEFAULT: 
+	TILE_TYPE.DEFAULT: 
 	{ 
 		"blocks_line_of_sight": false,
 		"defense_modifier" : 1.0,
@@ -40,7 +40,7 @@ var type_properties = {
 			PlayerUnit.unit_type.IFV,
 			]
 	},
-	tile_type.WATER: 
+	TILE_TYPE.WATER: 
 	{ 
 		"blocks_line_of_sight": false,
 		"defense_modifier" : 0.6,
@@ -49,7 +49,7 @@ var type_properties = {
 			PlayerUnit.unit_type.IFV,
 			]
 	},
-	tile_type.FOREST: 
+	TILE_TYPE.FOREST: 
 	{ 
 		"blocks_line_of_sight": true,
 		"defense_modifier" : 1.3,
@@ -61,7 +61,7 @@ var type_properties = {
 			PlayerUnit.unit_type.IFV,
 			]
 	},
-	tile_type.MOUNTAIN: 
+	TILE_TYPE.MOUNTAIN: 
 	{ 
 		"blocks_line_of_sight": true,
 		"defense_modifier" : 1,
@@ -70,7 +70,7 @@ var type_properties = {
 			
 			]
 	},
-	tile_type.HILL: 
+	TILE_TYPE.HILL: 
 	{ 
 		"blocks_line_of_sight": true,
 		"defense_modifier" : 1.1,
@@ -82,7 +82,7 @@ var type_properties = {
 			PlayerUnit.unit_type.IFV,
 			]
 	},
-	tile_type.TOWN: 
+	TILE_TYPE.TOWN: 
 	{ 
 		"blocks_line_of_sight": true,
 		"defense_modifier" : 1.5,
@@ -92,7 +92,7 @@ var type_properties = {
 			PlayerUnit.unit_type.AT_INFANTRY,
 			]
 	},		
-	tile_type.RIVER: 
+	TILE_TYPE.RIVER: 
 	{ 
 		"blocks_line_of_sight": false,
 		"defense_modifier" : 1.4,
@@ -101,7 +101,7 @@ var type_properties = {
 			PlayerUnit.unit_type.IFV,
 			]
 	},		
-	tile_type.BRIDGE: 
+	TILE_TYPE.BRIDGE: 
 	{ 
 		"blocks_line_of_sight": false,
 		"defense_modifier" : 1.1,

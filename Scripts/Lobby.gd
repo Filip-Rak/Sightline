@@ -100,7 +100,7 @@ func start_game():
 	var data = {
 
 	}
-	state_machine.change_state(StateMachine.game_state.MAP_TEST, data)
+	state_machine.change_state(StateMachine.GAME_STATE.MAP_TEST, data)
 	
 @rpc("any_peer")
 func send_player_information_to_server(player_name : String, id : int):
