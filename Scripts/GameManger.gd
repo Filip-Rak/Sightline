@@ -1,5 +1,7 @@
 extends Node
 
+class_name Game_Manager
+
 # Attributes
 # --------------------
 
@@ -13,14 +15,24 @@ var positional_offset_z : int
 var x_size : int
 var z_size : int
 
-# Highlighting a group of tiles
-var mass_highlight_group_name : String = "highlighted_tiles"
+# Highlighting a group of units or tiles by the game
+var mass_highlight_group_name : String = "mass_highlighted_tiles"
 var mass_highlight_material : Material = preload("res://Assets/Resources/Mat_move.tres")
 
-# Highlighting the tile under the mouse
-var mouse_highlight : Node3D
+# Highlighting a unit or tile by the mouse
+var mouse_over_highlight : Node3D
 # Mouse highlight probably shouldnt use its own materials, but rather amplify the group one's
-# Unless the tile isn't highlited in the first place - only then should it put material on it's own
+# Unless the tile isn't highlited in the first place - only then should it put a material on it's own
+
+# This is more of a stop gap solution
+var mouse_over_highlight_material : Material = preload("res://Assets/Resources/Mat_attack.tres")
+var mouse_over_highlight_previous_material : Material
+
+# This will store selected unit or a tile. It will also be highlighted
+# Difference is, this one is selected and should be higlighted as 'active'
+# mouse_over_highlight is for hovered over stuff
+# Both can only be one thing at the time
+var mouse_selection
 
 # Player
 var player_team_id = 1
@@ -30,6 +42,11 @@ var player_team_id = 1
 # --------------------
 
 func _ready():
+	# Set up the mouse mode manager
+	MouseModeManager.set_game_manager(self)
+	MouseModeManager.set_camera(camera)
+	MouseModeManager.set_mouse_mode(MouseModeManager.MOUSE_MODE.INSPECTION)
+	
 	# Extract dimensions of the map and save to global vars
 	get_map_dimensions()
 	
@@ -86,8 +103,10 @@ func load_tiles_to_matrix():
 # Process Functions
 # --------------------
 func _process(_delta : float):
-	if Input.is_action_just_pressed("function_debug"): highlight_spawnable_tiles(PlayerUnit.unit_type.IMV)
-	# get_hooverd_on_selectable()
+	if Input.is_action_just_pressed("function_debug"): 
+		# mouse_selection = PlayerUnit.new() # No no, spawn the scene. Var should hold the scene
+		highlight_spawnable_tiles(PlayerUnit.unit_type.INFANTRY)
+		MouseModeManager.current_mouse_mode = MouseModeManager.MOUSE_MODE.SPAWN
 
 # External Interaction Functions
 # --------------------
@@ -100,7 +119,9 @@ func set_up(_parameters):
 
 func highlight_spawnable_tiles(unit : PlayerUnit.unit_type):
 	# Discard all the previous highlits
-	un_highlight_tiles()
+	# Order here is very important!
+	clear_mouse_over_highlight() 
+	clear_mass_highlight()
 	
 	# Find all the tiles suitable for spawning
 	var good_tiles = []
@@ -112,9 +133,9 @@ func highlight_spawnable_tiles(unit : PlayerUnit.unit_type):
 							good_tiles.append(tile_matrix[i][j])
 	
 	# Highlight these tiles
-	highlight_tiles(good_tiles)
+	mass_highlight_tiles(good_tiles)
 
-func highlight_tiles(tiles : Array):
+func mass_highlight_tiles(tiles : Array):
 	for tile in tiles:
 		# Get the MeshInstance3D child
 		for child in tile.get_children():
@@ -126,7 +147,7 @@ func highlight_tiles(tiles : Array):
 				tile.add_to_group(mass_highlight_group_name)
 				break
 
-func un_highlight_tiles():
+func clear_mass_highlight():
 	# Get all nodes in the group
 	var highlighted = get_tree().get_nodes_in_group(mass_highlight_group_name)
 	
@@ -143,21 +164,53 @@ func un_highlight_tiles():
 				
 		# Remove the tile from the group
 		tile.remove_from_group(mass_highlight_group_name)
+
+func mouse_over_highlight_tile(tile : Node3D):
+	# Clear previous mouse highlight
+	clear_mouse_over_highlight()
+	
+	# Check if mouse points into a tile it can select
+	if tile.is_in_group(mass_highlight_group_name):
+		for child in tile.get_children():
+			if child is MeshInstance3D:
+				# Save previous material
+				mouse_over_highlight_previous_material = child.material_overlay
+				
+				# Highlight with new material
+				child.material_overlay = mouse_over_highlight_material
+				mouse_over_highlight = tile
+				break
+
+func clear_mouse_over_highlight():
+	if mouse_over_highlight:
+		for child in mouse_over_highlight.get_children():
+				if child is MeshInstance3D:
+					child.material_overlay = mouse_over_highlight_previous_material
+					mouse_over_highlight = null
+					break
+	
+func spawn_selected_unit(target_tile : Node3D):
+	# Make sure the selected tile is available for spawning
+	if !target_tile.is_in_group(mass_highlight_group_name): return
+	
+	# Make sure a unit is selected
+	# if !mouse_selection: return # Disabled for testing
+	
+	# Spawn the unit
+	print("Spawning a unit at: \n\tPosition: x = %s\t z = %s\n\tType of tile: %s\n\tName: %s\n\tType of unit: %s" % [target_tile.position.x, target_tile.position.z, target_tile.type, target_tile.name, mouse_selection])
 		
+	# Clear all selections after spawning - consider not doing so for 'shift' effect
+	clear_mouse_over_highlight()
+	clear_mass_highlight()
+	mouse_selection = null
 		
-# Utility Functions
+	# Change mouse mode to inspect
+	MouseModeManager.current_mouse_mode = MouseModeManager.MOUSE_MODE.INSPECTION
+	
+# Link Functions
 # --------------------
 
-# Return 'false' when no hit, or when the hit is not a selectable
-func get_hooverd_on_selectable():
-	var hit = camera.screen_point_to_ray()
-	
-	if hit:
-		var parent = hit["collider"].get_parent()
-		if parent:
-			var grand_parent = parent.get_parent()
-			if grand_parent:
-				return grand_parent
-		
-	return false
-		
+func select_unit_for_spawn(type : PlayerUnit.unit_type):
+	mouse_selection = PlayerUnit.get_scene_of_type(type) # No no, spawn the scene. Var should hold the scene
+	highlight_spawnable_tiles(type)
+	MouseModeManager.current_mouse_mode = MouseModeManager.MOUSE_MODE.SPAWN
