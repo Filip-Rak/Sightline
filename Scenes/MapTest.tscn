@@ -60,6 +60,8 @@ is_a_spawn = true
 
 [node name="GridTile7" parent="Map" instance=ExtResource("4_ct17t")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 2)
+team_id = 1
+is_a_spawn = true
 
 [node name="GridTile17" parent="Map" instance=ExtResource("4_ct17t")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 2)
