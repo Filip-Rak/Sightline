@@ -9,7 +9,7 @@ extends Node3D
 @onready var camera := $YAxisFocal/XAxisFocal/Camera3D
 
 # Flags
-@export_group("Flags")
+@export_category("Flags")
 @export var enable_positional_movement : bool = true
 @export var enable_rotational_movement : bool = true
 @export var enable_zoom : bool = true
@@ -17,7 +17,7 @@ extends Node3D
 @export var enable_collision_avoidance : bool = true
 
 # Positional Movement
-@export_group("Positional Movement")
+@export_category("Positional Movement")
 @export var positional_speed_max : float = 4.0
 @export var positional_speed_min : float = 2.2
 @export var positional_smoothing_factor : float = 0.02
@@ -26,7 +26,7 @@ var target_position : Vector3
 var current_positional_speed : float
 
 # Rotational Movement
-@export_group("Rotational Movement")
+@export_category("Rotational Movement")
 @export var mouse_sensitivity : float = 0.15
 @export var rotational_dampness_y : float = 0.985
 @export var rotational_dampness_x : float = 0.985
@@ -41,7 +41,7 @@ var inner_collision : bool = false
 var outer_collision : bool = false
 
 # Zoom
-@export_group("Zoom")
+@export_category("Zoom")
 @export var zoom_speed : float = 1.2
 @export var zoom_min : float = 0.7
 @export var zoom_max : float = 2
@@ -51,7 +51,7 @@ var target_zoom : float
 var zoom_direction = 0
 
 # Panning
-@export_group("Panning")
+@export_category("Panning")
 @export var pan_margin : int = 60
 @export var pan_speed_multiplier : float = 0.25
 
