@@ -212,7 +212,7 @@ func try_spawning_a_unit(target_tile : Node3D):
 func spawn_selected_unit(target_tile_path : NodePath, unit_to_spawn : PlayerUnit.unit_type, spawning_player : int):
 	var target_tile = get_node(target_tile_path)
 	
-	print("Spawning a unit at: \n\tPosition: x = %s\t z = %s\n\tType of tile: %s\n\tName: %s\n\tType of unit: %s" % [target_tile.position.x, target_tile.position.z, target_tile.type, target_tile.name, mouse_selection])
+	print("Spawning a unit at: \n\tPosition: x = %s\t z = %s\n\tType of tile: %s\n\tName: %s\n\tType of unit: %s" % [target_tile.position.x, target_tile.position.z, target_tile.type, target_tile.name, unit_to_spawn])
 	var spawned_unit = PlayerUnit.get_scene_of_type(unit_to_spawn).instantiate()
 	spawned_unit.position = target_tile.position
 	spawned_unit.set_player_owner(spawning_player)
