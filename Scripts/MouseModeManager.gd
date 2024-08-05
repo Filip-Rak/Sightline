@@ -51,7 +51,7 @@ func handle_spawn(hit):
 	if hit: 
 		game_manager.mouse_over_highlight_tile(hit)
 		if Input.is_action_just_pressed("main_interaction"):
-			game_manager.spawn_selected_unit(hit)
+			game_manager.try_spawning_a_unit(hit)
 
 func handle_move(_hit):
 	# print ("MOVE")

@@ -189,21 +189,17 @@ func clear_mouse_over_highlight():
 					mouse_over_highlight = null
 					break
 	
-func spawn_selected_unit(target_tile : Node3D):
+func try_spawning_a_unit(target_tile : Node3D):
 	# Make sure the selected tile is available for spawning
 	if !target_tile.is_in_group(mass_highlight_group_name): return
 	
 	# Make sure a unit is selected
-	if !mouse_selection: return
+	if mouse_selection == null: return
 	
-	# Spawn the unit
-	print("Spawning a unit at: \n\tPosition: x = %s\t z = %s\n\tType of tile: %s\n\tName: %s\n\tType of unit: %s" % [target_tile.position.x, target_tile.position.z, target_tile.type, target_tile.name, mouse_selection])
-	var spawned_unit = mouse_selection.instantiate()
-	spawned_unit.position = target_tile.position
-	target_tile.units_in_tile.append(spawned_unit)
-	add_child(spawned_unit)
-
-		
+	# Spawn the unit itself for all players
+	rpc("spawn_selected_unit", target_tile.get_path(), mouse_selection, multiplayer.get_unique_id()) 
+	# spawn_selected_unit(target_tile.get_path(), mouse_selection, multiplayer.get_unique_id())
+	
 	# Clear all selections after spawning - consider not doing so for 'shift' effect
 	clear_mouse_over_highlight()
 	clear_mass_highlight()
@@ -212,10 +208,21 @@ func spawn_selected_unit(target_tile : Node3D):
 	# Change mouse mode to inspect
 	MouseModeManager.current_mouse_mode = MouseModeManager.MOUSE_MODE.INSPECTION
 	
+@rpc("any_peer", "call_local")
+func spawn_selected_unit(target_tile_path : NodePath, unit_to_spawn : PlayerUnit.unit_type, spawning_player : int):
+	var target_tile = get_node(target_tile_path)
+	
+	print("Spawning a unit at: \n\tPosition: x = %s\t z = %s\n\tType of tile: %s\n\tName: %s\n\tType of unit: %s" % [target_tile.position.x, target_tile.position.z, target_tile.type, target_tile.name, mouse_selection])
+	var spawned_unit = PlayerUnit.get_scene_of_type(unit_to_spawn).instantiate()
+	spawned_unit.position = target_tile.position
+	spawned_unit.set_player_owner(spawning_player)
+	target_tile.units_in_tile.append(spawned_unit)
+	add_child(spawned_unit)
+	
 # Link Functions
 # --------------------
 
 func select_unit_for_spawn(type : PlayerUnit.unit_type):
-	mouse_selection = PlayerUnit.get_scene_of_type(type) # No no, spawn the scene. Var should hold the scene
+	mouse_selection = type
 	highlight_spawnable_tiles(type)
 	MouseModeManager.current_mouse_mode = MouseModeManager.MOUSE_MODE.SPAWN
