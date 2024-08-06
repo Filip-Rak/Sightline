@@ -131,6 +131,15 @@ func _ready():
 	# print(range_bonus())
 	pass
 	
+# Functions
+# --------------------
+
+func add_unit_to_tile(unit : PlayerUnit):
+	units_in_tile.append(unit)
+
+func remove_unit_from_tile(unit : PlayerUnit):
+	units_in_tile.erase(unit)
+	
 # Setters
 # --------------------
 

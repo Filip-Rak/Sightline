@@ -103,12 +103,12 @@ func get_transported_unit() -> PlayerUnit: return transported_unit
 
 # Returns 'true' if action_points are left
 func offset_action_points(offset : int) -> bool:
-	action_points_left -= offset
+	action_points_left += offset
 	return action_points_left > 0
 
 # Returns 'true' if hp is above 0, 'false' if below or equal 0
 func offset_hit_points(offset : float) -> bool:
-	hit_points_left -= offset
+	hit_points_left += offset
 	return hit_points_left > 0
 	
 # Returns 'false' if is either full or invalid unit is loaded

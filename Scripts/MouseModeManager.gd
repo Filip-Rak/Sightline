@@ -28,9 +28,6 @@ var game_manager = null
 # --------------------
 
 func _process(_delta : float):
-	process_hovering()
-
-func process_hovering():
 	if current_mouse_mode == MOUSE_MODE.STANDARD || !game_manager || !raycast_camera: return
 	
 	var select = get_hovered_on_selectable()
@@ -49,11 +46,10 @@ func handle_inspection(select):
 	if select && Input.is_action_just_pressed("main_interaction"):
 		game_manager.set_mouse_selection(select)
 		
-		# Here should be a call for highlight to GameManager
-		
 		if select.is_in_group(game_manager.get_unit_group_name()):
 			print ("SELECTED UNIT: %s" % [select])
-			game_manager.highlight_tiles_to_move()
+			if select.get_player_owner_id() == multiplayer.get_unique_id():
+				game_manager.highlight_moveable_tiles()
 			
 		elif select.is_in_group(game_manager.get_tile_group_name()):
 			print ("SELECTED TILE: %s" % [select])
@@ -64,9 +60,21 @@ func handle_spawn(select):
 		if Input.is_action_just_pressed("main_interaction"):
 			game_manager.try_spawning_a_unit(select)
 
-func handle_move(_select):
-	# print ("MOVE")
-	pass
+func handle_move(select):
+	if select:
+		game_manager.mouse_over_highlight_tile(select)
+		if Input.is_action_just_pressed("main_interaction"):
+			# Clear highlighting
+			game_manager.clear_mouse_over_highlight()
+			game_manager.clear_mass_highlight()
+			
+			# Select a different entity in inspection
+			set_mouse_mode(MOUSE_MODE.INSPECTION)
+			handle_inspection(select)
+			
+		elif Input.is_action_just_pressed("secondary_interaction"):
+			if select.is_in_group("tiles"):
+				game_manager.try_moving_a_unit(select)
 	
 func handle_attack(_select):
 	# print ("ATTACK")

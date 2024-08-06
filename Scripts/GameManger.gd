@@ -38,6 +38,9 @@ var mouse_over_highlight_previous_material : Material
 # Both can only be one thing at the time
 var mouse_selection
 
+# Path finding
+var reachable_tiles_and_costs : Dictionary
+
 # Player
 var player_team_id = 1
 @onready var camera = $PlayerCamera
@@ -224,11 +227,61 @@ func spawn_selected_unit(target_tile_path : NodePath, unit_to_spawn : PlayerUnit
 	target_tile.units_in_tile.append(spawned_unit)
 	add_child(spawned_unit)
 	
-func highlight_tiles_to_move():
-	var tiles = PathFinding.get_reachable_tiles(tile_matrix, mouse_selection)["tiles"]
-	clear_mass_highlight()
-	mass_highlight_tiles(tiles)
+func try_moving_a_unit(target_tile : GridTile):
+	# Make sure the selected tile is reachable and mouse selection is a unit
+	if !mouse_selection.is_in_group(unit_group_name): return
+	if reachable_tiles_and_costs["tiles"].find(target_tile) == -1: return
 	
+	# Prepare argument for path finding call
+	var unit = mouse_selection
+	var target_pos = target_tile. get_matrix_position()
+	var available_tiles = reachable_tiles_and_costs["tiles"]
+	
+	var path : Array = PathFinding.find_path(tile_matrix, unit, target_pos, available_tiles)
+	
+	if path.size() > 0:
+		path.remove_at(0)
+	
+	# Trim the path just before the danger
+	# This shouldn't work every time!
+	# path = trim_path_before_danger(path)
+	
+	# Here would be require logic for playing animations and moving the unit
+	# At the moment just snap the unit at it's final destination
+	
+	var final_dest = path.pop_back()
+	path.append(final_dest)
+	
+	# Delete the unit from previous tile
+	var previous_pos : Vector3 = unit.get_matrix_tile_position()
+	tile_matrix[previous_pos.x][previous_pos.z].remove_unit_from_tile(unit)
+
+	# Move the unit
+	if final_dest != null: 
+		unit.position = final_dest
+		unit.set_matrix_tile_position(final_dest)
+		tile_matrix[final_dest.x][final_dest.z].add_unit_to_tile(unit)
+		var path_cost = PathFinding.get_path_cost(tile_matrix, path)
+		unit.offset_action_points(-path_cost)
+	
+	# Refresh the highlighting
+	print ("AC: %s" % [unit.get_action_points_left()])
+	if unit.get_action_points_left() > 0:
+		highlight_moveable_tiles()
+	else:
+		clear_mouse_over_highlight()
+		clear_mass_highlight()
+	
+func highlight_moveable_tiles():
+	# Get all the tiles where the unit can move
+	reachable_tiles_and_costs = PathFinding.get_reachable_tiles(tile_matrix, mouse_selection)
+	
+	# Clear previous highlighting and set a new one
+	clear_mass_highlight()
+	mass_highlight_tiles(reachable_tiles_and_costs["tiles"])
+	
+	# Change mouse mode to move
+	MouseModeManager.set_mouse_mode(MouseModeManager.MOUSE_MODE.MOVE)
 	
 # Link Functions
 # --------------------
@@ -250,3 +303,52 @@ func get_tile_group_name() -> String:
 
 func get_unit_group_name() -> String:
 	return unit_group_name
+
+
+# Utility Functions
+# --------------------
+func get_matrix_pos(tile : GridTile):
+	for x in x_size:
+		for z in z_size:
+			if tile_matrix[x][z] == tile:
+				return Vector3(x, 0, z)
+				
+	return false
+
+func trim_path_before_danger(path : Array):
+	var trimmed_path : Array = []
+	
+	for tile_pos in path:
+		for neighbour in find_neighbours_pos(tile_pos):
+			if has_enemy(tile_matrix[neighbour.x][neighbour.z]):
+				return trimmed_path
+				
+		trimmed_path.append(tile_pos)
+	
+	return trimmed_path
+			
+func has_enemy(tile : GridTile) -> bool:
+	for unit in tile.get_units_in_tile():
+		# In the future check based on team id instead
+		if unit.get_player_owner_id() != multiplayer.get_unique_id():
+			return true
+			
+	return false
+		
+func find_neighbours_pos(pos : Vector3) -> Array:
+	const directions = [Vector3(1, 0, 0), Vector3(-1, 0, 0), Vector3(0, 0, 1), Vector3(0, 0, -1)]
+	
+	var neighbors = []
+	
+	for direction in directions:
+		var neighbor_pos = pos + direction
+		if is_in_matrix(neighbor_pos):
+			neighbors.append(neighbor_pos)
+	
+	return neighbors
+		
+func is_in_matrix(pos : Vector3) -> bool:
+	if pos.x < 0 || pos.x >= x_size: return false
+	if pos.z < 0 || pos.z >= z_size: return false
+	
+	return true
