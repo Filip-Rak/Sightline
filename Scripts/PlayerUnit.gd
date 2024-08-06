@@ -11,7 +11,7 @@ class_name PlayerUnit
 # Instance
 var action_points_left : int
 var hit_points_left : float
-var tile_position : Vector3
+var matrix_tile_position : Vector3
 var player_owner_id : int
 var transported_unit : PlayerUnit
 
@@ -94,7 +94,7 @@ func get_attacks() -> Array: return type_properties[type]["attacks"]
 
 func get_action_points_left() -> int: return action_points_left
 func get_hit_points_left() -> float: return hit_points_left
-func get_tile_position() -> Vector3: return tile_position
+func get_matrix_tile_position() -> Vector3: return matrix_tile_position
 func get_player_owner_id() -> int: return player_owner_id
 func get_transported_unit() -> PlayerUnit: return transported_unit
 
@@ -123,8 +123,8 @@ func load_transportable_unit(unit_to_load : PlayerUnit) -> bool:
 # --------------------
 
 # Remember to put y on 0!
-func set_tile_position(new_position : Vector3):
-	tile_position = new_position
+func set_matrix_tile_position(new_position : Vector3):
+	matrix_tile_position = Vector3(new_position.x, 0, new_position.z)
 
 func set_player_owner(id :int):
 	player_owner_id = id
@@ -140,7 +140,7 @@ func print_all():
 	print("get_attacks: " + str(get_attacks()))
 	print("get_action_points_left: " + str(get_action_points_left()))
 	print("get_hit_points_left: " + str(get_hit_points_left()))
-	print("get_tile_position: " + str(get_tile_position()))
+	print("get_matrix_tile_position: " + str(get_matrix_tile_position()))
 	print("get_transported_unit: " + str(get_transported_unit()))
 	
 	

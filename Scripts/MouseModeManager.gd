@@ -31,33 +31,42 @@ func _process(_delta : float):
 	process_hovering()
 
 func process_hovering():
-	var hit = get_hovered_on_selectable()
-	if !hit && game_manager: game_manager.clear_mouse_over_highlight()
+	if current_mouse_mode == MOUSE_MODE.STANDARD || !game_manager || !raycast_camera: return
+	
+	var select = get_hovered_on_selectable()
+	if !select: game_manager.clear_mouse_over_highlight()
 	
 	match current_mouse_mode:
 		MOUSE_MODE.STANDARD: pass
-		MOUSE_MODE.INSPECTION: handle_inspection(hit)
-		MOUSE_MODE.SPAWN: handle_spawn(hit)
-		MOUSE_MODE.MOVE: handle_move(hit)
-		MOUSE_MODE.ATTACK: handle_attack(hit)
+		MOUSE_MODE.INSPECTION: handle_inspection(select)
+		MOUSE_MODE.SPAWN: handle_spawn(select)
+		MOUSE_MODE.MOVE: handle_move(select)
+		MOUSE_MODE.ATTACK: handle_attack(select)
 		_: print ("INVALID MOUSE MODE")
 			
-func handle_inspection(_hit):
-	# print ("INSPECTION")
-	pass
+func handle_inspection(select):
 	
-func handle_spawn(hit):
-	# print ("SPAWN")
-	if hit: 
-		game_manager.mouse_over_highlight_tile(hit)
+	if select && Input.is_action_just_pressed("main_interaction"):
+		game_manager.set_mouse_selection(select)
+		
+		# Here should be a call for highlight to GameManager
+		
+		if select.is_in_group(game_manager.get_unit_group_name()):
+			print ("SELECTED UNIT: %s" % [select])
+		elif select.is_in_group(game_manager.get_tile_group_name()):
+			print ("SELECTED TILE: %s" % [select])
+	
+func handle_spawn(select):
+	if select: 
+		game_manager.mouse_over_highlight_tile(select)
 		if Input.is_action_just_pressed("main_interaction"):
-			game_manager.try_spawning_a_unit(hit)
+			game_manager.try_spawning_a_unit(select)
 
-func handle_move(_hit):
+func handle_move(_select):
 	# print ("MOVE")
 	pass
 	
-func handle_attack(_hit):
+func handle_attack(_select):
 	# print ("ATTACK")
 	pass
 

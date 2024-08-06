@@ -23,6 +23,7 @@ enum TILE_TYPE{
 @export var is_a_spawn : bool = false
 
 # Gamepplay variables
+var matrix_position : Vector3
 var units_in_tile : Array
 var support_calls : Array
 
@@ -121,6 +122,12 @@ func _ready():
 	# print(defense_modifier())
 	# print(range_bonus())
 	pass
+	
+# Setters
+# --------------------
+
+func set_matrix_position(pos : Vector3):
+	matrix_position = Vector3(pos.x, 0, pos.z)
 
 # Type Specific Getters
 # --------------------
@@ -138,8 +145,11 @@ func get_range_bonus() -> int:
 
 # Instance Specific Getters
 # --------------------
-func get_team_id():
+func get_team_id() -> int:
 	return team_id
 	
-func get_is_a_spawn():
+func get_is_a_spawn() -> bool:
 	return is_a_spawn
+	
+func get_matrix_position() -> Vector3:
+	return matrix_position

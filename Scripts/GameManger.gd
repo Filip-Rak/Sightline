@@ -10,10 +10,14 @@ class_name Game_Manager
 
 # Map related variables
 var tile_matrix = []
+var tile_group_name : String = "tiles"
 var positional_offset_x : int
 var positional_offset_z : int
 var x_size : int
 var z_size : int
+
+# Units
+var unit_group_name : String = "units"
 
 # Highlighting a group of units or tiles by the game
 var mass_highlight_group_name : String = "mass_highlighted_tiles"
@@ -98,15 +102,14 @@ func load_tiles_to_matrix():
 		var x : int = int(tile.position.x) - positional_offset_x
 		var z : int = int(tile.position.z) - positional_offset_z
 		tile_matrix[x][z] = tile
+		tile.set_matrix_position(Vector3(x, 0, z))
+		tile.add_to_group(tile_group_name)
 		# print ("[%s][%s] = %s" % [x, z, tile.type])
 	
 # Process Functions
 # --------------------
 func _process(_delta : float):
-	if Input.is_action_just_pressed("function_debug") && false: 
-		# mouse_selection = PlayerUnit.new() # No no, spawn the scene. Var should hold the scene
-		highlight_spawnable_tiles(PlayerUnit.unit_type.INFANTRY)
-		MouseModeManager.current_mouse_mode = MouseModeManager.MOUSE_MODE.SPAWN
+	pass
 
 # External Interaction Functions
 # --------------------
@@ -216,6 +219,8 @@ func spawn_selected_unit(target_tile_path : NodePath, unit_to_spawn : PlayerUnit
 	var spawned_unit = PlayerUnit.get_scene_of_type(unit_to_spawn).instantiate()
 	spawned_unit.position = target_tile.position
 	spawned_unit.set_player_owner(spawning_player)
+	spawned_unit.set_matrix_tile_position(target_tile.get_matrix_position())
+	spawned_unit.add_to_group(unit_group_name)
 	target_tile.units_in_tile.append(spawned_unit)
 	add_child(spawned_unit)
 	
@@ -226,3 +231,16 @@ func select_unit_for_spawn(type : PlayerUnit.unit_type):
 	mouse_selection = type
 	highlight_spawnable_tiles(type)
 	MouseModeManager.current_mouse_mode = MouseModeManager.MOUSE_MODE.SPAWN
+	
+# Setters
+# --------------------
+func set_mouse_selection(selection):
+	mouse_selection = selection
+
+# Getters
+# --------------------
+func get_tile_group_name() -> String:
+	return tile_group_name
+
+func get_unit_group_name() -> String:
+	return unit_group_name
