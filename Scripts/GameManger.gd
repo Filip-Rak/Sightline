@@ -114,7 +114,7 @@ func _process(_delta : float):
 # External Interaction Functions
 # --------------------
 
-# Function for receiving game settings
+# Function for receiving game actions
 func set_up(_parameters):
 	# Set up selected settings here
 	# Modify the matrix based on the settings
@@ -209,7 +209,7 @@ func try_spawning_a_unit(target_tile : Node3D):
 	mouse_selection = null
 		
 	# Change mouse mode to inspect
-	MouseModeManager.current_mouse_mode = MouseModeManager.MOUSE_MODE.INSPECTION
+	MouseModeManager.set_mouse_mode(MouseModeManager.MOUSE_MODE.INSPECTION)
 	
 @rpc("any_peer", "call_local")
 func spawn_selected_unit(target_tile_path : NodePath, unit_to_spawn : PlayerUnit.unit_type, spawning_player : int):
@@ -224,13 +224,19 @@ func spawn_selected_unit(target_tile_path : NodePath, unit_to_spawn : PlayerUnit
 	target_tile.units_in_tile.append(spawned_unit)
 	add_child(spawned_unit)
 	
+func highlight_tiles_to_move():
+	var tiles = PathFinding.get_reachable_tiles(tile_matrix, mouse_selection)["tiles"]
+	clear_mass_highlight()
+	mass_highlight_tiles(tiles)
+	
+	
 # Link Functions
 # --------------------
 
 func select_unit_for_spawn(type : PlayerUnit.unit_type):
 	mouse_selection = type
 	highlight_spawnable_tiles(type)
-	MouseModeManager.current_mouse_mode = MouseModeManager.MOUSE_MODE.SPAWN
+	MouseModeManager.set_mouse_mode(MouseModeManager.MOUSE_MODE.SPAWN)
 	
 # Setters
 # --------------------

@@ -20,6 +20,7 @@ config/icon="res://Assets/Icons/icon.svg"
 PlayerManager="*res://Scripts/PlayerManager.gd"
 StateMachine="*res://Scripts/StateMachine.gd"
 MouseModeManager="*res://Scripts/MouseModeManager.gd"
+PathFinding="*res://Scripts/PathFinding.gd"
 
 [input]
 

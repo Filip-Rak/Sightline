@@ -53,6 +53,8 @@ func handle_inspection(select):
 		
 		if select.is_in_group(game_manager.get_unit_group_name()):
 			print ("SELECTED UNIT: %s" % [select])
+			game_manager.highlight_tiles_to_move()
+			
 		elif select.is_in_group(game_manager.get_tile_group_name()):
 			print ("SELECTED TILE: %s" % [select])
 	

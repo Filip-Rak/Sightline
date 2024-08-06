@@ -34,6 +34,7 @@ var type_properties = {
 		"blocks_line_of_sight": false,
 		"defense_modifier" : 1.0,
 		"range_bonus": 0,
+		"movement_cost" : 1,
 		"accesible_to": [
 			PlayerUnit.unit_type.INFANTRY,
 			PlayerUnit.unit_type.AT_INFANTRY,
@@ -46,6 +47,7 @@ var type_properties = {
 		"blocks_line_of_sight": false,
 		"defense_modifier" : 0.6,
 		"range_bonus": 1,
+		"movement_cost" : 1,
 		"accesible_to": [
 			PlayerUnit.unit_type.IFV,
 			]
@@ -55,6 +57,7 @@ var type_properties = {
 		"blocks_line_of_sight": true,
 		"defense_modifier" : 1.3,
 		"range_bonus": 0,
+		"movement_cost" : 1,
 		"accesible_to": [
 			PlayerUnit.unit_type.INFANTRY,
 			PlayerUnit.unit_type.AT_INFANTRY,
@@ -67,6 +70,7 @@ var type_properties = {
 		"blocks_line_of_sight": true,
 		"defense_modifier" : 1,
 		"range_bonus": 1,
+		"movement_cost" : 1,
 		"accesible_to": [
 			
 			]
@@ -76,6 +80,7 @@ var type_properties = {
 		"blocks_line_of_sight": true,
 		"defense_modifier" : 1.1,
 		"range_bonus": 1,
+		"movement_cost" : 1,
 		"accesible_to": [
 			PlayerUnit.unit_type.INFANTRY,
 			PlayerUnit.unit_type.AT_INFANTRY,
@@ -88,6 +93,7 @@ var type_properties = {
 		"blocks_line_of_sight": true,
 		"defense_modifier" : 1.5,
 		"range_bonus": 1,
+		"movement_cost" : 1,
 		"accesible_to": [
 			PlayerUnit.unit_type.INFANTRY,
 			PlayerUnit.unit_type.AT_INFANTRY,
@@ -98,6 +104,7 @@ var type_properties = {
 		"blocks_line_of_sight": false,
 		"defense_modifier" : 1.4,
 		"range_bonus": 0,
+		"movement_cost" : 1,
 		"accesible_to": [
 			PlayerUnit.unit_type.IFV,
 			]
@@ -107,6 +114,7 @@ var type_properties = {
 		"blocks_line_of_sight": false,
 		"defense_modifier" : 1.1,
 		"range_bonus": 0,
+		"movement_cost" : 1,
 		"accesible_to": [
 			PlayerUnit.unit_type.INFANTRY,
 			PlayerUnit.unit_type.AT_INFANTRY,
@@ -142,6 +150,9 @@ func get_defense_modifier() -> float:
 	
 func get_range_bonus() -> int:
 	return type_properties[type]["range_bonus"]
+	
+func get_movement_cost() -> int:
+	return type_properties[type]["movement_cost"] 
 
 # Instance Specific Getters
 # --------------------
@@ -153,3 +164,7 @@ func get_is_a_spawn() -> bool:
 	
 func get_matrix_position() -> Vector3:
 	return matrix_position
+
+func get_units_in_tile() -> Array:
+	return units_in_tile
+
