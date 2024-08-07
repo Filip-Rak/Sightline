@@ -250,7 +250,6 @@ func try_moving_a_unit(target_tile : GridTile):
 	rpc("change_unit_pos", unit.get_path(), path)
 	
 	# Refresh the highlighting
-	print ("AC: %s" % [unit.get_action_points_left()])
 	if unit.get_action_points_left() > 0:
 		highlight_moveable_tiles()
 	else:

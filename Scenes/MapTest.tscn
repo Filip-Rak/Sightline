@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://bfm5ll5553ol" path="res://Assets/Tiles/Instances/grid_tile_Mountain_river.tscn" id="4_ct17t"]
 [ext_resource type="PackedScene" uid="uid://qjx8est1huum" path="res://Assets/Tiles/Instances/grid_tile_Town.tscn" id="5_dbgx1"]
 [ext_resource type="PackedScene" uid="uid://mwr768tf6k4" path="res://Scenes/player_camera.tscn" id="6_mp15b"]
-[ext_resource type="Script" path="res://Scripts/GameManger.gd" id="7_vsd77"]
+[ext_resource type="Script" path="res://Scripts/GameManager.gd" id="7_vsd77"]
 [ext_resource type="PackedScene" uid="uid://bec3g8cgjax13" path="res://Scenes/GameUI.tscn" id="8_vnqxy"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_74iu0"]
