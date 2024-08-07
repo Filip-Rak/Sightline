@@ -246,23 +246,8 @@ func try_moving_a_unit(target_tile : GridTile):
 	# This shouldn't work every time!
 	# path = trim_path_before_danger(path)
 	
-	# Here would be require logic for playing animations and moving the unit
-	# At the moment just snap the unit at it's final destination
-	
-	var final_dest = path.pop_back()
-	path.append(final_dest)
-	
-	# Delete the unit from previous tile
-	var previous_pos : Vector3 = unit.get_matrix_tile_position()
-	tile_matrix[previous_pos.x][previous_pos.z].remove_unit_from_tile(unit)
-
-	# Move the unit
-	if final_dest != null: 
-		unit.position = final_dest
-		unit.set_matrix_tile_position(final_dest)
-		tile_matrix[final_dest.x][final_dest.z].add_unit_to_tile(unit)
-		var path_cost = PathFinding.get_path_cost(tile_matrix, path)
-		unit.offset_action_points(-path_cost)
+	# Move the unit on the server
+	rpc("change_unit_pos", unit.get_path(), path)
 	
 	# Refresh the highlighting
 	print ("AC: %s" % [unit.get_action_points_left()])
@@ -276,12 +261,44 @@ func highlight_moveable_tiles():
 	# Get all the tiles where the unit can move
 	reachable_tiles_and_costs = PathFinding.get_reachable_tiles(tile_matrix, mouse_selection)
 	
-	# Clear previous highlighting and set a new one
+	# Clear previous highlighting
 	clear_mass_highlight()
+	
+	# Highlight new tiles
 	mass_highlight_tiles(reachable_tiles_and_costs["tiles"])
 	
 	# Change mouse mode to move
 	MouseModeManager.set_mouse_mode(MouseModeManager.MOUSE_MODE.MOVE)
+	
+@rpc("any_peer", "call_local")
+func change_unit_pos(unit_path : NodePath, path : Array):
+	if unit_path == null: return
+	if path == null: return
+	
+	# Get the unit
+	var unit = get_node(unit_path)
+	if unit == null: return
+	
+	# Here would be required logic for playing animations and moving the unit
+	# At the moment just snap the unit at it's final destination
+	
+	var final_dest = path.pop_back()
+	path.append(final_dest)
+	
+	if final_dest == null: return
+	
+	# Delete the unit from previous tile
+	var previous_pos : Vector3 = unit.get_matrix_tile_position()
+	tile_matrix[previous_pos.x][previous_pos.z].remove_unit_from_tile(unit)
+
+	# Move the unit
+	unit.position = tile_matrix[final_dest.x][final_dest.z].position
+	tile_matrix[final_dest.x][final_dest.z].add_unit_to_tile(unit)
+	unit.set_matrix_tile_position(final_dest)
+	
+	# Offset action points
+	var path_cost = PathFinding.get_path_cost(tile_matrix, path)
+	unit.offset_action_points(-path_cost)
 	
 # Link Functions
 # --------------------
