@@ -1,10 +1,19 @@
-[gd_scene load_steps=3 format=3 uid="uid://dmhiqpdhpo1y6"]
+[gd_scene load_steps=4 format=3 uid="uid://dmhiqpdhpo1y6"]
 
 [ext_resource type="Script" path="res://Scripts/PlayerUnit.gd" id="1_2q2r8"]
 [ext_resource type="PackedScene" path="res://Assets/Units/unit_infantry.tscn" id="2_6txcg"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gnulb"]
+size = Vector3(0.2, 0.419727, 0.2)
 
 [node name="PlayerUnit" type="Node3D"]
 script = ExtResource("1_2q2r8")
 type = 0
 
 [node name="unit_infantry" parent="." instance=ExtResource("2_6txcg")]
+
+[node name="RigidBody3D" type="RigidBody3D" parent="unit_infantry"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="unit_infantry/RigidBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.21092, 0)
+shape = SubResource("BoxShape3D_gnulb")
