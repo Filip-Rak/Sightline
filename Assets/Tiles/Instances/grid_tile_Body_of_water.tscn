@@ -1,6 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://detnfrch1wh4d"]
 
-[ext_resource type="Script" path="res://Scripts/GridTile.gd" id="1_8hbq6"]
+[ext_resource type="Script" path="res://Scripts/Entities/GridTile.gd" id="1_8hbq6"]
+
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mu4fi"]
 albedo_color = Color(0.18, 0.453, 0.6, 1)
