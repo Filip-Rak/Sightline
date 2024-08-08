@@ -4,11 +4,11 @@ extends Node
 # --------------------
 
 enum GAME_STATE {
-	LOBBY,
+	DEBUG_LOBBY,
 	MAP_TEST
 }
 
-var current_state: GAME_STATE = GAME_STATE.LOBBY
+var current_state: GAME_STATE = GAME_STATE.DEBUG_LOBBY
 
 # Functions
 # --------------------
@@ -22,7 +22,7 @@ func change_state(new_state: GAME_STATE, parameters = {}):
 
 	var scene_path = ""
 	match current_state:
-		GAME_STATE.LOBBY: scene_path = "res://scenes/LobbyScene.tscn"
+		GAME_STATE.DEBUG_LOBBY: scene_path = "res://scenes/DebugLobby.tscn"
 		GAME_STATE.MAP_TEST: scene_path = "res://scenes/MapTest.tscn"
 
 	# Load the new scene

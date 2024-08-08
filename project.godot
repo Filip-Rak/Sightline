@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Multiplayer Tbsg"
-run/main_scene="res://Scenes/LobbyScene.tscn"
+run/main_scene="res://Scenes/DebugLobby.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://Assets/Icons/icon.svg"
 

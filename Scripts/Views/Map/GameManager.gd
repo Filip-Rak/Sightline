@@ -8,7 +8,7 @@ class_name Game_Manager
 # Exported settings
 @export var map_root : Node3D
 
-# Map related variables
+# Map variables
 var tile_matrix = []
 const tile_group_name : String = "tiles"
 var positional_offset_x : int

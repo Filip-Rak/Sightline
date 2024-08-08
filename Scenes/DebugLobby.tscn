@@ -1,0 +1,96 @@
+[gd_scene load_steps=2 format=3 uid="uid://0013pwvu4oiq"]
+
+[ext_resource type="Script" path="res://Scripts/Views/DebugLobby.gd" id="1_qdyhk"]
+
+[node name="Lobby" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_qdyhk")
+
+[node name="HostButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 99.0
+offset_top = 291.0
+offset_right = 143.0
+offset_bottom = 322.0
+text = "Host
+"
+
+[node name="JoinButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 160.0
+offset_top = 292.0
+offset_right = 204.0
+offset_bottom = 323.0
+text = "Join
+"
+
+[node name="StartGameButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 232.0
+offset_top = 292.0
+offset_right = 328.0
+offset_bottom = 323.0
+text = "Start Game"
+
+[node name="NameLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 95.0
+offset_top = 107.0
+offset_right = 142.0
+offset_bottom = 130.0
+text = "Name"
+
+[node name="PlayerList" type="Label" parent="."]
+layout_mode = 0
+offset_left = 644.0
+offset_top = 108.0
+offset_right = 733.0
+offset_bottom = 131.0
+text = "Player List: "
+
+[node name="AddressLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 95.0
+offset_top = 170.0
+offset_right = 135.0
+offset_bottom = 193.0
+text = "Address:"
+
+[node name="PortLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 93.0
+offset_top = 237.0
+offset_right = 160.0
+offset_bottom = 260.0
+text = "Port:"
+
+[node name="Port" type="LineEdit" parent="."]
+layout_mode = 0
+offset_left = 197.0
+offset_top = 235.0
+offset_right = 264.063
+offset_bottom = 266.0
+scale = Vector2(1.30374, 1.12744)
+
+[node name="PlayerName" type="LineEdit" parent="."]
+layout_mode = 0
+offset_left = 200.0
+offset_top = 103.0
+offset_right = 267.063
+offset_bottom = 134.0
+
+[node name="Address" type="LineEdit" parent="."]
+layout_mode = 0
+offset_left = 200.0
+offset_top = 171.0
+offset_right = 267.063
+offset_bottom = 202.0
+
+[connection signal="button_down" from="HostButton" to="." method="_on_host_button_button_down"]
+[connection signal="button_down" from="JoinButton" to="." method="_on_join_button_button_down"]
+[connection signal="button_down" from="StartGameButton" to="." method="_on_start_game_button_button_down"]
