@@ -64,8 +64,6 @@ func _ready():
 	z_size = map_loader.get_z_size()
 	positional_offset_x = map_loader.get_pos_offset_x()
 	positional_offset_z = map_loader.get_pos_offset_z()
-	
-	Network.set_tile_matrix(tile_matrix)
 
 # External Interaction Functions
 # --------------------
@@ -160,7 +158,7 @@ func try_spawning_a_unit(target_tile : Node3D):
 	var tree : NodePath = self.get_path()
 	var player_id : int = multiplayer.get_unique_id()
 	
-	Network.rpc("spawn_unit", spawn_path, mouse_selection, player_id, unit_group_name, tree) 
+	rpc("spawn_unit", spawn_path, mouse_selection, player_id, tree) 
 	
 	# Clear all selections after spawning - consider not doing so for 'shift' effect
 	clear_mouse_over_highlight()
@@ -190,7 +188,7 @@ func try_moving_a_unit(target_tile : GridTile):
 	# path = trim_path_before_danger(tile_matrix, path)
 	
 	# Move the unit on the server
-	Network.rpc("move_unit", unit.get_path(), path)
+	rpc("move_unit", unit.get_path(), path)
 	
 	# Refresh the highlighting
 	if unit.get_action_points_left() > 0:
@@ -212,10 +210,59 @@ func highlight_moveable_tiles():
 	# Change mouse mode to move
 	MouseModeManager.set_mouse_mode(MouseModeManager.MOUSE_MODE.MOVE)
 
+# Remote Procedure Calls
+# --------------------
+@rpc("any_peer", "call_local")
+func spawn_unit(target_tile_path : NodePath, unit_to_spawn : PlayerUnit.unit_type, spawning_player: int, parent_node_path : NodePath):
+	# Get the tile to spawn in
+	var target_tile = get_node(target_tile_path)
 	
+	# Instantiate the unit and set it's properties
+	var spawned_unit = PlayerUnit.get_scene_of_type(unit_to_spawn).instantiate()
+	spawned_unit.position = target_tile.position
+	spawned_unit.set_player_owner(spawning_player)
+	spawned_unit.set_matrix_tile_position(target_tile.get_matrix_position())
+	spawned_unit.add_to_group(unit_group_name)
+	
+	# Update the tile properties
+	target_tile.units_in_tile.append(spawned_unit)
+	
+	# Add the unit to the tree
+	var tree = get_node(parent_node_path)
+	tree.add_child(spawned_unit)
+
+@rpc("any_peer", "call_local")
+func move_unit(path_to_unit : NodePath, route : Array):
+	if path_to_unit == null: return
+	if route == null: return
+	
+	# Get the unit
+	var unit = get_node(path_to_unit)
+	if unit == null: return
+	
+	# Here would be required logic for playing animations and moving the unit
+	# At the moment just snap the unit at it's final destination
+	
+	var final_dest = route.pop_back()
+	route.append(final_dest)
+	
+	if final_dest == null: return
+	
+	# Delete the unit from previous tile
+	var previous_pos : Vector3 = unit.get_matrix_tile_position()
+	tile_matrix[previous_pos.x][previous_pos.z].remove_unit_from_tile(unit)
+
+	# Move the unit
+	unit.position = tile_matrix[final_dest.x][final_dest.z].position
+	tile_matrix[final_dest.x][final_dest.z].add_unit_to_tile(unit)
+	unit.set_matrix_tile_position(final_dest)
+	
+	# Offset action points
+	var route_cost = PathFinding.get_path_cost(tile_matrix, route)
+	unit.offset_action_points(-route_cost)
+
 # Link Functions
 # --------------------
-
 func select_unit_for_spawn(type : PlayerUnit.unit_type):
 	mouse_selection = type
 	highlight_spawnable_tiles(type)
