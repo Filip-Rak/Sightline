@@ -77,6 +77,23 @@ offset_right = 264.063
 offset_bottom = 266.0
 scale = Vector2(1.30374, 1.12744)
 
+[node name="TeamLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 341.0
+offset_top = 102.0
+offset_right = 408.0
+offset_bottom = 125.0
+text = "Team:"
+
+[node name="Team" type="LineEdit" parent="."]
+layout_mode = 0
+offset_left = 418.0
+offset_top = 97.0
+offset_right = 485.063
+offset_bottom = 128.0
+scale = Vector2(1.30374, 1.12744)
+text = "1"
+
 [node name="PlayerName" type="LineEdit" parent="."]
 layout_mode = 0
 offset_left = 200.0

@@ -3,9 +3,6 @@ extends Node
 # Attributes
 # --------------------
 
-# Player data
-var players = {}
-
 # Connection
 var peer : ENetMultiplayerPeer
 var server_port : int = 135
@@ -36,8 +33,7 @@ func peer_disconnected(id):
 	print("ID: %s disconnected" % [id])
 	
 	# Delete disconnected player's information
-	if Network.players.has(id):
-		Network.players.erase(id)
+	PlayerManager.drop_player(id)
 	
 	# Host ID is equal to 1
 	if id == 1: 
@@ -51,8 +47,12 @@ func peer_disconnected(id):
 func connected_to_server():
 	print("Connection to server succesfull")
 	
+	# All players have by default unique multiplayer id set to 1
+	# After creating the peer move your data to correct spot
+	PlayerManager.change_id(1, multiplayer.get_unique_id())
+	
 	# Send the data to the server
-	rpc_id(1, "send_player_information", players[multiplayer.get_unique_id()], multiplayer.get_unique_id())
+	rpc_id(1, "send_player_information", PlayerManager.get_player(multiplayer.get_unique_id()), multiplayer.get_unique_id())
 	
 func connection_failed():
 	print("Connection to server failed")
@@ -62,20 +62,19 @@ func server_disconnected():
 
 # Connection Functions
 # --------------------
-func self_host_server(port : int, player_data : Dictionary):
+func self_host_server(port : int):
 	if port:
 		server_port = port
 	if setup_multiplayer_peer(true):
-		players[multiplayer.get_unique_id()] = player_data
 		print("Server is active")
 
-func join_server(address: String, port: int, player_data: Dictionary):
+func join_server(address: String, port: int):
 	if port:
 		server_port = port
 	if address:
 		server_address = address
-	if setup_multiplayer_peer(false):
-		players[multiplayer.get_unique_id()] = player_data
+	if !setup_multiplayer_peer(false):
+		print ("Connection failure")
 		
 func setup_multiplayer_peer(is_server: bool):
 	peer = ENetMultiplayerPeer.new()
@@ -103,15 +102,15 @@ func reset_multiplayer_state():
 	multiplayer.multiplayer_peer = null
 	
 	# Clear player data
-	players.clear()
+	PlayerManager.get_players().clear()
 
 # Remote Procedure Calls
 # --------------------
 @rpc("any_peer")
 func send_player_information(player_data : Dictionary, id : int, last_one : bool = false):
 	# Send data to server
-	if !players.has(id):
-		players[id] = player_data
+	if !PlayerManager.is_player(id):
+		PlayerManager.set_player(id, player_data)
 		
 		# Server sends data to all the clients
 		if multiplayer.is_server():
@@ -123,6 +122,7 @@ func send_player_information(player_data : Dictionary, id : int, last_one : bool
 
 @rpc("any_peer", "call_local")
 func distribute_player_information():
+	var players = PlayerManager.get_players()
 	var player_keys = players.keys()
 	var last_index = player_keys.size() - 1
 	

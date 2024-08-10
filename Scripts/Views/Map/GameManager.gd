@@ -64,6 +64,9 @@ func _ready():
 	z_size = map_loader.get_z_size()
 	positional_offset_x = map_loader.get_pos_offset_x()
 	positional_offset_z = map_loader.get_pos_offset_z()
+	
+	
+	print("Player\n\tID: %s\n\tdata: %s " % [multiplayer.get_unique_id(), PlayerManager.get_player(multiplayer.get_unique_id())])
 
 # External Interaction Functions
 # --------------------
