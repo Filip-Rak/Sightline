@@ -39,13 +39,9 @@ shadow_enabled = true
 
 [node name="GridTile" parent="Map" instance=ExtResource("1_7vihv")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
-team_id = 1
-is_a_spawn = true
 
 [node name="GridTile5" parent="Map" instance=ExtResource("2_f1n7r")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 2)
-team_id = 1
-is_a_spawn = true
 
 [node name="GridTile4" parent="Map" instance=ExtResource("2_f1n7r")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
@@ -54,14 +50,14 @@ is_a_spawn = true
 
 [node name="GridTile6" parent="Map" instance=ExtResource("2_f1n7r")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 3)
+team_id = 1
+is_a_spawn = true
 
 [node name="GridTile8" parent="Map" instance=ExtResource("2_f1n7r")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 2)
 
 [node name="GridTile3" parent="Map" instance=ExtResource("3_lsupy")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 2)
-team_id = 1
-is_a_spawn = true
 
 [node name="GridTile7" parent="Map" instance=ExtResource("4_ct17t")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 3)
@@ -73,27 +69,32 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2)
 
 [node name="GridTile10" parent="Map" instance=ExtResource("2_f1n7r")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0)
+team_id = 2
+is_a_spawn = true
 
 [node name="GridTile18" parent="Map" instance=ExtResource("2_f1n7r")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)
+team_id = 2
+is_a_spawn = true
 
 [node name="GridTile11" parent="Map" instance=ExtResource("2_f1n7r")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 1)
 
 [node name="GridTile12" parent="Map" instance=ExtResource("2_f1n7r")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1)
-team_id = 1
-is_a_spawn = true
 
 [node name="GridTile13" parent="Map" instance=ExtResource("2_f1n7r")]
-team_id = 1
+team_id = 2
 is_a_spawn = true
 
 [node name="GridTile14" parent="Map" instance=ExtResource("3_lsupy")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 0)
+team_id = 2
+is_a_spawn = true
 
 [node name="GridTile15" parent="Map" instance=ExtResource("4_ct17t")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 3)
+team_id = 1
 
 [node name="GridTile16" parent="Map" instance=ExtResource("5_dbgx1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 1)

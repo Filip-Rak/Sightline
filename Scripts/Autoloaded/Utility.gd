@@ -4,8 +4,7 @@ extends Node
 # --------------------
 func has_enemy(tile : GridTile) -> bool:
 	for unit in tile.get_units_in_tile():
-		# In the future check based on team id instead
-		if unit.get_player_owner_id() != multiplayer.get_unique_id():
+		if PlayerManager.get_team_id(unit.get_player_owner_id()) != PlayerManager.get_my_team_id():
 			return true
 			
 	return false

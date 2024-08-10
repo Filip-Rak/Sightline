@@ -8,6 +8,7 @@ var peer : ENetMultiplayerPeer
 var server_port : int = 135
 var server_address = "127.0.0.1"
 const COMPRESSION := ENetConnection.COMPRESS_RANGE_CODER
+var has_connection : bool = false
 
 # Ready Functions
 # --------------------
@@ -38,6 +39,7 @@ func peer_disconnected(id):
 	# Host ID is equal to 1
 	if id == 1: 
 		print("Host disconnected, connection lost")
+		has_connection = false
 		emit_signal("connection_lost")
 		reset_multiplayer_state()
 	else:
@@ -46,7 +48,7 @@ func peer_disconnected(id):
 	
 func connected_to_server():
 	print("Connection to server succesfull")
-	
+	has_connection = true
 	# All players have by default unique multiplayer id set to 1
 	# After creating the peer move your data to correct spot
 	PlayerManager.change_id(1, multiplayer.get_unique_id())
@@ -56,9 +58,11 @@ func connected_to_server():
 	
 func connection_failed():
 	print("Connection to server failed")
+	has_connection = false
 
 func server_disconnected():
 	print("Lost connection to the server")
+	has_connection = false
 
 # Connection Functions
 # --------------------
@@ -67,6 +71,7 @@ func self_host_server(port : int):
 		server_port = port
 	if setup_multiplayer_peer(true):
 		print("Server is active")
+		has_connection = true
 
 func join_server(address: String, port: int):
 	if port:
@@ -94,18 +99,31 @@ func setup_multiplayer_peer(is_server: bool):
 func reset_multiplayer_state():
 	print("Resetting multiplayer state...")
 	
+	# How even?
+	
 	# Disconnect the peer
 	# if peer:
 		# peer.close_connection()
 		
-	# Reset the multiplayer peer
-	multiplayer.multiplayer_peer = null
+	# Reset the multiplayer peer???
+	# multiplayer.multiplayer_peer = null
 	
-	# Clear player data
-	PlayerManager.get_players().clear()
+	# Reset player data
+	PlayerManager.reset_all_players()
+
+func sync_my_data():
+	# Get my data
+	var my_data = PlayerManager.get_my_data()
+	
+	# Call all the players to update their entries about the caller
+	rpc("update_player_data", my_data, multiplayer.get_unique_id())
 
 # Remote Procedure Calls
 # --------------------
+@rpc("any_peer")
+func update_player_data(data : Dictionary, player_id : int):
+	PlayerManager.set_player(player_id, data)
+
 @rpc("any_peer")
 func send_player_information(player_data : Dictionary, id : int, last_one : bool = false):
 	# Send data to server
@@ -135,3 +153,8 @@ func distribute_player_information():
 			rpc("send_player_information", player_data, player_id, true)
 		else:
 			rpc("send_player_information", player_data, player_id)
+
+# Getters
+# --------------------
+func has_connection_to_server() -> bool:
+	return has_connection

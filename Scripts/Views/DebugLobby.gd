@@ -13,10 +13,6 @@ extends Node
 func _ready():
 	Network.connect("player_data_updated", on_player_data_updated)
 	Network.connect("connection_lost", on_connection_lost)
-	
-	# Add the player
-	PlayerManager.add_player(multiplayer.get_unique_id(), "Player", 1)
-	
 
 # Remote Procedure Calls
 # --------------------
@@ -32,12 +28,16 @@ func start_game():
 	# Set team of the player
 	PlayerManager.set_player_team(multiplayer.get_unique_id(), int(team_id_node.text))
 	
+	# Sync player data over the network to update the teams
+	if Network.has_connection_to_server(): 
+		Network.sync_my_data()
+	
 	# Load the playing scene
 	var state_machine = get_node("/root/StateMachine")
-	var data = {
+	var parameters = {
 	
 	}
-	state_machine.change_state(StateMachine.GAME_STATE.MAP_TEST, data)
+	state_machine.change_state(StateMachine.GAME_STATE.MAP_TEST, parameters)
 
 # Signals
 # --------------------

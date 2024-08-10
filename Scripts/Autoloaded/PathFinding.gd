@@ -40,6 +40,7 @@ func get_reachable_tiles(tile_matrix : Array, unit : PlayerUnit) -> Dictionary:
 			if neighbor_pos.x < 0 || neighbor_pos.x >= tile_matrix.size(): continue
 			if neighbor_pos.z < 0 || neighbor_pos.z >= tile_matrix[0].size(): continue
 			
+			# Calc movement cost
 			var neighbor_tile = tile_matrix[neighbor_pos.x][neighbor_pos.z]
 			var movement_cost = neighbor_tile.get_movement_cost()
 			

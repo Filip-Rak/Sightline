@@ -42,7 +42,6 @@ var mouse_selection
 var reachable_tiles_and_costs : Dictionary
 
 # Player
-var player_team_id = 1
 @onready var camera = $PlayerCamera
 
 # Ready Functions
@@ -65,8 +64,7 @@ func _ready():
 	positional_offset_x = map_loader.get_pos_offset_x()
 	positional_offset_z = map_loader.get_pos_offset_z()
 	
-	
-	print("Player\n\tID: %s\n\tdata: %s " % [multiplayer.get_unique_id(), PlayerManager.get_player(multiplayer.get_unique_id())])
+	print("Player in level\n\tID: %s\n\tdata: %s " % [multiplayer.get_unique_id(), PlayerManager.get_player(multiplayer.get_unique_id())])
 
 # External Interaction Functions
 # --------------------
@@ -88,7 +86,7 @@ func highlight_spawnable_tiles(unit : PlayerUnit.unit_type):
 	for i in x_size:
 		for j in z_size:
 				if tile_matrix[i][j].get_is_a_spawn():
-					if tile_matrix[i][j].get_team_id() == player_team_id:
+					if tile_matrix[i][j].get_team_id() == PlayerManager.get_my_team_id():
 						if tile_matrix[i][j].get_accesible_to().find(unit) != -1:
 							good_tiles.append(tile_matrix[i][j])
 	

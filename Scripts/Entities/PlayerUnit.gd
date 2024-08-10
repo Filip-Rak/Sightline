@@ -142,6 +142,7 @@ func print_all():
 	print("get_hit_points_left: " + str(get_hit_points_left()))
 	print("get_matrix_tile_position: " + str(get_matrix_tile_position()))
 	print("get_transported_unit: " + str(get_transported_unit()))
+	print("get_player_owner_id: " + str(get_player_owner_id()))
 	
 	
 	

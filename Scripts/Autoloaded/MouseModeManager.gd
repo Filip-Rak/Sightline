@@ -48,6 +48,7 @@ func handle_inspection(select):
 		
 		if select.is_in_group(game_manager.get_unit_group_name()):
 			print ("SELECTED UNIT: %s" % [select])
+			
 			if select.get_player_owner_id() == multiplayer.get_unique_id():
 				game_manager.highlight_moveable_tiles()
 			
