@@ -88,4 +88,4 @@ func _on_team_text_changed(new_text):
 	
 	# Sync player data over the network to update the teams
 	if Network.has_connection_to_server(): 
-		Network.sync_my_data()
+		Network.sync_my_data_fast()
