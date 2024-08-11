@@ -37,7 +37,6 @@ func set_for_host():
 	# Figure out the order of turns
 	for i in PlayerManager.get_players().keys():
 		# Ignore spectators
-		print ("TEAM ID: %s" %[PlayerManager.get_team_id(i)])
 		if PlayerManager.get_team_id(i) > 0:
 			order.append(i)
 			
@@ -45,8 +44,7 @@ func set_for_host():
 	# In future use more balanced methods
 	order.shuffle()
 
-	print ("The array in question: %s" % [order])
-	print ("Players total: %s" %[PlayerManager.get_players().keys().size()])
+	print ("Turn order: %s" % [order])
 
 
 # Proccess Functions
