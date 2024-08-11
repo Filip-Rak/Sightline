@@ -19,9 +19,14 @@ var z_size : int
 # Units
 const unit_group_name : String = "units"
 
+# Highlighting materials
+var turn_enabled_mass_mat : Material = preload("res://Assets/Resources/Mat_move.tres")
+var turn_enabled_mouse_mat : Material = preload("res://Assets/Resources/Mat_attack.tres")
+var turn_disabled_mat : Material = preload("res://Assets/Resources/Mat_disabled.tres")
+
 # Highlighting a group of units or tiles by the game
 var mass_highlight_group_name : String = "mass_highlighted_tiles"
-var mass_highlight_material : Material = preload("res://Assets/Resources/Mat_move.tres")
+var mass_highlight_material : Material = turn_disabled_mat
 
 # Highlighting a unit or tile by the mouse
 var mouse_over_highlight : Node3D
@@ -29,7 +34,7 @@ var mouse_over_highlight : Node3D
 # Unless the tile isn't highlited in the first place - only then should it put a material on it's own
 
 # This is more of a stop gap solution
-var mouse_over_highlight_material : Material = preload("res://Assets/Resources/Mat_attack.tres")
+var mouse_over_highlight_material : Material = turn_disabled_mat
 var mouse_over_highlight_previous_material : Material
 
 # This will store selected unit or a tile. It will also be highlighted
@@ -43,6 +48,7 @@ var reachable_tiles_and_costs : Dictionary
 
 # Player
 @onready var camera = $PlayerCamera
+var player_turn : bool = false
 
 # Ready Functions
 # --------------------
@@ -66,6 +72,15 @@ func _ready():
 	
 	print("Player in level\n\tID: %s\n\tdata: %s " % [multiplayer.get_unique_id(), PlayerManager.get_player(multiplayer.get_unique_id())])
 
+func _process(_delta : float):
+	
+	if Input.is_action_just_pressed("function_debug"):
+		if !player_turn:
+			enable_turn()
+		else:
+			disable_turn()
+	pass
+
 # External Interaction Functions
 # --------------------
 
@@ -75,7 +90,7 @@ func set_up(_parameters):
 	# Modify the matrix based on the settings
 	pass
 
-func highlight_spawnable_tiles(unit : PlayerUnit.unit_type):
+func highlight_spawnable_tiles(unit : PlayerUnit.unit_type):	
 	# Discard all the previous highlits
 	# Order here is very important!
 	clear_mouse_over_highlight() 
@@ -148,6 +163,9 @@ func clear_mouse_over_highlight():
 					break
 	
 func try_spawning_a_unit(target_tile : Node3D):
+	# Only execute if turn belongs to the player
+	if !player_turn: return
+	
 	# Make sure the selected tile is available for spawning
 	if !target_tile.is_in_group(mass_highlight_group_name): return
 	
@@ -170,6 +188,10 @@ func try_spawning_a_unit(target_tile : Node3D):
 	MouseModeManager.set_mouse_mode(MouseModeManager.MOUSE_MODE.INSPECTION)
 	
 func try_moving_a_unit(target_tile : GridTile):
+	# Only execute if turn belongs to the player
+	if !player_turn: return
+	
+	
 	# Make sure the selected tile is reachable and mouse selection is a unit
 	if !mouse_selection.is_in_group(unit_group_name): return
 	if reachable_tiles_and_costs["tiles"].find(target_tile) == -1: return
@@ -207,9 +229,34 @@ func highlight_moveable_tiles():
 	
 	# Highlight new tiles
 	mass_highlight_tiles(reachable_tiles_and_costs["tiles"])
+
+func disable_turn():
+	player_turn = false
+	recolor_mass_highlight(turn_disabled_mat)
+	recolor_mouse_over_highlight(turn_disabled_mat)
 	
-	# Change mouse mode to move
-	MouseModeManager.set_mouse_mode(MouseModeManager.MOUSE_MODE.MOVE)
+func enable_turn():
+	player_turn = true
+	recolor_mass_highlight(turn_enabled_mass_mat)
+	recolor_mouse_over_highlight(turn_enabled_mouse_mat)
+
+func recolor_mass_highlight(new_material : Material):
+	# Change material
+	mass_highlight_material = new_material
+	
+	# Recolor the tiles
+	var highlighted = get_tree().get_nodes_in_group(mass_highlight_group_name)
+	mass_highlight_tiles(highlighted)
+
+func recolor_mouse_over_highlight(new_material : Material):
+	# Change the materials
+	mouse_over_highlight_material = new_material
+	mouse_over_highlight_previous_material = mass_highlight_material
+	
+	# Recolor the tile
+	if mouse_over_highlight:
+		mouse_over_highlight_tile(mouse_over_highlight)
+
 
 # Remote Procedure Calls
 # --------------------
@@ -231,6 +278,9 @@ func spawn_unit(target_tile_path : NodePath, unit_to_spawn : PlayerUnit.unit_typ
 	# Add the unit to the tree
 	var tree = get_node(parent_node_path)
 	tree.add_child(spawned_unit)
+	
+	# Add the unit to list of units of a player
+	PlayerManager.add_unit(spawning_player, spawned_unit)
 
 @rpc("any_peer", "call_local")
 func move_unit(path_to_unit : NodePath, route : Array):
@@ -274,6 +324,7 @@ func select_unit_for_spawn(type : PlayerUnit.unit_type):
 func set_mouse_selection(selection):
 	mouse_selection = selection
 
+	
 # Getters
 # --------------------
 func get_tile_group_name() -> String:
@@ -281,3 +332,5 @@ func get_tile_group_name() -> String:
 
 func get_unit_group_name() -> String:
 	return unit_group_name
+	
+	

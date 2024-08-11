@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" path="res://Scripts/Views/Map/GameUI.gd" id="1_5uulx"]
 
-
 [node name="GameUI" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -13,38 +12,42 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_5uulx")
 
-[node name="InfantryButton" type="Button" parent="."]
+[node name="InfantryButton" type="Button" parent="." groups=["ui_buttons"]]
 layout_mode = 0
 offset_left = 43.0
 offset_top = 565.0
 offset_right = 114.0
 offset_bottom = 596.0
+focus_mode = 0
 text = "Infantry
 "
 
-[node name="AT_InfantryButton" type="Button" parent="."]
+[node name="AT_InfantryButton" type="Button" parent="." groups=["ui_buttons"]]
 layout_mode = 0
 offset_left = 135.0
 offset_top = 564.0
 offset_right = 229.0
 offset_bottom = 595.0
+focus_mode = 0
 text = "AT Infantry
 "
 
-[node name="IMVButton" type="Button" parent="."]
+[node name="IMVButton" type="Button" parent="." groups=["ui_buttons"]]
 layout_mode = 0
 offset_left = 249.0
 offset_top = 565.0
 offset_right = 287.0
 offset_bottom = 596.0
+focus_mode = 0
 text = "IMV"
 
-[node name="IFVButton" type="Button" parent="."]
+[node name="IFVButton" type="Button" parent="." groups=["ui_buttons"]]
 layout_mode = 0
 offset_left = 316.0
 offset_top = 568.0
 offset_right = 387.0
 offset_bottom = 599.0
+focus_mode = 0
 text = "IFV
 "
 

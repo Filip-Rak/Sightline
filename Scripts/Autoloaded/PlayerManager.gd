@@ -17,14 +17,15 @@ func _ready():
 	add_default_player()
 
 func add_default_player():
-	add_player(multiplayer.get_unique_id(), "Player", -1)
+	add_player(multiplayer.get_unique_id(), "Player", -1, [])
 
 # Functions For External Setup
 # --------------------
-func add_player(player_id : int, player_name : String, team_id : int):
+func add_player(player_id : int, player_name : String, team_id : int, units : Array):
 	players[player_id] = {
 		"player_name": player_name,
-		"team_id": team_id
+		"team_id": team_id,
+		"units": units
 	}
 
 func change_id(previous_id : int, new_id : int): 
@@ -48,6 +49,9 @@ func drop_player(player_id : int) -> bool:
 func reset_all_players():
 	players.clear()
 	add_default_player()
+
+func add_unit(owner_id : int, unit : PlayerUnit):
+	players[owner_id]["units"].append(unit)
 
 # Setters
 # --------------------

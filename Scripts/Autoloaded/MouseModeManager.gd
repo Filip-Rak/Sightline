@@ -50,6 +50,8 @@ func handle_inspection(select):
 			print ("SELECTED UNIT: %s" % [select])
 			
 			if select.get_player_owner_id() == multiplayer.get_unique_id():
+				# Change mouse mode to move
+				set_mouse_mode(MouseModeManager.MOUSE_MODE.MOVE)
 				game_manager.highlight_moveable_tiles()
 			
 		elif select.is_in_group(game_manager.get_tile_group_name()):
