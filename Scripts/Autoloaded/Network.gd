@@ -23,7 +23,7 @@ func _ready():
 	multiplayer.server_disconnected.connect(server_disconnected)
 	
 	# Add custom signals
-	add_user_signal("player_data_updated")
+	add_user_signal("player_data_updated")# Mostly legacy, dont use
 	add_user_signal("connection_lost")
 	
 # Multiplayer Signal Functions
@@ -111,18 +111,20 @@ func reset_multiplayer_state():
 	# Reset player data
 	PlayerManager.reset_all_players()
 
-func sync_my_data():
+func sync_my_data_fast():
 	# Get my data
 	var my_data = PlayerManager.get_my_data()
 	
 	# Call all the players to update their entries about the caller
-	rpc("update_player_data", my_data, multiplayer.get_unique_id())
+	rpc("update_player_data_fast", my_data, multiplayer.get_unique_id())
 
 # Remote Procedure Calls
 # --------------------
 @rpc("any_peer")
-func update_player_data(data : Dictionary, player_id : int):
-	PlayerManager.set_player(player_id, data)
+func update_player_data_fast(data : Dictionary, caller_id : int):
+	# Update the data
+	PlayerManager.set_player(caller_id, data)
+
 
 @rpc("any_peer")
 func send_player_information(player_data : Dictionary, id : int, last_one : bool = false):

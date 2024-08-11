@@ -119,6 +119,9 @@ func load_transportable_unit(unit_to_load : PlayerUnit) -> bool:
 	
 	return false
 
+func reset_action_points():
+	action_points_left = type_properties[type]["action_points"]
+
 # Setters
 # --------------------
 

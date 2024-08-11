@@ -10,6 +10,9 @@ extends Node
 @onready var player_list_node = $PlayerList
 @onready var team_id_node = $Team
 
+# Flags
+var starting_game : bool = false
+
 func _ready():
 	Network.connect("player_data_updated", on_player_data_updated)
 	Network.connect("connection_lost", on_connection_lost)
@@ -25,19 +28,19 @@ func update_player_list():
 
 @rpc("any_peer", "call_local")
 func start_game():
-	# Set team of the player
-	PlayerManager.set_player_team(multiplayer.get_unique_id(), int(team_id_node.text))
+	if !Network.has_connection_to_server():
+		# Set player name and team
+		PlayerManager.set_player_name(multiplayer.get_unique_id(), name_node.text)
+		PlayerManager.set_player_team(multiplayer.get_unique_id(), int(team_id_node.text))
 	
-	# Sync player data over the network to update the teams
-	if Network.has_connection_to_server(): 
-		Network.sync_my_data()
+	starting_game = true
+	if starting_game:
+		# Load the playing scene
+		var state_machine = get_node("/root/StateMachine")
+		var parameters = {
 	
-	# Load the playing scene
-	var state_machine = get_node("/root/StateMachine")
-	var parameters = {
-	
-	}
-	state_machine.change_state(StateMachine.GAME_STATE.MAP_TEST, parameters)
+		}
+		state_machine.change_state(StateMachine.GAME_STATE.MAP_TEST, parameters)
 
 # Signals
 # --------------------
@@ -46,8 +49,9 @@ func start_game():
 func _on_host_button_button_down():
 	var server_port = port_node.text
 	
-	# Set player name
+	# Set player name and team
 	PlayerManager.set_player_name(multiplayer.get_unique_id(), name_node.text)
+	PlayerManager.set_player_team(multiplayer.get_unique_id(), int(team_id_node.text))
 	
 	# Create a server
 	Network.self_host_server(int(server_port))
@@ -60,8 +64,9 @@ func _on_join_button_button_down():
 	var server_address = address_node.text
 	var server_port = port_node.text
 	
-	# Set player name
+	# Set player name and team
 	PlayerManager.set_player_name(multiplayer.get_unique_id(), name_node.text)
+	PlayerManager.set_player_team(multiplayer.get_unique_id(), int(team_id_node.text))
 	
 	# Join the server
 	Network.join_server(server_address, int(server_port))
@@ -76,3 +81,11 @@ func on_player_data_updated():
 
 func on_connection_lost():
 	player_list_node.text = "Connection has been lost"
+
+func _on_team_text_changed(new_text):
+	# Set team of the player
+	PlayerManager.set_player_team(multiplayer.get_unique_id(), int(new_text))
+	
+	# Sync player data over the network to update the teams
+	if Network.has_connection_to_server(): 
+		Network.sync_my_data()

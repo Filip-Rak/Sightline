@@ -69,8 +69,6 @@ func _ready():
 	z_size = map_loader.get_z_size()
 	positional_offset_x = map_loader.get_pos_offset_x()
 	positional_offset_z = map_loader.get_pos_offset_z()
-	
-	print("Player in level\n\tID: %s\n\tdata: %s " % [multiplayer.get_unique_id(), PlayerManager.get_player(multiplayer.get_unique_id())])
 
 func _process(_delta : float):
 	
@@ -87,10 +85,14 @@ func _process(_delta : float):
 # Function for receiving game settings
 func set_up(_parameters):
 	# Set up selected settings here
+	var turn_manager : Turn_Manager = Turn_Manager.new()
+	add_child(turn_manager)
+	turn_manager.set_up()
+	
 	# Modify the matrix based on the settings
 	pass
 
-func highlight_spawnable_tiles(unit : PlayerUnit.unit_type):	
+func highlight_spawnable_tiles(unit : PlayerUnit.unit_type):
 	# Discard all the previous highlits
 	# Order here is very important!
 	clear_mouse_over_highlight() 
@@ -232,6 +234,7 @@ func highlight_moveable_tiles():
 
 func disable_turn():
 	player_turn = false
+	reset_action_points()
 	recolor_mass_highlight(turn_disabled_mat)
 	recolor_mouse_over_highlight(turn_disabled_mat)
 	
@@ -257,6 +260,10 @@ func recolor_mouse_over_highlight(new_material : Material):
 	if mouse_over_highlight:
 		mouse_over_highlight_tile(mouse_over_highlight)
 
+func reset_action_points():
+	var units = PlayerManager.get_units(multiplayer.get_unique_id())
+	for unit in units:
+		unit.reset_action_points()
 
 # Remote Procedure Calls
 # --------------------

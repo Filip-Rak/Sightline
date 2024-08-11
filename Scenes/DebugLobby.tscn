@@ -111,3 +111,4 @@ offset_bottom = 202.0
 [connection signal="button_down" from="HostButton" to="." method="_on_host_button_button_down"]
 [connection signal="button_down" from="JoinButton" to="." method="_on_join_button_button_down"]
 [connection signal="button_down" from="StartGameButton" to="." method="_on_start_game_button_button_down"]
+[connection signal="text_changed" from="Team" to="." method="_on_team_text_changed"]
