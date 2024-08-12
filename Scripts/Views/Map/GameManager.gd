@@ -233,32 +233,30 @@ func highlight_moveable_tiles():
 	mass_highlight_tiles(reachable_tiles_and_costs["tiles"])
 
 func disable_turn():
+	# Disable certain actions
 	player_turn = false
+	
+	# Reset action points for visualization of next turn
 	reset_action_points()
-	recolor_mass_highlight(turn_disabled_mat)
-	recolor_mouse_over_highlight(turn_disabled_mat)
+	
+	# Recalculate highlighting on the screen for the next turn
+	redo_highlighting(turn_disabled_mat, turn_disabled_mat)
 	
 func enable_turn():
+	# Disable certain actions
 	player_turn = true
-	recolor_mass_highlight(turn_enabled_mass_mat)
-	recolor_mouse_over_highlight(turn_enabled_mouse_mat)
-
-func recolor_mass_highlight(new_material : Material):
-	# Change material
-	mass_highlight_material = new_material
 	
-	# Recolor the tiles
-	var highlighted = get_tree().get_nodes_in_group(mass_highlight_group_name)
-	mass_highlight_tiles(highlighted)
+	# Recalculate highlighting on the screen for the next turn
+	redo_highlighting(turn_enabled_mass_mat, turn_enabled_mouse_mat)
 
-func recolor_mouse_over_highlight(new_material : Material):
-	# Change the materials
-	mouse_over_highlight_material = new_material
-	mouse_over_highlight_previous_material = mass_highlight_material
+func redo_highlighting(mass_material : Material, mouse_material : Material):
+	mass_highlight_material = mass_material
+	mouse_over_highlight_previous_material = mass_material
+	mouse_over_highlight_material = mouse_material
 	
-	# Recolor the tile
-	if mouse_over_highlight:
-		mouse_over_highlight_tile(mouse_over_highlight)
+	match MouseModeManager.current_mouse_mode:
+		MouseModeManager.MOUSE_MODE.SPAWN: highlight_spawnable_tiles(mouse_selection)
+		MouseModeManager.MOUSE_MODE.MOVE: highlight_moveable_tiles()
 
 func reset_action_points():
 	var units = PlayerManager.get_units(multiplayer.get_unique_id())
