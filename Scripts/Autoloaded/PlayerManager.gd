@@ -11,7 +11,7 @@ var players : Dictionary = {}
 # 	'player_name': string
 # 	'team_id' : int
 # 	"units": PlayerUnit Array
-# 	"synced": bool local acknowledgment
+# 	"ack": flag for synchronization
 
 # Ready Functions
 # --------------------
@@ -28,7 +28,7 @@ func add_player(player_id : int, player_name : String, team_id : int, units : Ar
 		"player_name": player_name,
 		"team_id": team_id,
 		"units": units,
-		"synced": true
+		"ack": false
 	}
 
 func change_id(previous_id : int, new_id : int): 
@@ -67,18 +67,18 @@ func set_player_name(id : int, player_name : String):
 func set_player_team(player_id : int, team_id : int):
 	players[player_id]["team_id"] = team_id
 
-func set_synced_all(value : bool):
-	for player in players:
-		player["synced"] = value
+func set_ack_all(value : bool):
+	for player_id in players:
+		players[player_id]["ack"] = value
 
-func set_synced(player_id : int, value : bool):
-	players[player_id]["synced"] = value
+func set_ack(player_id : int, value : bool):
+	players[player_id]["ack"] = value
 
 # Getters
 # --------------------
-func get_sync_all() -> bool:
+func is_ack_all() -> bool:
 	for player in players:
-		if !players[player]["synced"]:
+		if !players[player]["ack"]:
 			return false
 			
 	return true;
@@ -88,6 +88,9 @@ func get_players() -> Dictionary:
 
 func get_player(id : int) -> Dictionary:
 	return players[id]
+
+func get_player_name(id : int) -> String:
+	return players[id]["player_name"]
 
 func get_my_data() -> Dictionary:
 	return get_player(multiplayer.get_unique_id())

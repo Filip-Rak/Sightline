@@ -8,6 +8,10 @@ class_name Game_Manager
 # Exported settings
 @export var map_root : Node3D
 
+# Other scripts
+var turn_manager : Turn_Manager
+var game_ui
+
 # Map variables
 var tile_matrix = []
 const tile_group_name : String = "tiles"
@@ -54,6 +58,12 @@ var player_turn : bool = false
 # --------------------
 
 func _ready():
+	# This is the begining of the scene
+	print ("Waiting for players")
+	
+	# Set up signals
+	Network.connect("synchronization_complete", on_all_players_loaded)
+	
 	# Set up the mouse mode manager
 	MouseModeManager.set_game_manager(self)
 	MouseModeManager.set_camera(camera)
@@ -81,16 +91,21 @@ func _process(_delta : float):
 
 # External Interaction Functions
 # --------------------
-
 # Function for receiving game settings
 func set_up(_parameters):
-	# Set up selected settings here
-	var turn_manager : Turn_Manager = Turn_Manager.new()
+	# Settings for turn manager
+	turn_manager = Turn_Manager.new()
 	add_child(turn_manager)
-	turn_manager.set_up()
+	turn_manager.set_up(self)
 	
 	# Modify the matrix based on the settings
-	pass
+	
+	# Acknowledge completion of loading the map
+	# Host call the function manually
+	if multiplayer.get_unique_id() == 1:
+		Network.send_ack(1)
+	else:
+		Network.rpc_id(1, "send_ack", multiplayer.get_unique_id())
 
 func highlight_spawnable_tiles(unit : PlayerUnit.unit_type):
 	# Discard all the previous highlits
@@ -323,11 +338,20 @@ func select_unit_for_spawn(type : PlayerUnit.unit_type):
 	mouse_selection = type
 	highlight_spawnable_tiles(type)
 	MouseModeManager.set_mouse_mode(MouseModeManager.MOUSE_MODE.SPAWN)
+
+func on_all_players_loaded():
+	print ("All players loaded")
 	
+	# Start the first turn
+	turn_manager.begin_game()
+
 # Setters
 # --------------------
 func set_mouse_selection(selection):
 	mouse_selection = selection
+
+func set_game_ui(reference):
+	game_ui = reference
 
 	
 # Getters

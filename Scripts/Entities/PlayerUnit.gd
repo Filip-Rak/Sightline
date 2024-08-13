@@ -27,7 +27,7 @@ static var type_properties = {
 	unit_type.INFANTRY: 
 	{ 
 		"price": 1.0,
-		"action_points": 2,
+		"action_points": 1,
 		"sight_range": 3,
 		"hit_points_max": 100,
 		"can_transport": false,
@@ -38,7 +38,7 @@ static var type_properties = {
 	unit_type.AT_INFANTRY: 
 	{ 
 		"price": 2.0,
-		"action_points": 2,
+		"action_points": 1,
 		"sight_range": 3,
 		"hit_points_max": 80,
 		"can_transport": false,
@@ -49,7 +49,7 @@ static var type_properties = {
 	unit_type.IMV: 
 	{ 
 		"price": 2.0,
-		"action_points": 5,
+		"action_points": 3,
 		"sight_range": 1,
 		"hit_points_max": 40,
 		"can_transport": true,
@@ -60,7 +60,7 @@ static var type_properties = {
 	unit_type.IFV: 
 	{ 
 		"price": 5.0,
-		"action_points": 4,
+		"action_points": 2,
 		"sight_range": 2,
 		"hit_points_max": 120,
 		"can_transport": true,

@@ -24,6 +24,7 @@ func _ready():
 	
 	# Add custom signals
 	add_user_signal("player_data_updated")# Mostly legacy, dont use
+	add_user_signal("synchronization_complete")
 	add_user_signal("connection_lost")
 	
 # Multiplayer Signal Functions
@@ -125,6 +126,13 @@ func update_player_data_fast(data : Dictionary, caller_id : int):
 	# Update the data
 	PlayerManager.set_player(caller_id, data)
 
+@rpc("any_peer")
+func send_ack(sender_id : int):
+	PlayerManager.set_ack(sender_id, true)
+	
+	if PlayerManager.is_ack_all():
+		rpc("emit_signal_globbaly", "synchronization_complete")
+		PlayerManager.set_ack_all(false)
 
 @rpc("any_peer")
 func send_player_information(player_data : Dictionary, id : int, last_one : bool = false):
@@ -155,6 +163,10 @@ func distribute_player_information():
 			rpc("send_player_information", player_data, player_id, true)
 		else:
 			rpc("send_player_information", player_data, player_id)
+
+@rpc("any_peer", "call_local")
+func emit_signal_globbaly(signal_name : String):
+	emit_signal(signal_name)
 
 # Getters
 # --------------------

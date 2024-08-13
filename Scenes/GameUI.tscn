@@ -51,7 +51,32 @@ focus_mode = 0
 text = "IFV
 "
 
+[node name="EndTurnButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 875.0
+offset_top = 579.0
+offset_right = 993.0
+offset_bottom = 610.0
+text = "End Your Turn"
+
+[node name="CurrentTurnLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 874.0
+offset_top = 541.0
+offset_right = 976.0
+offset_bottom = 564.0
+text = "Current turn:"
+
+[node name="PlayerNameLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 883.0
+offset_top = 18.0
+offset_right = 936.0
+offset_bottom = 41.0
+text = "Player:"
+
 [connection signal="button_down" from="InfantryButton" to="." method="select_unit_for_spawn" binds= [0]]
 [connection signal="button_down" from="AT_InfantryButton" to="." method="select_unit_for_spawn" binds= [1]]
 [connection signal="button_down" from="IMVButton" to="." method="select_unit_for_spawn" binds= [2]]
 [connection signal="button_down" from="IFVButton" to="." method="select_unit_for_spawn" binds= [3]]
+[connection signal="button_down" from="EndTurnButton" to="." method="_on_end_turn_button_button_down"]

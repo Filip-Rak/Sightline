@@ -25,14 +25,26 @@ var time_spent_in_turn : float = 0
 
 # Order related
 var order : Array
+var current_index = 0
+
+# Other scripts
+var game_manager : Game_Manager
+
+# For clients
+var current_turn_player_id : int
 
 # Setup Functions
 # --------------------
-func set_up():
-	# Set up for the host
-	if multiplayer.get_unique_id() == 1:
-		set_for_host()
+func set_up(gm : Game_Manager):
+	# Setup for everyone
+	common_setup(gm)
 	
+	# Set up for the host
+	if multiplayer.get_unique_id() == 1: set_for_host()
+	
+func common_setup(gm : Game_Manager):
+	game_manager = gm
+
 func set_for_host():
 	# Figure out the order of turns
 	for i in PlayerManager.get_players().keys():
@@ -58,8 +70,67 @@ func handle_time_calculation(delta : float):
 func handle_forced_turn_change():
 	if set_timer_type != TIMER_TYPE.DISABLED:
 		if time_spent_in_turn >= time_limit:
-			start_next_turn()
+			# start_next_turn()
+			pass
+
+# External Control Functions
+# --------------------
+
+func begin_game():
+	if multiplayer.is_server():
+		start_new_turn()
+
+func try_skip_turn():
+	# For host
+	if multiplayer.is_server():
+		request_turn_skip(multiplayer.get_unique_id())
+	else:
+		# Politely ask the host to skip your turn (host will check your id)
+		rpc_id(1, "request_turn_skip", multiplayer.get_unique_id())
 
 
-func start_next_turn():
+# Internal Control Functions
+# --------------------
+func start_new_turn():
+	# Set the time
+	time_spent_in_turn = 0
+	if set_timer_type != TIMER_TYPE.DISABLED:
+		# Later use function for dynamic calculation instead
+		time_limit = base_time_limit
+		
+	# Disable current turn
+	rpc("end_player_turn", order[current_index])
+	
+	# Update order index
+	current_index += 1
+	current_index %= order.size()
+	
+	# Inform clients with new turn details
+	rpc("distribute_turn_data", order[current_index], time_limit)
+	
+	# Enable player's turn
+	rpc("start_player_turn", order[current_index])
+
+# Remote Procedure Calls
+# --------------------
+@rpc("any_peer", "call_remote")
+func request_turn_skip(caller_id : int):
+	if caller_id == order[current_index]:
+		start_new_turn()
+
+@rpc("any_peer", "call_local")
+func start_player_turn(player_id : int):
+	if multiplayer.get_unique_id() == player_id:
+		game_manager.enable_turn()
+
+@rpc("any_peer", "call_local")
+func end_player_turn(player_id : int):
+	if multiplayer.get_unique_id() == player_id:
+		game_manager.disable_turn()
+	
+@rpc("any_peer", "call_local")
+func distribute_turn_data(player_id : int, given_time : float):
+	time_limit = given_time
+	current_turn_player_id = player_id
+	game_manager.game_ui.update_turn_ui(player_id, given_time)
 	pass
