@@ -18,8 +18,8 @@ enum TIMER_TYPE{
 	DYNAMIC
 }
 
-var set_timer_type : TIMER_TYPE = TIMER_TYPE.DISABLED
-var base_time_limit : float = 60.0
+var set_timer_type : TIMER_TYPE = TIMER_TYPE.FIXED
+var base_time_limit : float = 10.0
 var time_limit : float = base_time_limit
 var time_spent_in_turn : float = 0
 
@@ -32,6 +32,9 @@ var game_manager : Game_Manager
 
 # For clients
 var current_turn_player_id : int
+
+func _ready():
+	multiplayer.peer_disconnected.connect(peer_disconnected)
 
 # Setup Functions
 # --------------------
@@ -58,11 +61,13 @@ func set_for_host():
 
 	print ("Turn order: %s" % [order])
 
-
 # Proccess Functions
 # --------------------
 func _process(delta : float):
 	handle_time_calculation(delta)
+	
+	if multiplayer.get_unique_id() == 1:
+		handle_forced_turn_change()
 	
 func handle_time_calculation(delta : float):
 	time_spent_in_turn += delta
@@ -70,11 +75,25 @@ func handle_time_calculation(delta : float):
 func handle_forced_turn_change():
 	if set_timer_type != TIMER_TYPE.DISABLED:
 		if time_spent_in_turn >= time_limit:
-			# start_next_turn()
-			pass
+			start_new_turn()
 
 # External Control Functions
 # --------------------
+
+func peer_disconnected(id : int):
+	# Do this in GlobalSingalHandler
+	if id == 1:
+		get_tree().quit()
+	
+	# Only on host
+	if multiplayer.get_unique_id() == 1:
+		if id == order[current_index]:
+			start_new_turn()
+			current_index -= 1
+		elif id <= order[current_index]:
+			current_index -= 1
+			
+		order.erase(id)
 
 func begin_game():
 	if multiplayer.is_server():
@@ -88,12 +107,10 @@ func try_skip_turn():
 		# Politely ask the host to skip your turn (host will check your id)
 		rpc_id(1, "request_turn_skip", multiplayer.get_unique_id())
 
-
 # Internal Control Functions
 # --------------------
 func start_new_turn():
-	# Set the time
-	time_spent_in_turn = 0
+	# Calculate the time
 	if set_timer_type != TIMER_TYPE.DISABLED:
 		# Later use function for dynamic calculation instead
 		time_limit = base_time_limit
@@ -131,6 +148,7 @@ func end_player_turn(player_id : int):
 @rpc("any_peer", "call_local")
 func distribute_turn_data(player_id : int, given_time : float):
 	time_limit = given_time
+	time_spent_in_turn = 0
 	current_turn_player_id = player_id
 	game_manager.game_ui.update_turn_ui(player_id, given_time)
 	pass

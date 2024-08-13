@@ -61,10 +61,10 @@ text = "End Your Turn"
 
 [node name="CurrentTurnLabel" type="Label" parent="."]
 layout_mode = 0
-offset_left = 874.0
-offset_top = 541.0
-offset_right = 976.0
-offset_bottom = 564.0
+offset_left = 875.0
+offset_top = 494.0
+offset_right = 977.0
+offset_bottom = 517.0
 text = "Current turn:"
 
 [node name="PlayerNameLabel" type="Label" parent="."]
@@ -74,6 +74,14 @@ offset_top = 18.0
 offset_right = 936.0
 offset_bottom = 41.0
 text = "Player:"
+
+[node name="TimeLeftLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 877.0
+offset_top = 537.0
+offset_right = 917.0
+offset_bottom = 560.0
+text = "Time left:"
 
 [connection signal="button_down" from="InfantryButton" to="." method="select_unit_for_spawn" binds= [0]]
 [connection signal="button_down" from="AT_InfantryButton" to="." method="select_unit_for_spawn" binds= [1]]

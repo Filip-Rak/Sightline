@@ -301,6 +301,9 @@ func spawn_unit(target_tile_path : NodePath, unit_to_spawn : PlayerUnit.unit_typ
 	
 	# Add the unit to list of units of a player
 	PlayerManager.add_unit(spawning_player, spawned_unit)
+	
+	# Recalculate the highlighting for other players
+	if !player_turn: redo_highlighting(turn_disabled_mat, turn_disabled_mat)
 
 @rpc("any_peer", "call_local")
 func move_unit(path_to_unit : NodePath, route : Array):
@@ -331,6 +334,9 @@ func move_unit(path_to_unit : NodePath, route : Array):
 	# Offset action points
 	var route_cost = PathFinding.get_path_cost(tile_matrix, route)
 	unit.offset_action_points(-route_cost)
+	
+	# Recalculate the highlighting for other players
+	if !player_turn: redo_highlighting(turn_disabled_mat, turn_disabled_mat)
 
 # Link Functions
 # --------------------
