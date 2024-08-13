@@ -18,7 +18,7 @@ enum TIMER_TYPE{
 	DYNAMIC
 }
 
-var set_timer_type : TIMER_TYPE = TIMER_TYPE.FIXED
+var set_timer_type : TIMER_TYPE = TIMER_TYPE.DISABLED
 var base_time_limit : float = 10.0
 var time_limit : float = base_time_limit
 var time_spent_in_turn : float = 0
