@@ -10,6 +10,7 @@ class_name Game_Manager
 
 # Other scripts
 var turn_manager : Turn_Manager
+var highlight_manager : Highlight_Manager
 var game_ui
 
 # Map variables
@@ -23,28 +24,6 @@ var z_size : int
 # Units
 const unit_group_name : String = "units"
 
-# Highlighting materials
-var turn_enabled_mass_mat : Material = preload("res://Assets/Resources/Mat_move.tres")
-var turn_enabled_mouse_mat : Material = preload("res://Assets/Resources/Mat_attack.tres")
-var turn_disabled_mat : Material = preload("res://Assets/Resources/Mat_disabled.tres")
-
-# Highlighting a group of units or tiles by the game
-var mass_highlight_group_name : String = "mass_highlighted_tiles"
-var mass_highlight_material : Material = turn_disabled_mat
-
-# Highlighting a unit or tile by the mouse
-var mouse_over_highlight : Node3D
-# Mouse highlight probably shouldnt use its own materials, but rather amplify the group one's
-# Unless the tile isn't highlited in the first place - only then should it put a material on it's own
-
-# This is more of a stop gap solution
-var mouse_over_highlight_material : Material = turn_disabled_mat
-var mouse_over_highlight_previous_material : Material
-
-# This will store selected unit or a tile. It will also be highlighted
-# Difference is, this one is selected and should be higlighted as 'active'
-# mouse_over_highlight is for hovered over stuff
-# Both can only be one thing at the time
 var mouse_selection
 
 # Path finding
@@ -69,6 +48,10 @@ func _ready():
 	MouseModeManager.set_camera(camera)
 	MouseModeManager.set_mouse_mode(MouseModeManager.MOUSE_MODE.INSPECTION)
 	
+	# Set up highligt manager
+	highlight_manager = Highlight_Manager.new(self)
+	add_child(highlight_manager)
+	
 	# Load the map and get its properties
 	# In the future this is where procedural generation would be added
 	var map_loader = Map_Loader.new()
@@ -81,12 +64,6 @@ func _ready():
 	positional_offset_z = map_loader.get_pos_offset_z()
 
 func _process(_delta : float):
-	
-	if Input.is_action_just_pressed("function_debug"):
-		if !player_turn:
-			enable_turn()
-		else:
-			disable_turn()
 	pass
 
 # External Interaction Functions
@@ -107,11 +84,14 @@ func set_up(_parameters):
 	else:
 		Network.rpc_id(1, "send_ack", multiplayer.get_unique_id())
 
-func highlight_spawnable_tiles(unit : PlayerUnit.unit_type):
+func select_spawnable_tiles():
 	# Discard all the previous highlits
 	# Order here is very important!
-	clear_mouse_over_highlight() 
-	clear_mass_highlight()
+	highlight_manager.clear_mouse_over_highlight() 
+	highlight_manager.clear_mass_highlight()
+	
+	# Save mouse_selection as unit
+	var unit : PlayerUnit.unit_type = mouse_selection
 	
 	# Find all the tiles suitable for spawning
 	var good_tiles = []
@@ -123,68 +103,14 @@ func highlight_spawnable_tiles(unit : PlayerUnit.unit_type):
 							good_tiles.append(tile_matrix[i][j])
 	
 	# Highlight these tiles
-	mass_highlight_tiles(good_tiles)
-
-func mass_highlight_tiles(tiles : Array):
-	for tile in tiles:
-		# Get the MeshInstance3D child
-		for child in tile.get_children():
-			if child is MeshInstance3D:
-				# Apply the highlight material
-				child.material_overlay = mass_highlight_material
-				
-				# Save highlited tiles to their group
-				tile.add_to_group(mass_highlight_group_name)
-				break
-
-func clear_mass_highlight():
-	# Get all nodes in the group
-	var highlighted = get_tree().get_nodes_in_group(mass_highlight_group_name)
-	
-	# Clear the highlighting material
-	for tile in highlighted:
-		
-		# Get the MeshInstance3D child
-		for child in tile.get_children():
-			if child is MeshInstance3D:
-				
-				# Clear highlight material
-				child.material_overlay = null
-				break
-				
-		# Remove the tile from the group
-		tile.remove_from_group(mass_highlight_group_name)
-
-func mouse_over_highlight_tile(tile : Node3D):
-	# Clear previous mouse highlight
-	clear_mouse_over_highlight()
-	
-	# Check if mouse points into a tile it can select
-	if tile.is_in_group(mass_highlight_group_name):
-		for child in tile.get_children():
-			if child is MeshInstance3D:
-				# Save previous material
-				mouse_over_highlight_previous_material = child.material_overlay
-				
-				# Highlight with new material
-				child.material_overlay = mouse_over_highlight_material
-				mouse_over_highlight = tile
-				break
-
-func clear_mouse_over_highlight():
-	if mouse_over_highlight:
-		for child in mouse_over_highlight.get_children():
-				if child is MeshInstance3D:
-					child.material_overlay = mouse_over_highlight_previous_material
-					mouse_over_highlight = null
-					break
+	highlight_manager.mass_highlight_tiles(good_tiles)
 	
 func try_spawning_a_unit(target_tile : Node3D):
 	# Only execute if turn belongs to the player
 	if !player_turn: return
 	
 	# Make sure the selected tile is available for spawning
-	if !target_tile.is_in_group(mass_highlight_group_name): return
+	if !target_tile.is_in_group(highlight_manager.get_mass_highlight_group_name()): return
 	
 	# Make sure a unit is selected
 	if mouse_selection == null: return
@@ -197,8 +123,8 @@ func try_spawning_a_unit(target_tile : Node3D):
 	rpc("spawn_unit", spawn_path, mouse_selection, player_id, tree) 
 	
 	# Clear all selections after spawning - consider not doing so for 'shift' effect
-	clear_mouse_over_highlight()
-	clear_mass_highlight()
+	highlight_manager.clear_mouse_over_highlight()
+	highlight_manager.clear_mass_highlight()
 	mouse_selection = null
 		
 	# Change mouse mode to inspect
@@ -232,20 +158,20 @@ func try_moving_a_unit(target_tile : GridTile):
 	
 	# Refresh the highlighting
 	if unit.get_action_points_left() > 0:
-		highlight_moveable_tiles()
+		select_moveable_tiles()
 	else:
-		clear_mouse_over_highlight()
-		clear_mass_highlight()
+		highlight_manager.clear_mouse_over_highlight()
+		highlight_manager.clear_mass_highlight()
 	
-func highlight_moveable_tiles():
+func select_moveable_tiles():
 	# Get all the tiles where the unit can move
 	reachable_tiles_and_costs = PathFinding.get_reachable_tiles(tile_matrix, mouse_selection)
 	
 	# Clear previous highlighting
-	clear_mass_highlight()
+	highlight_manager.clear_mass_highlight()
 	
 	# Highlight new tiles
-	mass_highlight_tiles(reachable_tiles_and_costs["tiles"])
+	highlight_manager.mass_highlight_tiles(reachable_tiles_and_costs["tiles"])
 
 func disable_turn():
 	# Disable certain actions
@@ -255,23 +181,15 @@ func disable_turn():
 	reset_action_points()
 	
 	# Recalculate highlighting on the screen for the next turn
-	redo_highlighting(turn_disabled_mat, turn_disabled_mat)
+	highlight_manager.redo_highlighting(player_turn)
 	
 func enable_turn():
 	# Disable certain actions
 	player_turn = true
 	
 	# Recalculate highlighting on the screen for the next turn
-	redo_highlighting(turn_enabled_mass_mat, turn_enabled_mouse_mat)
+	highlight_manager.redo_highlighting(player_turn)
 
-func redo_highlighting(mass_material : Material, mouse_material : Material):
-	mass_highlight_material = mass_material
-	mouse_over_highlight_previous_material = mass_material
-	mouse_over_highlight_material = mouse_material
-	
-	match MouseModeManager.current_mouse_mode:
-		MouseModeManager.MOUSE_MODE.SPAWN: highlight_spawnable_tiles(mouse_selection)
-		MouseModeManager.MOUSE_MODE.MOVE: highlight_moveable_tiles()
 
 func reset_action_points():
 	var units = PlayerManager.get_units(multiplayer.get_unique_id())
@@ -303,7 +221,7 @@ func spawn_unit(target_tile_path : NodePath, unit_to_spawn : PlayerUnit.unit_typ
 	PlayerManager.add_unit(spawning_player, spawned_unit)
 	
 	# Recalculate the highlighting for other players
-	if !player_turn: redo_highlighting(turn_disabled_mat, turn_disabled_mat)
+	if !player_turn: highlight_manager.redo_highlighting(player_turn)
 
 @rpc("any_peer", "call_local")
 func move_unit(path_to_unit : NodePath, route : Array):
@@ -336,13 +254,13 @@ func move_unit(path_to_unit : NodePath, route : Array):
 	unit.offset_action_points(-route_cost)
 	
 	# Recalculate the highlighting for other players
-	if !player_turn: redo_highlighting(turn_disabled_mat, turn_disabled_mat)
+	if !player_turn: highlight_manager.redo_highlighting(player_turn)
 
 # Link Functions
 # --------------------
 func select_unit_for_spawn(type : PlayerUnit.unit_type):
 	mouse_selection = type
-	highlight_spawnable_tiles(type)
+	select_spawnable_tiles()
 	MouseModeManager.set_mouse_mode(MouseModeManager.MOUSE_MODE.SPAWN)
 
 func on_all_players_loaded():

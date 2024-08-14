@@ -31,7 +31,7 @@ func _process(_delta : float):
 	if current_mouse_mode == MOUSE_MODE.STANDARD || !game_manager || !raycast_camera: return
 	
 	var select = get_hovered_on_selectable()
-	if !select: game_manager.clear_mouse_over_highlight()
+	if !select: game_manager.highlight_manager.clear_mouse_over_highlight()
 	
 	match current_mouse_mode:
 		MOUSE_MODE.STANDARD: pass
@@ -52,24 +52,24 @@ func handle_inspection(select):
 			if select.get_player_owner_id() == multiplayer.get_unique_id():
 				# Change mouse mode to move
 				set_mouse_mode(MouseModeManager.MOUSE_MODE.MOVE)
-				game_manager.highlight_moveable_tiles()
+				game_manager.select_moveable_tiles()
 			
 		elif select.is_in_group(game_manager.get_tile_group_name()):
 			print ("SELECTED TILE: %s" % [select])
 	
 func handle_spawn(select):
 	if select: 
-		game_manager.mouse_over_highlight_tile(select)
+		game_manager.highlight_manager.mouse_over_highlghted_tile(select)
 		if Input.is_action_just_pressed("main_interaction"):
 			game_manager.try_spawning_a_unit(select)
 
 func handle_move(select):
 	if select:
-		game_manager.mouse_over_highlight_tile(select)
+		game_manager.highlight_manager.mouse_over_highlghted_tile(select)
 		if Input.is_action_just_pressed("main_interaction"):
 			# Clear highlighting
-			game_manager.clear_mouse_over_highlight()
-			game_manager.clear_mass_highlight()
+			game_manager.highlight_manager.clear_mouse_over_highlight()
+			game_manager.highlight_manager.clear_mass_highlight()
 			
 			# Select a different entity in inspection
 			set_mouse_mode(MOUSE_MODE.INSPECTION)
