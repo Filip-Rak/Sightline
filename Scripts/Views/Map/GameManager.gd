@@ -27,8 +27,9 @@ const unit_group_name : String = "units"
 # Selections
 var mouse_selection
 var selected_action
+var targets_and_costs : Dictionary
 
-# Path finding
+# Pathfinding
 var reachable_tiles_and_costs : Dictionary
 
 # Player
@@ -64,12 +65,19 @@ func _ready():
 	z_size = map_loader.get_z_size()
 	positional_offset_x = map_loader.get_pos_offset_x()
 	positional_offset_z = map_loader.get_pos_offset_z()
+	
+	# Spawn all the action nodes
+	# This is required to perform PRCs on them
+	for action in PlayerUnit.get_all_actions():
+		if !action.is_inside_tree():
+			add_child(action)
 
 func _process(_delta : float):
 	pass
 
 # External Interaction Functions
 # --------------------
+
 # Function for receiving game settings
 func set_up(_parameters):
 	# Settings for turn manager
@@ -132,7 +140,7 @@ func try_spawning_a_unit(target_tile : Node3D):
 	# Change mouse mode to inspect
 	MouseModeManager.set_mouse_mode(MouseModeManager.MOUSE_MODE.INSPECTION)
 
-func select_action(action : Action):
+func select_action(action_arg : Action):
 	# Execute only if player unit is selected
 	# This is a temporary measure because rn the UI is pernament
 	# This should be deleted with introduction of procedural UI
@@ -140,9 +148,43 @@ func select_action(action : Action):
 	# And such a button would only be available in a situation when the unit is indeed selected
 	if !(mouse_selection is PlayerUnit): return
 	
+	# Save selected action for on click events
+	selected_action = action_arg
 	
+	# Save targets
+	targets_and_costs = action_arg.get_available_targets(mouse_selection, tile_matrix)
 	
-	print (action.get_display_name())
+	# Clear previous highlighting
+	highlight_manager.clear_mass_highlight()
+	
+	# Highlight new tiles
+	highlight_manager.mass_highlight_tiles(targets_and_costs["tiles"])
+	
+	print ("ACTION: " + str(action_arg.get_display_name()))
+
+func execute_action(target):
+	# Only execute if turn belongs to the player
+	if !player_turn: return
+	
+	# Make sure mouse selection isnt null and selected target is among available ones
+	if !mouse_selection: return
+	if targets_and_costs["tiles"].find(target) == -1: return
+	
+	# Call execution on the action
+	selected_action.perform_action(mouse_selection, target, tile_matrix, self)
+
+func on_action_finished(stay_in_action : bool):
+	# Recalculate the highlighting for other players
+	if stay_in_action:
+		# Redo the calculations to check now available targets
+		select_action(selected_action)
+	else:
+		MouseModeManager.set_mouse_mode(MouseModeManager.MOUSE_MODE.INSPECTION)
+		highlight_manager.clear_mouse_over_highlight()
+		highlight_manager.clear_mass_highlight()
+	
+	# Recalculate the highlighting for other players
+	highlight_manager.redo_highlighting(player_turn)
 
 func try_moving_a_unit(target_tile : GridTile):
 	# Only execute if turn belongs to the player
@@ -193,12 +235,18 @@ func disable_turn():
 	# Reset action points for visualization of next turn
 	reset_action_points()
 	
+	if MouseModeManager.current_mouse_mode == MouseModeManager.MOUSE_MODE.ACTION:
+		select_action(selected_action)
+	
 	# Recalculate highlighting on the screen for the next turn
 	highlight_manager.redo_highlighting(player_turn)
 	
 func enable_turn():
 	# Disable certain actions
 	player_turn = true
+	
+	if MouseModeManager.current_mouse_mode == MouseModeManager.MOUSE_MODE.ACTION:
+		select_action(selected_action)
 	
 	# Recalculate highlighting on the screen for the next turn
 	highlight_manager.redo_highlighting(player_turn)
@@ -298,4 +346,5 @@ func get_tile_group_name() -> String:
 func get_unit_group_name() -> String:
 	return unit_group_name
 	
-	
+func get_tile_matrix() -> Array:
+	return tile_matrix

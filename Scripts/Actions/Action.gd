@@ -5,6 +5,9 @@ class_name Action
 # Attributes
 # --------------------
 
+# Signals
+signal action_completed(action_name : String)
+
 # Constant variables
 var _display_name : String
 var _description : String
@@ -39,7 +42,7 @@ func get_available_targets(_unit, _tile_matrix : Array) -> Dictionary:
 	return {}
 
 # Checks if the action can be done on selected target and returns 'true' if succeeds 
-func perform_action(_unit, _target, _tile_matrix : Array):
+func perform_action(_unit, _target, _tile_matrix : Array, _game_manager : Game_Manager):
 	print ("ERROR: perform_action called on base class")
 	return false
 

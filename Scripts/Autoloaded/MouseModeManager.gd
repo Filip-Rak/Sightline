@@ -10,6 +10,12 @@ enum MOUSE_MODE{
 	# For selecting units and tiles
 	INSPECTION,
 	
+	# For actions, with common logic being
+	# Displaying available targets
+	# Highlighting them with mouse over
+	# And executing with mouse click
+	ACTION,
+	
 	# For spawning new units
 	SPAWN,
 	
@@ -36,6 +42,7 @@ func _process(_delta : float):
 	match current_mouse_mode:
 		MOUSE_MODE.STANDARD: pass
 		MOUSE_MODE.INSPECTION: handle_inspection(select)
+		MOUSE_MODE.ACTION: handle_action(select)
 		MOUSE_MODE.SPAWN: handle_spawn(select)
 		MOUSE_MODE.MOVE: handle_move(select)
 		MOUSE_MODE.ATTACK: handle_attack(select)
@@ -51,11 +58,19 @@ func handle_inspection(select):
 			
 			if select.get_player_owner_id() == multiplayer.get_unique_id():
 				# Change mouse mode to move
-				set_mouse_mode(MouseModeManager.MOUSE_MODE.MOVE)
-				game_manager.select_moveable_tiles()
+				# set_mouse_mode(MouseModeManager.MOUSE_MODE.MOVE)
+				# game_manager.select_moveable_tiles()
+				pass
 			
 		elif select.is_in_group(game_manager.get_tile_group_name()):
 			print ("SELECTED TILE: %s" % [select])
+
+func handle_action(select):
+	if select: 
+		game_manager.highlight_manager.mouse_over_highlghted_tile(select)
+	
+	if Input.is_action_just_pressed("secondary_interaction"): 
+		game_manager.execute_action(select)
 	
 func handle_spawn(select):
 	if select: 

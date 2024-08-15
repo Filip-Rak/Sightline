@@ -87,14 +87,34 @@ func _ready():
 
 # Type Getters
 # --------------------
-func get_price() -> float: return type_properties[type]["price"]
-func get_action_points_max() -> int: return type_properties[type]["action_points"]
-func get_sight_range() -> int: return type_properties[type]["sight_range"]
-func get_hit_points_max() -> float: return type_properties[type]["hit_points_max"]
-func get_can_transport() -> bool: return type_properties[type]["can_transport"]
-func get_can_be_transported() -> bool: return type_properties[type]["can_be_transported"]
-func get_scene() -> PackedScene: return type_properties[type]["scene"]
 static func get_scene_of_type(given_type : unit_type) -> PackedScene: return type_properties[given_type]["scene"]
+
+static func get_all_actions() -> Array:
+	var all_actions : Array = []
+	
+	for unit_type_key in type_properties.keys():
+		var actions = type_properties[unit_type_key].get("actions", [])
+		for action in actions:
+			# Check if action is not already in the list to avoid duplicates
+			if action not in all_actions:
+				all_actions.append(action)
+		
+	return all_actions
+	
+func get_price() -> float: return type_properties[type]["price"]
+
+func get_action_points_max() -> int: return type_properties[type]["action_points"]
+
+func get_sight_range() -> int: return type_properties[type]["sight_range"]
+
+func get_hit_points_max() -> float: return type_properties[type]["hit_points_max"]
+
+func get_can_transport() -> bool: return type_properties[type]["can_transport"]
+
+func get_can_be_transported() -> bool: return type_properties[type]["can_be_transported"]
+
+func get_scene() -> PackedScene: return type_properties[type]["scene"]
+
 func get_actions() -> Array: return type_properties[type]["actions"]
 
 # Instance Getters

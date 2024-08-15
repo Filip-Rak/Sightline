@@ -50,4 +50,5 @@ func _on_end_turn_button_button_down():
 	
 
 func _on_move_button_button_down():
+	MouseModeManager.set_mouse_mode(MouseModeManager.MOUSE_MODE.ACTION)
 	game_manager.select_action(PlayerUnit.type_properties[PlayerUnit.unit_type.IFV]["actions"][0])
