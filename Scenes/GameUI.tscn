@@ -83,8 +83,17 @@ offset_right = 917.0
 offset_bottom = 560.0
 text = "Time left:"
 
+[node name="move_button" type="Button" parent="."]
+layout_mode = 0
+offset_left = 885.0
+offset_top = 64.0
+offset_right = 936.0
+offset_bottom = 95.0
+text = "Move"
+
 [connection signal="button_down" from="InfantryButton" to="." method="select_unit_for_spawn" binds= [0]]
 [connection signal="button_down" from="AT_InfantryButton" to="." method="select_unit_for_spawn" binds= [1]]
 [connection signal="button_down" from="IMVButton" to="." method="select_unit_for_spawn" binds= [2]]
 [connection signal="button_down" from="IFVButton" to="." method="select_unit_for_spawn" binds= [3]]
 [connection signal="button_down" from="EndTurnButton" to="." method="_on_end_turn_button_button_down"]
+[connection signal="button_down" from="move_button" to="." method="_on_move_button_button_down"]

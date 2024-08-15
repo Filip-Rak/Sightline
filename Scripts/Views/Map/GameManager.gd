@@ -24,7 +24,9 @@ var z_size : int
 # Units
 const unit_group_name : String = "units"
 
+# Selections
 var mouse_selection
+var selected_action
 
 # Path finding
 var reachable_tiles_and_costs : Dictionary
@@ -129,19 +131,30 @@ func try_spawning_a_unit(target_tile : Node3D):
 		
 	# Change mouse mode to inspect
 	MouseModeManager.set_mouse_mode(MouseModeManager.MOUSE_MODE.INSPECTION)
+
+func select_action(action : Action):
+	# Execute only if player unit is selected
+	# This is a temporary measure because rn the UI is pernament
+	# This should be deleted with introduction of procedural UI
+	# Since this fucntion would never be triggered without said UI element being available
+	# And such a button would only be available in a situation when the unit is indeed selected
+	if !(mouse_selection is PlayerUnit): return
 	
+	
+	
+	print (action.get_display_name())
+
 func try_moving_a_unit(target_tile : GridTile):
 	# Only execute if turn belongs to the player
 	if !player_turn: return
-	
 	
 	# Make sure the selected tile is reachable and mouse selection is a unit
 	if !mouse_selection.is_in_group(unit_group_name): return
 	if reachable_tiles_and_costs["tiles"].find(target_tile) == -1: return
 	
-	# Prepare argument for path finding call
+	# Prepare arguments for path finding call
 	var unit = mouse_selection
-	var target_pos = target_tile. get_matrix_position()
+	var target_pos = target_tile.get_matrix_position()
 	var available_tiles = reachable_tiles_and_costs["tiles"]
 	
 	var path : Array = PathFinding.find_path(tile_matrix, unit, target_pos, available_tiles)
@@ -189,7 +202,6 @@ func enable_turn():
 	
 	# Recalculate highlighting on the screen for the next turn
 	highlight_manager.redo_highlighting(player_turn)
-
 
 func reset_action_points():
 	var units = PlayerManager.get_units(multiplayer.get_unique_id())

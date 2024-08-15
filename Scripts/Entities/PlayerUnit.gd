@@ -33,7 +33,9 @@ static var type_properties = {
 		"can_transport": false,
 		"can_be_transported": true,
 		"scene": preload("res://Assets/Units/player_unit_infantry.tscn"),
-		"attacks" : ["placeholder", "for", "attacks"]
+		"actions" : [
+				Action_Move.new()
+			]
 	},
 	unit_type.AT_INFANTRY: 
 	{ 
@@ -44,7 +46,9 @@ static var type_properties = {
 		"can_transport": false,
 		"can_be_transported": true,
 		"scene": preload("res://Assets/Units/player_unit_AT_infantry.tscn"),
-		"attacks" : ["placeholder", "for", "attacks"]
+		"actions" : [
+				Action_Move.new()
+			]
 	},
 	unit_type.IMV: 
 	{ 
@@ -55,7 +59,9 @@ static var type_properties = {
 		"can_transport": true,
 		"can_be_transported": false,
 		"scene": preload("res://Assets/Units/player_unit_IMV.tscn"),
-		"attacks" : ["placeholder", "for", "attacks"]
+		"actions" : [
+				Action_Move.new()
+			]
 	},
 	unit_type.IFV: 
 	{ 
@@ -66,7 +72,9 @@ static var type_properties = {
 		"can_transport": true,
 		"can_be_transported": false,
 		"scene": preload("res://Assets/Units/player_unit_IFV.tscn"),
-		"attacks" : ["placeholder", "for", "attacks"]
+		"actions" : [
+				Action_Move.new()
+			]
 	},
 }
 
@@ -87,7 +95,7 @@ func get_can_transport() -> bool: return type_properties[type]["can_transport"]
 func get_can_be_transported() -> bool: return type_properties[type]["can_be_transported"]
 func get_scene() -> PackedScene: return type_properties[type]["scene"]
 static func get_scene_of_type(given_type : unit_type) -> PackedScene: return type_properties[given_type]["scene"]
-func get_attacks() -> Array: return type_properties[type]["attacks"]
+func get_actions() -> Array: return type_properties[type]["actions"]
 
 # Instance Getters
 # --------------------
@@ -140,7 +148,7 @@ func print_all():
 	print("get_hit_points_max: " + str(get_hit_points_max()))
 	print("get_can_transport: " + str(get_can_transport()))
 	print("get_can_be_transported: " + str(get_can_be_transported()))
-	print("get_attacks: " + str(get_attacks()))
+	print("get_actions: " + str(get_actions()))
 	print("get_action_points_left: " + str(get_action_points_left()))
 	print("get_hit_points_left: " + str(get_hit_points_left()))
 	print("get_matrix_tile_position: " + str(get_matrix_tile_position()))

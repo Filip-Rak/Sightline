@@ -48,3 +48,6 @@ func select_unit_for_spawn(type : PlayerUnit.unit_type):
 func _on_end_turn_button_button_down():
 	game_manager.turn_manager.try_skip_turn()
 	
+
+func _on_move_button_button_down():
+	game_manager.select_action(PlayerUnit.type_properties[PlayerUnit.unit_type.IFV]["actions"][0])
