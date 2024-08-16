@@ -158,7 +158,6 @@ func select_action(action_arg : Action):
 	# Highlighting and UI changes are handled by Action superclass
 	# Through subclasses in order to make them more customizable
 	
-
 func execute_action(target):
 	# Only execute if turn belongs to the player
 	if !player_turn: return
@@ -169,48 +168,6 @@ func execute_action(target):
 	
 	# Call execution on the action
 	selected_action.perform_action(target)
-
-func try_moving_a_unit(target_tile : GridTile):
-	# Only execute if turn belongs to the player
-	if !player_turn: return
-	
-	# Make sure the selected tile is reachable and mouse selection is a unit
-	if !mouse_selection.is_in_group(unit_group_name): return
-	if reachable_tiles_and_costs["tiles"].find(target_tile) == -1: return
-	
-	# Prepare arguments for path finding call
-	var unit = mouse_selection
-	var target_pos = target_tile.get_matrix_position()
-	var available_tiles = reachable_tiles_and_costs["tiles"]
-	
-	var path : Array = PathFinding.find_path(tile_matrix, unit, target_pos, available_tiles)
-	
-	if path.size() > 0:
-		path.remove_at(0)
-	
-	# Trim the path just before the danger
-	# This shouldn't work every time!
-	# path = trim_path_before_danger(tile_matrix, path)
-	
-	# Move the unit on the server
-	rpc("move_unit", unit.get_path(), path)
-	
-	# Refresh the highlighting
-	if unit.get_action_points_left() > 0:
-		select_moveable_tiles()
-	else:
-		highlight_manager.clear_mouse_over_highlight()
-		highlight_manager.clear_mass_highlight()
-	
-func select_moveable_tiles():
-	# Get all the tiles where the unit can move
-	reachable_tiles_and_costs = PathFinding.get_reachable_tiles(tile_matrix, mouse_selection)
-	
-	# Clear previous highlighting
-	highlight_manager.clear_mass_highlight()
-	
-	# Highlight new tiles
-	highlight_manager.mass_highlight_tiles(reachable_tiles_and_costs["tiles"])
 
 func disable_turn():
 	# Disable certain actions
@@ -263,39 +220,6 @@ func spawn_unit(target_tile_path : NodePath, unit_to_spawn : PlayerUnit.unit_typ
 	
 	# Add the unit to list of units of a player
 	PlayerManager.add_unit(spawning_player, spawned_unit)
-	
-	# Recalculate the highlighting for other players
-	if !player_turn: highlight_manager.redo_highlighting(player_turn)
-
-@rpc("any_peer", "call_local")
-func move_unit(path_to_unit : NodePath, route : Array):
-	if path_to_unit == null: return
-	if route == null: return
-	
-	# Get the unit
-	var unit = get_node(path_to_unit)
-	if unit == null: return
-	
-	# Here would be required logic for playing animations and moving the unit
-	# At the moment just snap the unit at it's final destination
-	
-	var final_dest = route.pop_back()
-	route.append(final_dest)
-	
-	if final_dest == null: return
-	
-	# Delete the unit from previous tile
-	var previous_pos : Vector3 = unit.get_matrix_tile_position()
-	tile_matrix[previous_pos.x][previous_pos.z].remove_unit_from_tile(unit)
-
-	# Move the unit
-	unit.position = tile_matrix[final_dest.x][final_dest.z].position
-	tile_matrix[final_dest.x][final_dest.z].add_unit_to_tile(unit)
-	unit.set_matrix_tile_position(final_dest)
-	
-	# Offset action points
-	var route_cost = PathFinding.get_path_cost(tile_matrix, route)
-	unit.offset_action_points(-route_cost)
 	
 	# Recalculate the highlighting for other players
 	if !player_turn: highlight_manager.redo_highlighting(player_turn)

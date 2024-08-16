@@ -45,7 +45,6 @@ func _highlight_tiles(tiles : Array):
 	# Highlight new tiles
 	_game_manager.highlight_manager.mass_highlight_tiles(tiles)
 
-
 func _highlight_units():
 	pass
 
