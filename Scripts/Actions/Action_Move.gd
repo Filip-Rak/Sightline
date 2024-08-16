@@ -33,8 +33,13 @@ func _init(display_name : String = "", description : String = ""):
 # Returns tiles available for movement
 func get_available_targets() -> Dictionary:
 	# Get variables
-	var unit = _game_manager.get_mouse_selection()
+	var unit : PlayerUnit = _game_manager.get_mouse_selection()
 	var tile_matrix = _game_manager.get_tile_matrix()
+	
+	# Check if the unit belongs to the player
+	if unit.get_player_owner_id() != multiplayer.get_unique_id(): 
+		MouseModeManager.set_mouse_mode(MouseModeManager.MOUSE_MODE.INSPECTION)
+		return {"tiles" : [], "costs" : []}
 	
 	# Do a pathfinding call and save results
 	var tiles_and_costs = PathFinding.get_reachable_tiles(tile_matrix, unit)

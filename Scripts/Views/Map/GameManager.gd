@@ -147,7 +147,14 @@ func select_action(action_arg : Action):
 	# This should be deleted with introduction of dynamic UI
 	# Since this fucntion would never be triggered without said UI element being available
 	# And such a button would only be available in a situation when the unit is indeed selected
-	if !(mouse_selection is PlayerUnit): return
+	if !(mouse_selection is PlayerUnit || mouse_selection is PlayerUnit.unit_type): return
+	
+	MouseModeManager.set_mouse_mode(MouseModeManager.MOUSE_MODE.ACTION)
+	
+	# Discard all the previous highlits
+	# Order here is very important!
+	highlight_manager.clear_mouse_over_highlight() 
+	highlight_manager.clear_mass_highlight()
 	
 	# Save selected action for on click events
 	selected_action = action_arg

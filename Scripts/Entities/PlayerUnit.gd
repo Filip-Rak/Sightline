@@ -34,6 +34,7 @@ static var type_properties = {
 		"can_be_transported": true,
 		"scene": preload("res://Assets/Units/player_unit_infantry.tscn"),
 		"actions" : [
+				Action_Spawn.new(1, 5),
 				Action_Move.new()
 			]
 	},
@@ -47,6 +48,7 @@ static var type_properties = {
 		"can_be_transported": true,
 		"scene": preload("res://Assets/Units/player_unit_AT_infantry.tscn"),
 		"actions" : [
+				Action_Spawn.new(2, 2),
 				Action_Move.new()
 			]
 	},
@@ -60,6 +62,7 @@ static var type_properties = {
 		"can_be_transported": false,
 		"scene": preload("res://Assets/Units/player_unit_IMV.tscn"),
 		"actions" : [
+				Action_Spawn.new(2, 2),
 				Action_Move.new()
 			]
 	},
@@ -73,6 +76,7 @@ static var type_properties = {
 		"can_be_transported": false,
 		"scene": preload("res://Assets/Units/player_unit_IFV.tscn"),
 		"actions" : [
+				Action_Spawn.new(5, 1),
 				Action_Move.new()
 			]
 	},
@@ -101,6 +105,8 @@ static func get_all_actions() -> Array:
 		
 	return all_actions
 	
+static func get_actions(u_type : unit_type) -> Array: return type_properties[u_type]["actions"]
+
 func get_price() -> float: return type_properties[type]["price"]
 
 func get_action_points_max() -> int: return type_properties[type]["action_points"]
@@ -115,15 +121,16 @@ func get_can_be_transported() -> bool: return type_properties[type]["can_be_tran
 
 func get_scene() -> PackedScene: return type_properties[type]["scene"]
 
-func get_actions() -> Array: return type_properties[type]["actions"]
-
 # Instance Getters
 # --------------------
-
 func get_action_points_left() -> int: return action_points_left
+
 func get_hit_points_left() -> float: return hit_points_left
+
 func get_matrix_tile_position() -> Vector3: return matrix_tile_position
+
 func get_player_owner_id() -> int: return player_owner_id
+
 func get_transported_unit() -> PlayerUnit: return transported_unit
 
 # Interactive Setters
@@ -168,7 +175,6 @@ func print_all():
 	print("get_hit_points_max: " + str(get_hit_points_max()))
 	print("get_can_transport: " + str(get_can_transport()))
 	print("get_can_be_transported: " + str(get_can_be_transported()))
-	print("get_actions: " + str(get_actions()))
 	print("get_action_points_left: " + str(get_action_points_left()))
 	print("get_hit_points_left: " + str(get_hit_points_left()))
 	print("get_matrix_tile_position: " + str(get_matrix_tile_position()))

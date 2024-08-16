@@ -42,7 +42,14 @@ func update_turn_ui(player_id : int, _given_time : float):
 # Links
 # --------------------
 func select_unit_for_spawn(type : PlayerUnit.unit_type):
-	game_manager.select_unit_for_spawn(type)
+
+	var action_arg = PlayerUnit.get_actions(type)[0]
+	if action_arg:
+			game_manager.set_mouse_selection(type)
+			game_manager.select_action(action_arg)
+			
+	else:
+		print("Unit not spawnable")
 
 
 func _on_end_turn_button_button_down():
@@ -50,5 +57,4 @@ func _on_end_turn_button_button_down():
 	
 
 func _on_move_button_button_down():
-	MouseModeManager.set_mouse_mode(MouseModeManager.MOUSE_MODE.ACTION)
-	game_manager.select_action(PlayerUnit.type_properties[PlayerUnit.unit_type.IFV]["actions"][0])
+	game_manager.select_action(PlayerUnit.type_properties[PlayerUnit.unit_type.IFV]["actions"][1])

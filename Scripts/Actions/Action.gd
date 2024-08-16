@@ -8,14 +8,16 @@ class_name Action
 # Other scripts
 var _game_manager : Game_Manager
 
-# Constant variables
-var _display_name : String
-var _description : String
+# Visual
+var _display_name : String = "action_base_class_display_name"
+var _description : String = "action_base_class_description_name"
+
+# Stats
 var _ap_cost : int
 var _usage_limit : int
 var _cooldown : int
 
-# Unit isntance
+# Instance specific
 var _uses_left : int
 var _cooldown_left : int
 
@@ -31,7 +33,7 @@ func _init(display_name : String, description : String, ap_cost : int, usage_lim
 	
 	# Unit isntance
 	self._uses_left = usage_limit
-	self._cooldown_left = cooldown
+	self._cooldown_left = 0
 
 # Protected Methods 
 # --------------------
