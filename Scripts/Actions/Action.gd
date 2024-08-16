@@ -5,8 +5,8 @@ class_name Action
 # Attributes
 # --------------------
 
-# Signals
-signal action_completed(action_name : String)
+# Other scripts
+var _game_manager : Game_Manager
 
 # Constant variables
 var _display_name : String
@@ -42,7 +42,7 @@ func get_available_targets(_unit, _tile_matrix : Array) -> Dictionary:
 	return {}
 
 # Checks if the action can be done on selected target and returns 'true' if succeeds 
-func perform_action(_unit, _target, _tile_matrix : Array, _game_manager : Game_Manager):
+func perform_action(_unit, _target, _tile_matrix : Array):
 	print ("ERROR: perform_action called on base class")
 	return false
 
@@ -71,3 +71,8 @@ func get_uses_left() -> int:
 	
 func get_cooldown_left() -> int:
 	return _cooldown_left
+
+# Setters
+# --------------------
+func set_game_manager(gm : Game_Manager):
+	_game_manager = gm

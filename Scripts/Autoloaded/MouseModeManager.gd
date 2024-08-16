@@ -68,6 +68,14 @@ func handle_inspection(select):
 func handle_action(select):
 	if select: 
 		game_manager.highlight_manager.mouse_over_highlghted_tile(select)
+		if Input.is_action_just_pressed("main_interaction"):
+			# Clear highlighting
+			game_manager.highlight_manager.clear_mouse_over_highlight()
+			game_manager.highlight_manager.clear_mass_highlight()
+			
+			# Select a different entity in inspection
+			set_mouse_mode(MOUSE_MODE.INSPECTION)
+			handle_inspection(select)
 	
 	if Input.is_action_just_pressed("secondary_interaction"): 
 		game_manager.execute_action(select)

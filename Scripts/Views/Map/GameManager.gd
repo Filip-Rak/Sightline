@@ -66,10 +66,11 @@ func _ready():
 	positional_offset_x = map_loader.get_pos_offset_x()
 	positional_offset_z = map_loader.get_pos_offset_z()
 	
-	# Spawn all the action nodes
+	# Spawn all the action instances
 	# This is required to perform PRCs on them
 	for action in PlayerUnit.get_all_actions():
 		if !action.is_inside_tree():
+			action.set_game_manager(self)
 			add_child(action)
 
 func _process(_delta : float):
@@ -171,7 +172,7 @@ func execute_action(target):
 	if targets_and_costs["tiles"].find(target) == -1: return
 	
 	# Call execution on the action
-	selected_action.perform_action(mouse_selection, target, tile_matrix, self)
+	selected_action.perform_action(mouse_selection, target, tile_matrix)
 
 func on_action_finished(stay_in_action : bool):
 	# Recalculate the highlighting for other players
@@ -239,7 +240,7 @@ func disable_turn():
 		select_action(selected_action)
 	
 	# Recalculate highlighting on the screen for the next turn
-	highlight_manager.redo_highlighting(player_turn)
+	highlight_manager.redo_highlighting(false)
 	
 func enable_turn():
 	# Disable certain actions

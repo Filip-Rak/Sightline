@@ -39,7 +39,7 @@ func get_available_targets(unit : PlayerUnit, tile_matrix : Array) -> Dictionary
 	# Return results for visualization
 	return tiles_and_costs
 
-func perform_action(unit : PlayerUnit, target : GridTile, tile_matrix : Array, game_manager : Game_Manager):
+func perform_action(unit : PlayerUnit, target : GridTile, tile_matrix : Array):
 	# Do a pathfinding call
 	var path : Array = PathFinding.find_path(tile_matrix, unit, target.get_matrix_position(), available_tiles)
 	
@@ -49,15 +49,14 @@ func perform_action(unit : PlayerUnit, target : GridTile, tile_matrix : Array, g
 	# Here any checks if the path is inside any enemy zones of control would happen
 	
 	# Move the unit on the server
-	rpc("_move_unit", unit.get_path(), path, game_manager.get_path())
+	rpc("_move_unit", unit.get_path(), path)
 
 # Remote Procedure Calls
 # --------------------
 
 @rpc("any_peer", "call_local")
-func _move_unit(path_to_unit : NodePath, route : Array, game_manager_path : NodePath):
-	var game_manager = get_node(game_manager_path)
-	var tile_matrix : Array = game_manager.get_tile_matrix()
+func _move_unit(path_to_unit : NodePath, route : Array):
+	var tile_matrix : Array = _game_manager.get_tile_matrix()
 	
 	if path_to_unit == null: return
 	if route == null: return
@@ -89,4 +88,4 @@ func _move_unit(path_to_unit : NodePath, route : Array, game_manager_path : Node
 	
 	# Trigger a function for further cleanup in game manager
 	var _stay_in_action = unit.get_action_points_left() > 0
-	game_manager.on_action_finished(true)
+	_game_manager.on_action_finished(true)
