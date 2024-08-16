@@ -144,7 +144,7 @@ func try_spawning_a_unit(target_tile : Node3D):
 func select_action(action_arg : Action):
 	# Execute only if player unit is selected
 	# This is a temporary measure because rn the UI is pernament
-	# This should be deleted with introduction of procedural UI
+	# This should be deleted with introduction of dynamic UI
 	# Since this fucntion would never be triggered without said UI element being available
 	# And such a button would only be available in a situation when the unit is indeed selected
 	if !(mouse_selection is PlayerUnit): return
@@ -153,15 +153,11 @@ func select_action(action_arg : Action):
 	selected_action = action_arg
 	
 	# Save targets
-	targets_and_costs = action_arg.get_available_targets(mouse_selection, tile_matrix)
+	targets_and_costs = action_arg.get_available_targets()
 	
-	# Clear previous highlighting
-	highlight_manager.clear_mass_highlight()
+	# Highlighting and UI changes are handled by Action superclass
+	# Through subclasses in order to make them more customizable
 	
-	# Highlight new tiles
-	highlight_manager.mass_highlight_tiles(targets_and_costs["tiles"])
-	
-	print ("ACTION: " + str(action_arg.get_display_name()))
 
 func execute_action(target):
 	# Only execute if turn belongs to the player
@@ -172,20 +168,7 @@ func execute_action(target):
 	if targets_and_costs["tiles"].find(target) == -1: return
 	
 	# Call execution on the action
-	selected_action.perform_action(mouse_selection, target, tile_matrix)
-
-func on_action_finished(stay_in_action : bool):
-	# Recalculate the highlighting for other players
-	if stay_in_action:
-		# Redo the calculations to check now available targets
-		select_action(selected_action)
-	else:
-		MouseModeManager.set_mouse_mode(MouseModeManager.MOUSE_MODE.INSPECTION)
-		highlight_manager.clear_mouse_over_highlight()
-		highlight_manager.clear_mass_highlight()
-	
-	# Recalculate the highlighting for other players
-	highlight_manager.redo_highlighting(player_turn)
+	selected_action.perform_action(target)
 
 func try_moving_a_unit(target_tile : GridTile):
 	# Only execute if turn belongs to the player
@@ -349,3 +332,6 @@ func get_unit_group_name() -> String:
 	
 func get_tile_matrix() -> Array:
 	return tile_matrix
+
+func get_mouse_selection():
+	return mouse_selection

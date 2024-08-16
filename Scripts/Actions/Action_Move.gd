@@ -31,15 +31,26 @@ func _init(display_name : String = "", description : String = ""):
 # --------------------
 
 # Returns tiles available for movement
-func get_available_targets(unit : PlayerUnit, tile_matrix : Array) -> Dictionary:
+func get_available_targets() -> Dictionary:
+	# Get variables
+	var unit = _game_manager.get_mouse_selection()
+	var tile_matrix = _game_manager.get_tile_matrix()
+	
 	# Do a pathfinding call and save results
 	var tiles_and_costs = PathFinding.get_reachable_tiles(tile_matrix, unit)
 	available_tiles = tiles_and_costs["tiles"]
 	
+	# Highlight targets
+	super._highlight_tiles(available_tiles)
+	
 	# Return results for visualization
 	return tiles_and_costs
 
-func perform_action(unit : PlayerUnit, target : GridTile, tile_matrix : Array):
+func perform_action(target):
+	# Get variables
+	var unit = _game_manager.mouse_selection
+	var tile_matrix = _game_manager.get_tile_matrix()
+	
 	# Do a pathfinding call
 	var path : Array = PathFinding.find_path(tile_matrix, unit, target.get_matrix_position(), available_tiles)
 	
@@ -88,4 +99,4 @@ func _move_unit(path_to_unit : NodePath, route : Array):
 	
 	# Trigger a function for further cleanup in game manager
 	var _stay_in_action = unit.get_action_points_left() > 0
-	_game_manager.on_action_finished(true)
+	super.on_action_finished(true)
