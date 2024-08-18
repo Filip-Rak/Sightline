@@ -50,10 +50,13 @@ func common_setup(gm : Game_Manager):
 
 func set_for_host():
 	# Figure out the order of turns
-	for i in PlayerManager.get_players().keys():
+	for id in PlayerManager.get_players().keys():
 		# Ignore spectators
-		if PlayerManager.get_team_id(i) > 0:
-			order.append(i)
+		if PlayerManager.get_team_id(id) <= 0: continue
+		# Ignore disconnected players
+		if !PlayerManager.get_player_connected(id): continue
+		
+		order.append(id)
 			
 	# For now order players by random
 	# In future use more balanced methods

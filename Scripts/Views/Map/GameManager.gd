@@ -45,6 +45,7 @@ func _ready():
 	
 	# Set up signals
 	Network.connect("synchronization_complete", on_all_players_loaded)
+	multiplayer.peer_disconnected.connect(peer_disconnected)
 	
 	# Set up the mouse mode manager
 	MouseModeManager.set_game_manager(self)
@@ -94,52 +95,6 @@ func set_up(_parameters):
 		Network.send_ack(1)
 	else:
 		Network.rpc_id(1, "send_ack", multiplayer.get_unique_id())
-
-func select_spawnable_tiles():
-	# Discard all the previous highlits
-	# Order here is very important!
-	highlight_manager.clear_mouse_over_highlight() 
-	highlight_manager.clear_mass_highlight()
-	
-	# Save mouse_selection as unit
-	var unit : PlayerUnit.unit_type = mouse_selection
-	
-	# Find all the tiles suitable for spawning
-	var good_tiles = []
-	for i in x_size:
-		for j in z_size:
-				if tile_matrix[i][j].get_is_a_spawn():
-					if tile_matrix[i][j].get_team_id() == PlayerManager.get_my_team_id():
-						if tile_matrix[i][j].get_accesible_to().find(unit) != -1:
-							good_tiles.append(tile_matrix[i][j])
-	
-	# Highlight these tiles
-	highlight_manager.mass_highlight_tiles(good_tiles)
-	
-func try_spawning_a_unit(target_tile : Node3D):
-	# Only execute if turn belongs to the player
-	if !player_turn: return
-	
-	# Make sure the selected tile is available for spawning
-	if !target_tile.is_in_group(highlight_manager.get_mass_highlight_group_name()): return
-	
-	# Make sure a unit is selected
-	if mouse_selection == null: return
-	
-	# Spawn the unit itself for all players
-	var spawn_path : NodePath = target_tile.get_path()
-	var tree : NodePath = self.get_path()
-	var player_id : int = multiplayer.get_unique_id()
-	
-	rpc("spawn_unit", spawn_path, mouse_selection, player_id, tree) 
-	
-	# Clear all selections after spawning - consider not doing so for 'shift' effect
-	highlight_manager.clear_mouse_over_highlight()
-	highlight_manager.clear_mass_highlight()
-	mouse_selection = null
-		
-	# Change mouse mode to inspect
-	MouseModeManager.set_mouse_mode(MouseModeManager.MOUSE_MODE.INSPECTION)
 
 func select_action(action_arg : Action):
 	# Execute only if player unit is selected
@@ -204,45 +159,35 @@ func reset_action_points():
 	for unit in units:
 		unit.reset_action_points()
 
-# Remote Procedure Calls
-# --------------------
-@rpc("any_peer", "call_local")
-func spawn_unit(target_tile_path : NodePath, unit_to_spawn : PlayerUnit.unit_type, spawning_player: int, parent_node_path : NodePath):
-	# Get the tile to spawn in
-	var target_tile = get_node(target_tile_path)
-	
-	# Instantiate the unit and set it's properties
-	var spawned_unit = PlayerUnit.get_scene_of_type(unit_to_spawn).instantiate()
-	spawned_unit.position = target_tile.position
-	spawned_unit.set_player_owner(spawning_player)
-	spawned_unit.set_matrix_tile_position(target_tile.get_matrix_position())
-	spawned_unit.add_to_group(unit_group_name)
-	
-	# Update the tile properties
-	target_tile.units_in_tile.append(spawned_unit)
-	
-	# Add the unit to the tree
-	var tree = get_node(parent_node_path)
-	tree.add_child(spawned_unit)
-	
-	# Add the unit to list of units of a player
-	PlayerManager.add_unit(spawning_player, spawned_unit)
-	
-	# Recalculate the highlighting for other players
-	if !player_turn: highlight_manager.redo_highlighting(player_turn)
-
 # Link Functions
 # --------------------
-func select_unit_for_spawn(type : PlayerUnit.unit_type):
-	mouse_selection = type
-	select_spawnable_tiles()
-	MouseModeManager.set_mouse_mode(MouseModeManager.MOUSE_MODE.SPAWN)
-
 func on_all_players_loaded():
 	print ("All players loaded")
 	
 	# Start the first turn
 	turn_manager.begin_game()
+
+func peer_disconnected(id : int):
+	# Dont do anything with host, because it will be disconnected instantly and the game will end
+	if id == 1: return
+	
+	# If the player has teammates distribute their units among them
+	var dsc_units = PlayerManager.get_units(id)
+	var dsc_teammates = PlayerManager.get_teammates_ids(id)
+	
+	# Number of teammates
+	var num_teammates  = dsc_teammates.size()
+	
+	# Check if there are any teammates to distribute the units to
+	if num_teammates == 0: return 
+	
+	# Distribute units among teammates evenly
+	for i in range(dsc_units.size()):
+		# Assign each unit to a teammate in a round-robin fashion
+		var teammate_index = i % num_teammates
+		var teammate_id = dsc_teammates[teammate_index]
+		
+		PlayerManager.reassign_unit(dsc_units[i], id, teammate_id)
 
 # Setters
 # --------------------

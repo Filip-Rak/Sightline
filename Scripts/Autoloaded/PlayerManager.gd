@@ -11,7 +11,8 @@ var players : Dictionary = {}
 # 	'player_name': string
 # 	'team_id' : int
 # 	"units": PlayerUnit Array
-# 	"ack": flag for synchronization
+# 	"ack": bool flag for synchronization
+#	"connected": only used in selected scenes, the player will usually be deleted on disconnected
 
 # Ready Functions
 # --------------------
@@ -28,7 +29,8 @@ func add_player(player_id : int, player_name : String, team_id : int, units : Ar
 		"player_name": player_name,
 		"team_id": team_id,
 		"units": units,
-		"ack": false
+		"ack": false,
+		"connected": true
 	}
 
 func change_id(previous_id : int, new_id : int): 
@@ -56,6 +58,14 @@ func reset_all_players():
 func add_unit(owner_id : int, unit : PlayerUnit):
 	players[owner_id]["units"].append(unit)
 
+func reassign_unit(unit : PlayerUnit, giver_id : int, receiver_id : int):
+	# Reassign in PlayerManager
+	players[giver_id]["units"].erase(unit)
+	players[receiver_id]["units"].append(unit)
+	
+	# Reasing in PlayerUnit
+	unit.set_player_owner(receiver_id)
+
 # Setters
 # --------------------
 func set_player(id : int, data : Dictionary):
@@ -73,6 +83,9 @@ func set_ack_all(value : bool):
 
 func set_ack(player_id : int, value : bool):
 	players[player_id]["ack"] = value
+
+func set_player_connected(id : int, value : bool):
+	players[id]["connected"] = value
 
 # Getters
 # --------------------
@@ -109,3 +122,16 @@ func is_player(id : int) -> bool:
 
 func get_player_num() -> int:
 	return players.size()
+
+func get_player_connected(id : int) -> bool:
+	return players[id]["connected"]
+
+func get_teammates_ids(id : int) -> Array:
+	var team_id = get_team_id(id)
+	var teammates : Array = [] 
+	
+	for player_id : int in players:
+		if players[player_id]["team_id"] == team_id:
+			teammates.append(player_id)
+			
+	return teammates

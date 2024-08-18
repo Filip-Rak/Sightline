@@ -38,7 +38,6 @@ func _redo_highlighting(mass_material : Material, mouse_material : Material):
 	# Recalculate the selection
 	match MouseModeManager.current_mouse_mode:
 		# MouseModeManager.MOUSE_MODE.MOVE: _game_manager.select_moveable_tiles()
-		MouseModeManager.MOUSE_MODE.SPAWN: _game_manager.select_spawnable_tiles()
 		MouseModeManager.MOUSE_MODE.ACTION: _game_manager.select_action(_game_manager.selected_action)
 
 # Public Functions

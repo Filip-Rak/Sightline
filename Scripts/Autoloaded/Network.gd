@@ -34,10 +34,13 @@ func peer_connected(id):
 func peer_disconnected(id):
 	print("ID: %s disconnected" % [id])
 	
-	# Delete disconnected player's information
-	PlayerManager.drop_player(id)
-	
 	# Host ID is equal to 1
+	if StateMachine.get_is_gameplay_in_progress() && id != 1:
+		PlayerManager.set_player_connected(id, false)
+	else: 
+		# Delete disconnected player's information
+		PlayerManager.drop_player(id)
+	
 	if id == 1: 
 		print("Host disconnected, connection lost")
 		has_connection = false

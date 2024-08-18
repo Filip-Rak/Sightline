@@ -8,22 +8,27 @@ enum GAME_STATE {
 	MAP_TEST
 }
 
-var current_state: GAME_STATE = GAME_STATE.DEBUG_LOBBY
+var _current_state: GAME_STATE = GAME_STATE.DEBUG_LOBBY
+var _gameplay_in_progress : bool = false
 
 # Functions
 # --------------------
 
 # Change the state and load the corresponding scene
 func change_state(new_state: GAME_STATE, parameters = {}):
-	if current_state == new_state:
+	if _current_state == new_state:
 		return
 
-	current_state = new_state
+	_current_state = new_state
 
 	var scene_path = ""
-	match current_state:
-		GAME_STATE.DEBUG_LOBBY: scene_path = "res://scenes/DebugLobby.tscn"
-		GAME_STATE.MAP_TEST: scene_path = "res://scenes/MapTest.tscn"
+	match _current_state:
+		GAME_STATE.DEBUG_LOBBY: 
+			scene_path = "res://scenes/DebugLobby.tscn"
+			_gameplay_in_progress = false
+		GAME_STATE.MAP_TEST: 
+			scene_path = "res://scenes/MapTest.tscn"
+			_gameplay_in_progress = true
 
 	# Load the new scene
 	var new_scene = load(scene_path).instantiate()
@@ -45,3 +50,8 @@ func _change_scene(new_scene, parameters):
 	# Initialize the new scene with the provided parameters
 	if new_scene.has_method("set_up"):
 		new_scene.set_up(parameters)
+
+# Getters
+# --------------------
+func get_is_gameplay_in_progress() -> bool:
+	return _gameplay_in_progress
