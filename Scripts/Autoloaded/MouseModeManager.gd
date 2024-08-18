@@ -15,15 +15,6 @@ enum MOUSE_MODE{
 	# Highlighting them with mouse over
 	# And executing with mouse click
 	ACTION,
-	
-	# For spawning new units
-	SPAWN,
-	
-	# For directing selected unit to move somwhere
-	MOVE,
-	
-	# For directing selected unit to attack
-	ATTACK
 }
 
 var current_mouse_mode : MOUSE_MODE = MOUSE_MODE.STANDARD
@@ -43,9 +34,6 @@ func _process(_delta : float):
 		MOUSE_MODE.STANDARD: pass
 		MOUSE_MODE.INSPECTION: handle_inspection(select)
 		MOUSE_MODE.ACTION: handle_action(select)
-		MOUSE_MODE.SPAWN: handle_spawn(select)
-		MOUSE_MODE.MOVE: handle_move(select)
-		MOUSE_MODE.ATTACK: handle_attack(select)
 		_: print ("INVALID MOUSE MODE")
 			
 func handle_inspection(select):
@@ -79,32 +67,7 @@ func handle_action(select):
 	
 	if Input.is_action_just_pressed("secondary_interaction"): 
 		game_manager.execute_action(select)
-	
-func handle_spawn(select):
-	if select: 
-		game_manager.highlight_manager.mouse_over_highlghted_tile(select)
-		if Input.is_action_just_pressed("main_interaction"):
-			game_manager.try_spawning_a_unit(select)
 
-func handle_move(select):
-	if select:
-		game_manager.highlight_manager.mouse_over_highlghted_tile(select)
-		if Input.is_action_just_pressed("main_interaction"):
-			# Clear highlighting
-			game_manager.highlight_manager.clear_mouse_over_highlight()
-			game_manager.highlight_manager.clear_mass_highlight()
-			
-			# Select a different entity in inspection
-			set_mouse_mode(MOUSE_MODE.INSPECTION)
-			handle_inspection(select)
-			
-		elif Input.is_action_just_pressed("secondary_interaction"):
-			if select.is_in_group("tiles"):
-				game_manager.try_moving_a_unit(select)
-	
-func handle_attack(_select):
-	# print ("ATTACK")
-	pass
 
 # Return 'false' when:
 # - no hit
