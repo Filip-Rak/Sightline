@@ -93,6 +93,8 @@ func spawn_unit(target_tile_path : NodePath, unit_to_spawn : Unit_Properties.uni
 	
 	# Recalculate the highlighting for other players
 	if !_game_manager.player_turn: _game_manager.highlight_manager.redo_highlighting(_game_manager.player_turn)
+	
+	# super.on_action_finished(false)
 
 # Getters
 # --------------------

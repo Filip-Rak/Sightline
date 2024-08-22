@@ -1,7 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://br0c6ovpy2yck"]
-
-[ext_resource type="Script" path="res://Scripts/Entities/PlayerUnit.gd" id="1_ftc4h"]
-
-
-[node name="PlayerUnit" type="Node3D"]
-script = ExtResource("1_ftc4h")
