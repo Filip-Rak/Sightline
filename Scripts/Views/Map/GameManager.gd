@@ -168,8 +168,11 @@ func on_all_players_loaded():
 	turn_manager.begin_game()
 
 func peer_disconnected(id : int):
-	# Dont do anything with host, because it will be disconnected instantly and the game will end
+	# If host diconnects the game is over
 	if id == 1: return
+	
+	# If host remains connected, they will reasing units of the disconnected players to their teammates
+	if multiplayer.get_unique_id() != 1: return
 	
 	# If the player has teammates distribute their units among them
 	var dsc_units = PlayerManager.get_units(id)
@@ -187,7 +190,13 @@ func peer_disconnected(id : int):
 		var teammate_index = i % num_teammates
 		var teammate_id = dsc_teammates[teammate_index]
 		
-		PlayerManager.reassign_unit(dsc_units[i], id, teammate_id)
+		# The index of a unit will always remain 0 because we are actively reasigning them
+		PlayerManager.rpc("reassign_unit", dsc_units[0].get_path(), id, teammate_id)
+	
+	print ("---HOST : UNIT MIGRATION RESULTS---")
+	for player in PlayerManager.get_players():
+		print("Owner: %s" % [player])
+		print("Units %s" % [PlayerManager.get_units(player)])
 
 # Setters
 # --------------------

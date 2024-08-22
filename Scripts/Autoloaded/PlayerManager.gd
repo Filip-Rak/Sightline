@@ -58,7 +58,13 @@ func reset_all_players():
 func add_unit(owner_id : int, unit : Unit):
 	players[owner_id]["units"].append(unit)
 
-func reassign_unit(unit : Unit, giver_id : int, receiver_id : int):
+
+# Remote Procedure Calls
+# --------------------
+@rpc("any_peer", "call_local")
+func reassign_unit(unit_path : NodePath, giver_id : int, receiver_id : int):
+	var unit = get_node(unit_path)
+	
 	# Reassign in PlayerManager
 	players[giver_id]["units"].erase(unit)
 	players[receiver_id]["units"].append(unit)
