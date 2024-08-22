@@ -1,7 +1,6 @@
 [gd_scene load_steps=13 format=3 uid="uid://b8hia2kf43t3a"]
 
-[ext_resource type="Script" path="res://Scripts/Entities/PlayerUnit.gd" id="1_ap0wm"]
-
+[ext_resource type="Script" path="res://Scripts/Entities/Unit.gd" id="1_6b331"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ti1tk"]
 
@@ -789,8 +788,8 @@ _data = {
 size = Vector3(0.2, 0.419727, 0.2)
 
 [node name="PlayerUnit" type="Node3D"]
-script = ExtResource("1_ap0wm")
-type = 1
+script = ExtResource("1_6b331")
+_type = 1
 
 [node name="AT_Infantry" type="Node3D" parent="."]
 

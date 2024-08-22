@@ -30,7 +30,7 @@ func get_available_targets() -> Dictionary:
 	var tile_matrix = _game_manager.get_tile_matrix()
 	
 	# Save mouse_selection as unit
-	var unit : PlayerUnit.unit_type = _game_manager.mouse_selection
+	var unit : Unit_Properties.unit_type = _game_manager.mouse_selection
 	
 	# Find all the tiles suitable for spawning
 	var good_tiles = []
@@ -70,12 +70,12 @@ func perform_action(_target : Tile):
 # Remote Procedure Calls
 # --------------------
 @rpc("any_peer", "call_local")
-func spawn_unit(target_tile_path : NodePath, unit_to_spawn : PlayerUnit.unit_type, spawning_player: int, parent_node_path : NodePath):
+func spawn_unit(target_tile_path : NodePath, unit_to_spawn : Unit_Properties.unit_type, spawning_player: int, parent_node_path : NodePath):
 	# Get the tile to spawn in
 	var target_tile = get_node(target_tile_path)
 	
 	# Instantiate the unit and set it's properties
-	var spawned_unit = PlayerUnit.get_scene_of_type(unit_to_spawn).instantiate()
+	var spawned_unit = Unit_Properties.get_scene_of_type(unit_to_spawn).instantiate()
 	spawned_unit.position = target_tile.position
 	spawned_unit.set_player_owner(spawning_player)
 	spawned_unit.set_matrix_tile_position(target_tile.get_matrix_position())

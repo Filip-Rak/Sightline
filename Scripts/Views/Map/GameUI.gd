@@ -35,10 +35,10 @@ func populate_buy_menu():
 			hbox = child
 			break
 
-	for unit_id in PlayerUnit.get_spawnable_types():
+	for unit_type in Unit_Properties.get_spawnable_types():
 		var button = Button.new()
-		button.text = PlayerUnit.get_display_name(unit_id)
-		button.connect("button_down", Callable(self, "_on_unit_buy_button_pressed").bind(unit_id))
+		button.text = Unit_Properties.get_display_name(unit_type)
+		button.connect("button_down", Callable(self, "_on_unit_buy_button_pressed").bind(unit_type))
 		hbox.add_child(button)
 
 # Proccess
@@ -63,9 +63,9 @@ func update_turn_ui(player_id : int, _given_time : float):
 	player_turn_label.text = PlayerManager.get_player_name(player_id)
 	game_in_progress = true
 
-func inspect_unit(unit: PlayerUnit):
+func inspect_unit(unit : Unit):
 	var action_buttons: Array = get_tree().get_nodes_in_group("action_buttons")
-	var actions: Array = PlayerUnit.get_actions(unit.type)
+	var actions: Array = Unit_Properties.get_actions(unit.get_type())
 	
 	# Ignore specific actions in setting up buttons
 	# For transport it will be first a check and the deletion
@@ -109,20 +109,17 @@ func _on_end_turn_button_down():
 	if game_manager:
 		game_manager.turn_manager.try_skip_turn()
 
-func _on_move_button_button_down():
-	game_manager.select_action(PlayerUnit.type_properties[PlayerUnit.unit_type.IFV]["actions"][1])
-
 func _on_deploy_button_down():
 	if !buy_menu: return
 	
 	# Toggle visibility of the buy menu
 	buy_menu.visible = !buy_menu.visible
 
-func _on_unit_buy_button_pressed(unit_id : int):
-	var spawn_action = PlayerUnit.get_action(unit_id, Action_Spawn.get_internal_name())
+func _on_unit_buy_button_pressed(unit_type : int):
+	var spawn_action = Unit_Properties.get_action(unit_type, Action_Spawn.get_internal_name())
 	if spawn_action:
-			game_manager.set_mouse_selection(unit_id)
-			game_manager.select_action(spawn_action)		
+			game_manager.set_mouse_selection(unit_type)
+			game_manager.select_action(spawn_action)
 	else:
 		print("Unit not spawnable")
 

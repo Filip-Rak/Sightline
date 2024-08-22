@@ -11,7 +11,7 @@ class_name Game_Manager
 # Other scripts
 var turn_manager : Turn_Manager
 var highlight_manager : Highlight_Manager
-var game_ui
+var game_ui : Game_UI
 
 # Map variables
 var tile_matrix = []
@@ -69,7 +69,7 @@ func _ready():
 	
 	# Spawn all the action instances
 	# This is required to perform PRCs on them
-	for action in PlayerUnit.get_all_actions():
+	for action in Unit_Properties.get_all_actions():
 		if !action.is_inside_tree():
 			action.set_game_manager(self)
 			add_child(action)
@@ -102,7 +102,7 @@ func select_action(action_arg : Action):
 	# This should be deleted with introduction of dynamic UI
 	# Since this fucntion would never be triggered without said UI element being available
 	# And such a button would only be available in a situation when the unit is indeed selected
-	if !(mouse_selection is PlayerUnit || mouse_selection is PlayerUnit.unit_type): return
+	if !(mouse_selection is Unit || mouse_selection is Unit_Properties.unit_type): return
 	
 	MouseModeManager.set_mouse_mode(MouseModeManager.MOUSE_MODE.ACTION)
 	

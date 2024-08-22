@@ -22,10 +22,10 @@ static var _type_properties = {
 		"range_bonus": 0,
 		"movement_cost" : 1,
 		"accesible_to": [
-			PlayerUnit.unit_type.INFANTRY,
-			PlayerUnit.unit_type.AT_INFANTRY,
-			PlayerUnit.unit_type.IMV,
-			PlayerUnit.unit_type.IFV,
+			Unit_Properties.unit_type.INFANTRY,
+			Unit_Properties.unit_type.AT_INFANTRY,
+			Unit_Properties.unit_type.IMV,
+			Unit_Properties.unit_type.IFV,
 			]
 	},
 	tile_type.WATER: 
@@ -35,7 +35,7 @@ static var _type_properties = {
 		"range_bonus": 1,
 		"movement_cost" : 1,
 		"accesible_to": [
-			PlayerUnit.unit_type.IFV,
+			Unit_Properties.unit_type.IFV,
 			]
 	},
 	tile_type.FOREST: 
@@ -45,10 +45,10 @@ static var _type_properties = {
 		"range_bonus": 0,
 		"movement_cost" : 1,
 		"accesible_to": [
-			PlayerUnit.unit_type.INFANTRY,
-			PlayerUnit.unit_type.AT_INFANTRY,
-			PlayerUnit.unit_type.IMV,
-			PlayerUnit.unit_type.IFV,
+			Unit_Properties.unit_type.INFANTRY,
+			Unit_Properties.unit_type.AT_INFANTRY,
+			Unit_Properties.unit_type.IMV,
+			Unit_Properties.unit_type.IFV,
 			]
 	},
 	tile_type.MOUNTAIN: 
@@ -68,10 +68,10 @@ static var _type_properties = {
 		"range_bonus": 1,
 		"movement_cost" : 1,
 		"accesible_to": [
-			PlayerUnit.unit_type.INFANTRY,
-			PlayerUnit.unit_type.AT_INFANTRY,
-			PlayerUnit.unit_type.IMV,
-			PlayerUnit.unit_type.IFV,
+			Unit_Properties.unit_type.INFANTRY,
+			Unit_Properties.unit_type.AT_INFANTRY,
+			Unit_Properties.unit_type.IMV,
+			Unit_Properties.unit_type.IFV,
 			]
 	},
 	tile_type.TOWN: 
@@ -81,8 +81,8 @@ static var _type_properties = {
 		"range_bonus": 1,
 		"movement_cost" : 1,
 		"accesible_to": [
-			PlayerUnit.unit_type.INFANTRY,
-			PlayerUnit.unit_type.AT_INFANTRY,
+			Unit_Properties.unit_type.INFANTRY,
+			Unit_Properties.unit_type.AT_INFANTRY,
 			]
 	},		
 	tile_type.RIVER: 
@@ -92,7 +92,7 @@ static var _type_properties = {
 		"range_bonus": 0,
 		"movement_cost" : 1,
 		"accesible_to": [
-			PlayerUnit.unit_type.IFV,
+			Unit_Properties.unit_type.IFV,
 			]
 	},		
 	tile_type.BRIDGE: 
@@ -102,10 +102,10 @@ static var _type_properties = {
 		"range_bonus": 0,
 		"movement_cost" : 1,
 		"accesible_to": [
-			PlayerUnit.unit_type.INFANTRY,
-			PlayerUnit.unit_type.AT_INFANTRY,
-			PlayerUnit.unit_type.IMV,
-			PlayerUnit.unit_type.IFV,
+			Unit_Properties.unit_type.INFANTRY,
+			Unit_Properties.unit_type.AT_INFANTRY,
+			Unit_Properties.unit_type.IMV,
+			Unit_Properties.unit_type.IFV,
 			]
 	},
 }
@@ -118,7 +118,7 @@ static func get_blocks_line_of_sight(type : tile_type) -> bool:
 static func get_accesible_to(type : tile_type) -> Array:
 	return _type_properties[type]["accesible_to"]
 	
-static func is_accesible_to(tile : tile_type, unit : PlayerUnit.unit_type) -> bool:
+static func is_accesible_to(tile : tile_type, unit : Unit_Properties.unit_type) -> bool:
 	var accesible_to : Array = _type_properties[tile]["accesible_to"]
 	if accesible_to.find(unit) != -1:
 		return true

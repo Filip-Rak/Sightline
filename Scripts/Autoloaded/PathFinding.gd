@@ -6,7 +6,7 @@ var f_costs = {}
 var g_costs = {}
 
 # Function to get reachable tiles based on unit's movement points
-func get_reachable_tiles(tile_matrix : Array, unit : PlayerUnit) -> Dictionary:
+func get_reachable_tiles(tile_matrix : Array, unit : Unit) -> Dictionary:
 	var reachable_tiles = []
 	var queue = []
 	var visited = {}
@@ -51,7 +51,7 @@ func get_reachable_tiles(tile_matrix : Array, unit : PlayerUnit) -> Dictionary:
 			if visited.has(neighbor_pos): continue
 			
 			# Check if neighbor is passable
-			if !Tile_Properties.is_accesible_to(neighbor_tile.get_type(), unit.type): continue
+			if !Tile_Properties.is_accesible_to(neighbor_tile.get_type(), unit.get_type()): continue
 			
 			# Check if the tile has no enemy units
 			# This check should be rewritten to happen ONLY for visible enemies, which is currently not implemented anyway
@@ -66,7 +66,7 @@ func get_reachable_tiles(tile_matrix : Array, unit : PlayerUnit) -> Dictionary:
 	return {"tiles": reachable_tiles, "costs": movement_costs}
 
 # Function to find the path from start_pos to end_pos
-func find_path(tile_matrix : Array, unit : PlayerUnit, end_pos : Vector3, viable_tiles : Array) -> Array:
+func find_path(tile_matrix : Array, unit : Unit, end_pos : Vector3, viable_tiles : Array) -> Array:
 	# Make sure f_costs and g_costs are reset from prior pathing
 	f_costs.clear()
 	g_costs.clear()

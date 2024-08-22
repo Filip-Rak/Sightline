@@ -1,4 +1,4 @@
-extends Node
+extends Node3D
 
 class_name Tile
 
@@ -15,10 +15,10 @@ var _support_calls : Array
 
 # Methods
 # --------------------
-func add_unit_to_tile(unit : PlayerUnit):
+func add_unit_to_tile(unit : Unit):
 	_units_in_tile.append(unit)
 
-func remove_unit_from_tile(unit : PlayerUnit):
+func remove_unit_from_tile(unit : Unit):
 	_units_in_tile.erase(unit)
 	
 func has_enemy():

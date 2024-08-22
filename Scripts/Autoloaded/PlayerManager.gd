@@ -10,7 +10,7 @@ var players : Dictionary = {}
 # PLAYER_ID:
 # 	'player_name': string
 # 	'team_id' : int
-# 	"units": PlayerUnit Array
+# 	"units": Unit Array
 # 	"ack": bool flag for synchronization
 #	"connected": only used in selected scenes, the player will usually be deleted on disconnected
 
@@ -55,15 +55,15 @@ func reset_all_players():
 	players.clear()
 	add_default_player()
 
-func add_unit(owner_id : int, unit : PlayerUnit):
+func add_unit(owner_id : int, unit : Unit):
 	players[owner_id]["units"].append(unit)
 
-func reassign_unit(unit : PlayerUnit, giver_id : int, receiver_id : int):
+func reassign_unit(unit : Unit, giver_id : int, receiver_id : int):
 	# Reassign in PlayerManager
 	players[giver_id]["units"].erase(unit)
 	players[receiver_id]["units"].append(unit)
 	
-	# Reasing in PlayerUnit
+	# Reasing in Unit
 	unit.set_player_owner(receiver_id)
 
 # Setters
