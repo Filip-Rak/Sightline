@@ -3,6 +3,8 @@ extends CanvasLayer
 # Attributes
 # --------------------
 
+class_name Game_UI
+
 # Nodes
 @export var game_manager : Game_Manager
 @export var player_turn_label : Label
@@ -19,8 +21,8 @@ func _ready():
 	set_UI()
 	
 func set_externals():
-	if game_manager:
-		game_manager.set_game_ui(self)
+	if game_manager: game_manager.set_game_ui(self)
+	MouseModeManager.set_game_ui(self)
 
 func set_UI():
 	populate_buy_menu()
@@ -63,15 +65,37 @@ func update_turn_ui(player_id : int, _given_time : float):
 
 # Links
 # --------------------
-func select_unit_for_spawn(type : PlayerUnit.unit_type):
-
-	var action_arg = PlayerUnit.get_actions(type)[0]
-	if action_arg:
-			game_manager.set_mouse_selection(type)
-			game_manager.select_action(action_arg)
+func inspect_unit(unit: PlayerUnit):
+	var action_buttons: Array = get_tree().get_nodes_in_group("action_buttons")
+	var actions: Array = PlayerUnit.get_actions(unit.type)
+	
+	# Iterate over all action buttons
+	for i in range(action_buttons.size()):
+		var button : Button = action_buttons[i] 
+		
+		# Check if there's an action for this button index
+		if i < actions.size():
+			var action = actions[i]
 			
-	else:
-		print("Unit not spawnable")
+			# Assign the button's text to the action's display name
+			button.text = action.get_display_name()
+			
+			# Connect the button's "button_down" signal to function, passing the action as an argument
+			button.connect("button_down", Callable(self, "_on_action_button_down").bind(action))
+			
+			# Enable the button since it has an assigned action
+			button.disabled = false
+		else:
+			# Disable buttons without actions
+			button.text = ""
+			button.disabled = true
+			
+	# Handle too many actions scenario
+	if actions.size() > action_buttons.size():
+		print("Warning: Too many actions, not all actions will be assigned to buttons.")
+
+func _on_action_button_down(action : Action):
+	pass
 
 func _on_end_turn_button_down():
 	if game_manager:

@@ -10,16 +10,14 @@ enum MOUSE_MODE{
 	# For selecting units and tiles
 	INSPECTION,
 	
-	# For actions, with common logic being
-	# Displaying available targets
-	# Highlighting them with mouse over
-	# And executing with mouse click
+	# For actions with common logic
 	ACTION,
 }
 
 var current_mouse_mode : MOUSE_MODE = MOUSE_MODE.STANDARD
 var raycast_camera = null
-var game_manager = null
+var game_manager : Game_Manager = null
+var game_ui : Game_UI = null
 
 # Process Functions
 # --------------------
@@ -43,12 +41,7 @@ func handle_inspection(select):
 		
 		if select.is_in_group(game_manager.get_unit_group_name()):
 			print ("SELECTED UNIT: %s" % [select])
-			
-			if select.get_player_owner_id() == multiplayer.get_unique_id():
-				# Change mouse mode to move
-				# set_mouse_mode(MouseModeManager.MOUSE_MODE.MOVE)
-				# game_manager.select_moveable_tiles()
-				pass
+			if game_ui: game_ui.inspect_unit(select)
 			
 		elif select.is_in_group(game_manager.get_tile_group_name()):
 			print ("SELECTED TILE: %s" % [select])
@@ -97,3 +90,6 @@ func set_camera(camera : Node3D):
 	
 func set_game_manager(gm : Game_Manager):
 	game_manager = gm
+
+func set_game_ui(ui : Game_UI):
+	game_ui = ui

@@ -38,7 +38,7 @@ func get_available_targets() -> Dictionary:
 		for j in _game_manager.z_size:
 				if tile_matrix[i][j].get_is_a_spawn():
 					if tile_matrix[i][j].get_team_id() == PlayerManager.get_my_team_id():
-						if tile_matrix[i][j].get_accesible_to().find(unit) != -1:
+						if Tile_Properties.get_accesible_to(tile_matrix[i][j].get_type()).find(unit) != -1:
 							good_tiles.append(tile_matrix[i][j])
 	
 	# Highlight these tiles
@@ -51,7 +51,7 @@ func get_available_targets() -> Dictionary:
 
 	return {"tiles": good_tiles, "costs": costs}
 
-func perform_action(_target : GridTile):
+func perform_action(_target : Tile):
 	# Get path for RPC call
 	var spawn_path : NodePath = _target.get_path()
 	var tree : NodePath = self.get_path()
@@ -82,7 +82,7 @@ func spawn_unit(target_tile_path : NodePath, unit_to_spawn : PlayerUnit.unit_typ
 	spawned_unit.add_to_group(_game_manager.unit_group_name)
 	
 	# Update the tile properties
-	target_tile.units_in_tile.append(spawned_unit)
+	target_tile.add_unit_to_tile(spawned_unit)
 	
 	# Add the unit to the tree
 	var tree = get_node(parent_node_path)

@@ -102,37 +102,37 @@ theme_override_constants/margin_bottom = 16
 layout_mode = 2
 columns = 3
 
-[node name="Button" type="Button" parent="LowerSection/MiddlePanel/UnitSelectionPanel/HBoxContainer/Actions/MarginContainer/GridContainer"]
+[node name="Button" type="Button" parent="LowerSection/MiddlePanel/UnitSelectionPanel/HBoxContainer/Actions/MarginContainer/GridContainer" groups=["action_buttons"]]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "1"
 
-[node name="Button2" type="Button" parent="LowerSection/MiddlePanel/UnitSelectionPanel/HBoxContainer/Actions/MarginContainer/GridContainer"]
+[node name="Button2" type="Button" parent="LowerSection/MiddlePanel/UnitSelectionPanel/HBoxContainer/Actions/MarginContainer/GridContainer" groups=["action_buttons"]]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "2"
 
-[node name="Button3" type="Button" parent="LowerSection/MiddlePanel/UnitSelectionPanel/HBoxContainer/Actions/MarginContainer/GridContainer"]
+[node name="Button3" type="Button" parent="LowerSection/MiddlePanel/UnitSelectionPanel/HBoxContainer/Actions/MarginContainer/GridContainer" groups=["action_buttons"]]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "3"
 
-[node name="Button4" type="Button" parent="LowerSection/MiddlePanel/UnitSelectionPanel/HBoxContainer/Actions/MarginContainer/GridContainer"]
+[node name="Button4" type="Button" parent="LowerSection/MiddlePanel/UnitSelectionPanel/HBoxContainer/Actions/MarginContainer/GridContainer" groups=["action_buttons"]]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "4"
 
-[node name="Button5" type="Button" parent="LowerSection/MiddlePanel/UnitSelectionPanel/HBoxContainer/Actions/MarginContainer/GridContainer"]
+[node name="Button5" type="Button" parent="LowerSection/MiddlePanel/UnitSelectionPanel/HBoxContainer/Actions/MarginContainer/GridContainer" groups=["action_buttons"]]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "5"
 
-[node name="Button6" type="Button" parent="LowerSection/MiddlePanel/UnitSelectionPanel/HBoxContainer/Actions/MarginContainer/GridContainer"]
+[node name="Button6" type="Button" parent="LowerSection/MiddlePanel/UnitSelectionPanel/HBoxContainer/Actions/MarginContainer/GridContainer" groups=["action_buttons"]]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -213,6 +213,7 @@ theme_override_font_sizes/font_size = 18
 text = "End Turn"
 
 [node name="BuyMenu" type="PanelContainer" parent="."]
+visible = false
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0

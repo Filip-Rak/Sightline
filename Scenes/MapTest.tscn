@@ -1,10 +1,10 @@
 [gd_scene load_steps=12 format=3 uid="uid://bpxleqntw6wjw"]
 
-[ext_resource type="PackedScene" uid="uid://detnfrch1wh4d" path="res://Assets/Tiles/Instances/grid_tile_Body_of_water.tscn" id="1_7vihv"]
-[ext_resource type="PackedScene" uid="uid://dhaetwn3aoaik" path="res://Assets/Tiles/Instances/grid_tile_Default.tscn" id="2_f1n7r"]
-[ext_resource type="PackedScene" uid="uid://4lnq37ykrjtc" path="res://Assets/Tiles/Instances/grid_tile_Forest.tscn" id="3_lsupy"]
-[ext_resource type="PackedScene" uid="uid://bfm5ll5553ol" path="res://Assets/Tiles/Instances/grid_tile_Mountain_river.tscn" id="4_ct17t"]
-[ext_resource type="PackedScene" uid="uid://qjx8est1huum" path="res://Assets/Tiles/Instances/grid_tile_Town.tscn" id="5_dbgx1"]
+[ext_resource type="PackedScene" uid="uid://detnfrch1wh4d" path="res://Assets/Tiles/Instances/tile_Body_of_water.tscn" id="1_7vihv"]
+[ext_resource type="PackedScene" uid="uid://dhaetwn3aoaik" path="res://Assets/Tiles/Instances/tile_Default.tscn" id="2_f1n7r"]
+[ext_resource type="PackedScene" uid="uid://4lnq37ykrjtc" path="res://Assets/Tiles/Instances/tile_Forest.tscn" id="3_lsupy"]
+[ext_resource type="PackedScene" uid="uid://bfm5ll5553ol" path="res://Assets/Tiles/Instances/tile_Mountain_river.tscn" id="4_ct17t"]
+[ext_resource type="PackedScene" uid="uid://qjx8est1huum" path="res://Assets/Tiles/Instances/tile_Town.tscn" id="5_dbgx1"]
 [ext_resource type="PackedScene" uid="uid://mwr768tf6k4" path="res://Scenes/player_camera.tscn" id="6_mp15b"]
 [ext_resource type="Script" path="res://Scripts/Views/Map/GameManager.gd" id="7_vsd77"]
 [ext_resource type="PackedScene" uid="uid://bec3g8cgjax13" path="res://Scenes/GameUI.tscn" id="8_vnqxy"]
@@ -37,77 +37,64 @@ shadow_enabled = true
 
 [node name="Map" type="Node3D" parent="."]
 
-[node name="GridTile" parent="Map" instance=ExtResource("1_7vihv")]
+[node name="Tile" parent="Map" instance=ExtResource("1_7vihv")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
-team_id = 4
-is_a_spawn = true
 
-[node name="GridTile5" parent="Map" instance=ExtResource("2_f1n7r")]
+[node name="Tile5" parent="Map" instance=ExtResource("2_f1n7r")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 2)
 
-[node name="GridTile4" parent="Map" instance=ExtResource("2_f1n7r")]
+[node name="Tile4" parent="Map" instance=ExtResource("2_f1n7r")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
-team_id = 1
-is_a_spawn = true
+_team_id = 1
+_is_a_spawn = true
 
-[node name="GridTile6" parent="Map" instance=ExtResource("2_f1n7r")]
+[node name="Tile6" parent="Map" instance=ExtResource("2_f1n7r")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 3)
-team_id = 1
-is_a_spawn = true
+_team_id = 1
+_is_a_spawn = true
 
-[node name="GridTile8" parent="Map" instance=ExtResource("2_f1n7r")]
+[node name="Tile8" parent="Map" instance=ExtResource("2_f1n7r")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 2)
 
-[node name="GridTile3" parent="Map" instance=ExtResource("3_lsupy")]
+[node name="Tile3" parent="Map" instance=ExtResource("3_lsupy")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 2)
-team_id = 3
-is_a_spawn = true
+_team_id = 3
+_is_a_spawn = true
 
-[node name="GridTile7" parent="Map" instance=ExtResource("4_ct17t")]
+[node name="Tile7" parent="Map" instance=ExtResource("4_ct17t")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 3)
-team_id = 1
-is_a_spawn = true
 
-[node name="GridTile17" parent="Map" instance=ExtResource("4_ct17t")]
+[node name="Tile17" parent="Map" instance=ExtResource("4_ct17t")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2)
-team_id = 4
-is_a_spawn = true
 
-[node name="GridTile10" parent="Map" instance=ExtResource("2_f1n7r")]
+[node name="Tile10" parent="Map" instance=ExtResource("2_f1n7r")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0)
-team_id = 2
-is_a_spawn = true
+_team_id = 2
+_is_a_spawn = true
 
-[node name="GridTile18" parent="Map" instance=ExtResource("2_f1n7r")]
+[node name="Tile18" parent="Map" instance=ExtResource("2_f1n7r")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)
-team_id = 2
-is_a_spawn = true
 
-[node name="GridTile11" parent="Map" instance=ExtResource("2_f1n7r")]
+[node name="Tile11" parent="Map" instance=ExtResource("2_f1n7r")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 1)
-team_id = 3
-is_a_spawn = true
+_team_id = 3
+_is_a_spawn = true
 
-[node name="GridTile12" parent="Map" instance=ExtResource("2_f1n7r")]
+[node name="Tile12" parent="Map" instance=ExtResource("2_f1n7r")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1)
 
-[node name="GridTile13" parent="Map" instance=ExtResource("2_f1n7r")]
-team_id = 2
-is_a_spawn = true
+[node name="Tile13" parent="Map" instance=ExtResource("2_f1n7r")]
+_team_id = 2
+_is_a_spawn = true
 
-[node name="GridTile14" parent="Map" instance=ExtResource("3_lsupy")]
+[node name="Tile14" parent="Map" instance=ExtResource("3_lsupy")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 0)
-team_id = 2
-is_a_spawn = true
 
-[node name="GridTile15" parent="Map" instance=ExtResource("4_ct17t")]
+[node name="Tile15" parent="Map" instance=ExtResource("4_ct17t")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 3)
-team_id = 1
 
-[node name="GridTile16" parent="Map" instance=ExtResource("5_dbgx1")]
+[node name="Tile16" parent="Map" instance=ExtResource("5_dbgx1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 1)
-team_id = 4
-is_a_spawn = true
 
 [node name="PlayerCamera" parent="." instance=ExtResource("6_mp15b")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.59917, 0, 4.14529)

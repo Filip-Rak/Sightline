@@ -28,7 +28,7 @@ func load_map(map_root : Node3D, tile_group_name):
 	# Build the matrix with now known sizes
 	_initialize_tile_matrix()
 	
-	# Fill the matrix with GridTiles
+	# Fill the matrix with Tiles
 	_load_tiles_to_matrix()
 
 func _get_map_dimensions():
@@ -40,7 +40,7 @@ func _get_map_dimensions():
 		printerr("The map is either empty or set up incorrectly!") 
 		return
 	
-	# Find max and min x and z coordinate in maps's childredn (GridTiles)
+	# Find max and min x and z coordinate in maps's childredn (Tiles)
 	var max_x : int = children[0].position .x
 	var min_x : int = children[0].position .x
 	var max_z : int = children[0].position .z
@@ -64,7 +64,7 @@ func _initialize_tile_matrix():
 	for i in x_size:
 		tile_matrix.append([])
 		for j in z_size:
-			tile_matrix[i].append(GridTile.new())
+			tile_matrix[i].append(Tile.new())
 			
 func _load_tiles_to_matrix():
 	

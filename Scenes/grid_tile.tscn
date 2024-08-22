@@ -1,7 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://xntxt0yf3qlg"]
 
-[ext_resource type="Script" path="res://Scripts/Entities/GridTile.gd" id="1_gwv7o"]
-
+[ext_resource type="Script" path="res://Scripts/Entities/Tile.gd" id="1_nqv4i"]
 
 [node name="GridTile" type="Node3D"]
-script = ExtResource("1_gwv7o")
+script = ExtResource("1_nqv4i")
