@@ -133,15 +133,7 @@ func _on_unit_buy_button_pressed(unit_type : int):
 			game_manager.set_mouse_selection(unit_type)
 			game_manager.select_action(spawn_action)
 	else:
-		print("Unit not spawnable")
-		
-		
-	print ("---_on_unit_buy_button_pressed---")
-	print ("SELECTED ACTION: %s" % [game_manager.selected_action])
-	print ("unit_type %s" % [unit_type])
-	print ("get_actions %s" % [Unit_Properties.get_actions(unit_type)])
-	print ("spawn_action %s" % [spawn_action])
-	print ("Action_Spawn.get_internal_name() %s" % [Action_Spawn.get_internal_name()])
+		print("_on_unit_buy_button_pressed() -> Unit not spawnable")
 
 # Utility
 # --------------------
