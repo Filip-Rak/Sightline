@@ -2,13 +2,6 @@ extends Node
 
 # Utility Functions
 # --------------------
-func has_enemy(tile : GridTile) -> bool:
-	for unit in tile.get_units_in_tile():
-		if PlayerManager.get_team_id(unit.get_player_owner_id()) != PlayerManager.get_my_team_id():
-			return true
-			
-	return false
-		
 func find_neighbours_pos(tile_matrix : Array, pos : Vector3) -> Array:
 	const directions = [Vector3(1, 0, 0), Vector3(-1, 0, 0), Vector3(0, 0, 1), Vector3(0, 0, -1)]
 	

@@ -21,6 +21,13 @@ func add_unit_to_tile(unit : PlayerUnit):
 func remove_unit_from_tile(unit : PlayerUnit):
 	_units_in_tile.erase(unit)
 	
+func has_enemy():
+	for unit in _units_in_tile:
+		if PlayerManager.get_team_id(unit.get_player_owner_id()) != PlayerManager.get_my_team_id():
+			return true
+			
+	return false
+	
 # Setters
 # --------------------
 func set_matrix_position(pos : Vector3):

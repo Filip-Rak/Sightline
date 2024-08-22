@@ -63,11 +63,13 @@ func update_turn_ui(player_id : int, _given_time : float):
 	player_turn_label.text = PlayerManager.get_player_name(player_id)
 	game_in_progress = true
 
-# Links
-# --------------------
 func inspect_unit(unit: PlayerUnit):
 	var action_buttons: Array = get_tree().get_nodes_in_group("action_buttons")
 	var actions: Array = PlayerUnit.get_actions(unit.type)
+	
+	# Ignore specific actions in setting up buttons
+	# For transport it will be first a check and the deletion
+	_delete_actions_from_arr(actions, Action_Spawn.get_internal_name())
 	
 	# Iterate over all action buttons
 	for i in range(action_buttons.size()):
@@ -94,8 +96,10 @@ func inspect_unit(unit: PlayerUnit):
 	if actions.size() > action_buttons.size():
 		print("Warning: Too many actions, not all actions will be assigned to buttons.")
 
+# Links
+# --------------------
 func _on_action_button_down(action : Action):
-	pass
+	game_manager.select_action(action)
 
 func _on_end_turn_button_down():
 	if game_manager:
@@ -117,3 +121,10 @@ func _on_unit_buy_button_pressed(unit_id : int):
 			game_manager.select_action(spawn_action)		
 	else:
 		print("Unit not spawnable")
+
+# Utility
+# --------------------
+func _delete_actions_from_arr(arr : Array, internal_name : String):
+	for action in arr:
+		if action.get_internal_name() == internal_name:
+			arr.erase(action)

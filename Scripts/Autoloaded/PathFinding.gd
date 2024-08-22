@@ -42,7 +42,7 @@ func get_reachable_tiles(tile_matrix : Array, unit : PlayerUnit) -> Dictionary:
 			
 			# Calc movement cost
 			var neighbor_tile = tile_matrix[neighbor_pos.x][neighbor_pos.z]
-			var movement_cost = neighbor_tile.get_movement_cost()
+			var movement_cost = Tile_Properties.get_movement_cost(neighbor_tile.get_type())
 			
 			# Check if the unit has enough movement points to move to this tile
 			if ac_left < movement_cost: continue
@@ -51,11 +51,11 @@ func get_reachable_tiles(tile_matrix : Array, unit : PlayerUnit) -> Dictionary:
 			if visited.has(neighbor_pos): continue
 			
 			# Check if neighbor is passable
-			if neighbor_tile.get_accesible_to().find(unit.type) == -1 : continue
+			if !Tile_Properties.is_accesible_to(neighbor_tile.get_type(), unit.type): continue
 			
 			# Check if the tile has no enemy units
 			# This check should be rewritten to happen ONLY for visible enemies, which is currently not implemented anyway
-			if Utility.has_enemy(neighbor_tile): continue
+			if neighbor_tile.has_enemy(): continue
 			
 			# Update the tile
 			queue.append({"pos": neighbor_pos, "ac_left":ac_left - movement_cost})
@@ -108,7 +108,7 @@ func find_path(tile_matrix : Array, unit : PlayerUnit, end_pos : Vector3, viable
 			if !viable_tiles.has(neighbor_tile): continue
 			
 			# Calculate the g_cost from movement
-			var tentative_g_cost = g_costs[current_pos] + neighbor_tile.get_movement_cost()
+			var tentative_g_cost = g_costs[current_pos] + Tile_Properties.get_movement_cost(neighbor_tile.get_type())
 			
 			# Skip the tile if the cost has been exceeded
 			if tentative_g_cost > unit.get_action_points_left(): continue
@@ -147,7 +147,7 @@ func heuristic_cost_estimate(start_pos : Vector3, end_pos : Vector3) -> float:
 func get_path_cost(tile_matrix : Array, path : Array) -> int:
 	var cost : int = 0
 	for tile_pos in path:
-		cost += tile_matrix[tile_pos.x][tile_pos.z].get_movement_cost()
+		cost += Tile_Properties.get_movement_cost(tile_matrix[tile_pos.x][tile_pos.z].get_type())
 		
 	return cost
 

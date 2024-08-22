@@ -118,6 +118,13 @@ static func get_blocks_line_of_sight(type : tile_type) -> bool:
 static func get_accesible_to(type : tile_type) -> Array:
 	return _type_properties[type]["accesible_to"]
 	
+static func is_accesible_to(tile : tile_type, unit : PlayerUnit.unit_type) -> bool:
+	var accesible_to : Array = _type_properties[tile]["accesible_to"]
+	if accesible_to.find(unit) != -1:
+		return true
+	else:
+		return false
+	
 static func get_defense_modifier(type : tile_type) -> float:
 	return _type_properties[type]["defense_modifier"]
 	
