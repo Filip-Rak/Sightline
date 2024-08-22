@@ -36,7 +36,7 @@ static var type_properties = {
 		"scene": preload("res://Assets/Units/player_unit_infantry.tscn"),
 		"actions" : [
 				Action_Spawn.new(1, 5),
-				Action_Move.new()
+				Action_Move.new("INF MOVE")
 			]
 	},
 	unit_type.AT_INFANTRY: 
@@ -51,7 +51,7 @@ static var type_properties = {
 		"scene": preload("res://Assets/Units/player_unit_AT_infantry.tscn"),
 		"actions" : [
 				Action_Spawn.new(2, 2),
-				Action_Move.new()
+				Action_Move.new("AT MOVE")
 			]
 	},
 	unit_type.IMV: 
@@ -66,7 +66,7 @@ static var type_properties = {
 		"scene": preload("res://Assets/Units/player_unit_IMV.tscn"),
 		"actions" : [
 				Action_Spawn.new(2, 2),
-				Action_Move.new()
+				Action_Move.new("IMV MOVE")
 			]
 	},
 	unit_type.IFV: 
@@ -81,7 +81,7 @@ static var type_properties = {
 		"scene": preload("res://Assets/Units/player_unit_IFV.tscn"),
 		"actions" : [
 				Action_Spawn.new(5, 1),
-				Action_Move.new()
+				Action_Move.new("IFV MOVE")
 			]
 	},
 }

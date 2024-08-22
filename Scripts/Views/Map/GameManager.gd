@@ -125,7 +125,7 @@ func execute_action(target):
 	if !player_turn: return
 	
 	# Make sure mouse selection isnt null and selected target is among available ones
-	if !mouse_selection: return
+	if mouse_selection == null: return
 	if targets_and_costs["tiles"].find(target) == -1: return
 	
 	# Call execution on the action

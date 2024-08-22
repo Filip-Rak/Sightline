@@ -75,6 +75,10 @@ func inspect_unit(unit: PlayerUnit):
 	for i in range(action_buttons.size()):
 		var button : Button = action_buttons[i] 
 		
+		# Disconnect any existing connections to avoid duplicates
+		if button.is_connected("button_down", _on_action_button_down):
+			button.disconnect("button_down", _on_action_button_down)
+		
 		# Check if there's an action for this button index
 		if i < actions.size():
 			var action = actions[i]
