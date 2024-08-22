@@ -8,12 +8,15 @@ draw_center = false
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d5pqr"]
 draw_center = false
 
-[node name="GameUI" type="CanvasLayer" node_paths=PackedStringArray("player_turn_label", "player_name_label", "time_left_label", "buy_menu")]
+[node name="GameUI" type="CanvasLayer" node_paths=PackedStringArray("player_turn_label", "player_name_label", "time_left_label", "buy_menu", "inspection_panel_empty", "unit_selection_panel", "tile_selection_panel")]
 script = ExtResource("1_5uulx")
 player_turn_label = NodePath("LowerSection/TurnPanel/MarginContainer/VBoxContainer/HBoxContainer/PlayerTurnLabel")
 player_name_label = NodePath("PlayerNameLabel")
 time_left_label = NodePath("LowerSection/TurnPanel/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/TimeLeftLabel")
 buy_menu = NodePath("BuyMenu")
+inspection_panel_empty = NodePath("LowerSection/MiddlePanel/InspectionPanel")
+unit_selection_panel = NodePath("LowerSection/MiddlePanel/UnitSelectionPanel")
+tile_selection_panel = NodePath("LowerSection/MiddlePanel/TileSelectionPanel")
 
 [node name="LowerSection" type="HBoxContainer" parent="."]
 anchors_preset = 12
@@ -62,7 +65,6 @@ size_flags_stretch_ratio = 6.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_o0jpd")
 
 [node name="InspectionPanel" type="PanelContainer" parent="LowerSection/MiddlePanel"]
-visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 6.0
@@ -74,6 +76,7 @@ text = "Select Unit or Tile to display details"
 horizontal_alignment = 1
 
 [node name="UnitSelectionPanel" type="PanelContainer" parent="LowerSection/MiddlePanel"]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 6.0
@@ -86,6 +89,11 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_d5pqr")
 
+[node name="Label" type="Label" parent="LowerSection/MiddlePanel/UnitSelectionPanel/HBoxContainer/UnitDetails"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Unit details"
+
 [node name="Actions" type="PanelContainer" parent="LowerSection/MiddlePanel/UnitSelectionPanel/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -94,9 +102,9 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_d5pqr")
 [node name="MarginContainer" type="MarginContainer" parent="LowerSection/MiddlePanel/UnitSelectionPanel/HBoxContainer/Actions"]
 layout_mode = 2
 theme_override_constants/margin_left = 16
-theme_override_constants/margin_top = 16
+theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 16
-theme_override_constants/margin_bottom = 16
+theme_override_constants/margin_bottom = 8
 
 [node name="GridContainer" type="GridContainer" parent="LowerSection/MiddlePanel/UnitSelectionPanel/HBoxContainer/Actions/MarginContainer"]
 layout_mode = 2

@@ -45,6 +45,7 @@ func handle_inspection(select):
 			
 		elif select.is_in_group(game_manager.get_tile_group_name()):
 			print ("SELECTED TILE: %s" % [select])
+			if game_ui: game_ui.inspect_tile(select)
 
 func handle_action(select):
 	if select: 

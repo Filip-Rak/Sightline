@@ -11,6 +11,9 @@ class_name Game_UI
 @export var player_name_label : Label
 @export var time_left_label : Label
 @export var buy_menu : PanelContainer
+@export var inspection_panel_empty : PanelContainer
+@export var unit_selection_panel : PanelContainer
+@export var tile_selection_panel : PanelContainer
 
 var game_in_progress = false
 
@@ -56,7 +59,7 @@ func handle_timer():
 		else:
 			time_left_label.text = "Time left: " + str(floor(time_max - time_spent))
 		 
-		
+
 # External Control Functions
 # --------------------
 func update_turn_ui(player_id : int, _given_time : float):
@@ -64,12 +67,16 @@ func update_turn_ui(player_id : int, _given_time : float):
 	game_in_progress = true
 
 func inspect_unit(unit : Unit):
+	# Set visibility to panels
+	_set_element_activity(unit_selection_panel, true)
+	_set_element_activity(tile_selection_panel, false)
+	_set_element_activity(inspection_panel_empty, false)
+	
 	var action_buttons: Array = get_tree().get_nodes_in_group("action_buttons")
 	var actions: Array = Unit_Properties.get_actions(unit.get_type())
 	
-	# Ignore specific actions in setting up buttons
-	# For transport it will be first a check and the deletion
-	_delete_actions_from_arr(actions, Action_Spawn.get_internal_name())
+	# Ignore certain actions in setting up buttons
+	actions = _action_buttons_filter(actions)
 	
 	# Iterate over all action buttons
 	for i in range(action_buttons.size()):
@@ -98,8 +105,13 @@ func inspect_unit(unit : Unit):
 			
 	# Handle too many actions scenario
 	if actions.size() > action_buttons.size():
-		print("Warning: Too many actions, not all actions will be assigned to buttons.")
+		print("inspect_unit() -> Warning: Too many actions, not all actions will be assigned to buttons")
 
+func inspect_tile(_tile : Tile):
+	_set_element_activity(unit_selection_panel, false)
+	_set_element_activity(tile_selection_panel, true)
+	_set_element_activity(inspection_panel_empty, false)
+	
 # Links
 # --------------------
 func _on_action_button_down(action : Action):
@@ -122,10 +134,42 @@ func _on_unit_buy_button_pressed(unit_type : int):
 			game_manager.select_action(spawn_action)
 	else:
 		print("Unit not spawnable")
+		
+		
+	print ("---_on_unit_buy_button_pressed---")
+	print ("SELECTED ACTION: %s" % [game_manager.selected_action])
+	print ("unit_type %s" % [unit_type])
+	print ("get_actions %s" % [Unit_Properties.get_actions(unit_type)])
+	print ("spawn_action %s" % [spawn_action])
+	print ("Action_Spawn.get_internal_name() %s" % [Action_Spawn.get_internal_name()])
 
 # Utility
 # --------------------
-func _delete_actions_from_arr(arr : Array, internal_name : String):
+func _action_buttons_filter(arr : Array) -> Array:
+	# List of actions to avoid
+	var filter_out : Array = [Action_Spawn.get_internal_name()]
+	
+	# List of valid actions
+	var reference : Array = []
+	
+	var valid : bool = true
+	# Check every action given
 	for action in arr:
-		if action.get_internal_name() == internal_name:
-			arr.erase(action)
+		# Compare internal names to all the internal names
+		for banned_entry in filter_out:
+			# If name is the same, mark it as invalid an break
+			if banned_entry == action.get_internal_name():
+				valid = false
+				break
+		# add the action if valid
+		if valid:
+			reference.append(action)
+			
+		# Reset the flag
+		valid = true
+			
+	return reference
+
+func _set_element_activity(element, value : bool):
+	# element.disable = value
+	element.visible = value

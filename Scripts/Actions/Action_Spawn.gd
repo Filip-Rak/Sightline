@@ -61,9 +61,9 @@ func perform_action(_target : Tile):
 	
 	# Clear all selections after spawning - consider not doing so for 'shift' effect
 	_game_manager.highlight_manager.clear_mouse_over_highlight()
-	_game_manager.highlight_manager.clear_mass_highlight()
+	_game_manager.highlight_manager.clear_mass_highlight()	
 	_game_manager.mouse_selection = null
-		
+
 	# Change mouse mode to inspect
 	MouseModeManager.set_mouse_mode(MouseModeManager.MOUSE_MODE.INSPECTION)
 

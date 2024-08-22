@@ -31,7 +31,7 @@ func _init(display_name : String = "", description : String = ""):
 # --------------------
 
 # Returns tiles available for movement
-func get_available_targets() -> Dictionary:
+func get_available_targets() -> Dictionary:	
 	# Get variables
 	var unit : Unit = _game_manager.get_mouse_selection()
 	var tile_matrix = _game_manager.get_tile_matrix()
@@ -103,8 +103,8 @@ func _move_unit(path_to_unit : NodePath, route : Array):
 	unit.offset_action_points(-route_cost)
 	
 	# Trigger a function for further cleanup in game manager
-	var _stay_in_action = unit.get_action_points_left() > 0
-	super.on_action_finished(true)
+	# var _stay_in_action = unit.get_action_points_left() > 0
+	# super.on_action_finished(true)
 
 # Getters
 # --------------------
