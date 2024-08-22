@@ -1,99 +1,234 @@
-[gd_scene load_steps=2 format=3 uid="uid://bec3g8cgjax13"]
+[gd_scene load_steps=4 format=3 uid="uid://bec3g8cgjax13"]
 
 [ext_resource type="Script" path="res://Scripts/Views/Map/GameUI.gd" id="1_5uulx"]
 
-[node name="GameUI" type="Control"]
-layout_mode = 3
-anchors_preset = 15
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o0jpd"]
+draw_center = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d5pqr"]
+draw_center = false
+
+[node name="GameUI" type="CanvasLayer" node_paths=PackedStringArray("player_turn_label", "player_name_label", "time_left_label", "buy_menu")]
+script = ExtResource("1_5uulx")
+player_turn_label = NodePath("LowerSection/TurnPanel/MarginContainer/VBoxContainer/HBoxContainer/PlayerTurnLabel")
+player_name_label = NodePath("PlayerNameLabel")
+time_left_label = NodePath("LowerSection/TurnPanel/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/TimeLeftLabel")
+buy_menu = NodePath("BuyMenu")
+
+[node name="LowerSection" type="HBoxContainer" parent="."]
+anchors_preset = 12
+anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_top = -120.0
 grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-script = ExtResource("1_5uulx")
+grow_vertical = 0
+size_flags_vertical = 3
 
-[node name="InfantryButton" type="Button" parent="." groups=["ui_buttons"]]
-layout_mode = 0
-offset_left = 43.0
-offset_top = 565.0
-offset_right = 114.0
-offset_bottom = 596.0
-focus_mode = 0
-text = "Infantry
+[node name="DeployPanel" type="PanelContainer" parent="LowerSection"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="LowerSection/DeployPanel"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="LowerSection/DeployPanel/MarginContainer"]
+layout_mode = 2
+
+[node name="DeployLabel" type="Label" parent="LowerSection/DeployPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Deploy
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DeployButton" type="Button" parent="LowerSection/DeployPanel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(50, 25)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+text = "145
 "
 
-[node name="AT_InfantryButton" type="Button" parent="." groups=["ui_buttons"]]
-layout_mode = 0
-offset_left = 135.0
-offset_top = 564.0
-offset_right = 229.0
-offset_bottom = 595.0
-focus_mode = 0
-text = "AT Infantry
+[node name="MiddlePanel" type="PanelContainer" parent="LowerSection"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 6.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_o0jpd")
+
+[node name="InspectionPanel" type="PanelContainer" parent="LowerSection/MiddlePanel"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 6.0
+
+[node name="Label" type="Label" parent="LowerSection/MiddlePanel/InspectionPanel"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Select Unit or Tile to display details"
+horizontal_alignment = 1
+
+[node name="UnitSelectionPanel" type="PanelContainer" parent="LowerSection/MiddlePanel"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 6.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="LowerSection/MiddlePanel/UnitSelectionPanel"]
+layout_mode = 2
+
+[node name="UnitDetails" type="PanelContainer" parent="LowerSection/MiddlePanel/UnitSelectionPanel/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_d5pqr")
+
+[node name="Actions" type="PanelContainer" parent="LowerSection/MiddlePanel/UnitSelectionPanel/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_d5pqr")
+
+[node name="MarginContainer" type="MarginContainer" parent="LowerSection/MiddlePanel/UnitSelectionPanel/HBoxContainer/Actions"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="GridContainer" type="GridContainer" parent="LowerSection/MiddlePanel/UnitSelectionPanel/HBoxContainer/Actions/MarginContainer"]
+layout_mode = 2
+columns = 3
+
+[node name="Button" type="Button" parent="LowerSection/MiddlePanel/UnitSelectionPanel/HBoxContainer/Actions/MarginContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "1"
+
+[node name="Button2" type="Button" parent="LowerSection/MiddlePanel/UnitSelectionPanel/HBoxContainer/Actions/MarginContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "2"
+
+[node name="Button3" type="Button" parent="LowerSection/MiddlePanel/UnitSelectionPanel/HBoxContainer/Actions/MarginContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "3"
+
+[node name="Button4" type="Button" parent="LowerSection/MiddlePanel/UnitSelectionPanel/HBoxContainer/Actions/MarginContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "4"
+
+[node name="Button5" type="Button" parent="LowerSection/MiddlePanel/UnitSelectionPanel/HBoxContainer/Actions/MarginContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "5"
+
+[node name="Button6" type="Button" parent="LowerSection/MiddlePanel/UnitSelectionPanel/HBoxContainer/Actions/MarginContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "6"
+
+[node name="TileSelectionPanel" type="PanelContainer" parent="LowerSection/MiddlePanel"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 6.0
+
+[node name="Label" type="Label" parent="LowerSection/MiddlePanel/TileSelectionPanel"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Tile
 "
+horizontal_alignment = 1
 
-[node name="IMVButton" type="Button" parent="." groups=["ui_buttons"]]
-layout_mode = 0
-offset_left = 249.0
-offset_top = 565.0
-offset_right = 287.0
-offset_bottom = 596.0
-focus_mode = 0
-text = "IMV"
+[node name="TurnPanel" type="PanelContainer" parent="LowerSection"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
 
-[node name="IFVButton" type="Button" parent="." groups=["ui_buttons"]]
-layout_mode = 0
-offset_left = 316.0
-offset_top = 568.0
-offset_right = 387.0
-offset_bottom = 599.0
-focus_mode = 0
-text = "IFV
-"
+[node name="MarginContainer" type="MarginContainer" parent="LowerSection/TurnPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 8
 
-[node name="EndTurnButton" type="Button" parent="."]
-layout_mode = 0
-offset_left = 875.0
-offset_top = 579.0
-offset_right = 993.0
-offset_bottom = 610.0
-text = "End Your Turn"
+[node name="VBoxContainer" type="VBoxContainer" parent="LowerSection/TurnPanel/MarginContainer"]
+layout_mode = 2
 
-[node name="CurrentTurnLabel" type="Label" parent="."]
-layout_mode = 0
-offset_left = 875.0
-offset_top = 494.0
-offset_right = 977.0
-offset_bottom = 517.0
-text = "Current turn:"
+[node name="HBoxContainer" type="HBoxContainer" parent="LowerSection/TurnPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="LowerSection/TurnPanel/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+text = "Waiting for:"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PlayerTurnLabel" type="Label" parent="LowerSection/TurnPanel/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+text = "SlayvSeller"
+
+[node name="HSeparator" type="HSeparator" parent="LowerSection/TurnPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="LowerSection/TurnPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_right = 12
+
+[node name="HBoxContainer" type="HBoxContainer" parent="LowerSection/TurnPanel/MarginContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="LowerSection/TurnPanel/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+theme_override_font_sizes/font_size = 12
+text = "Turn: 4"
+
+[node name="TimeLeftLabel" type="Label" parent="LowerSection/TurnPanel/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+theme_override_font_sizes/font_size = 12
+text = "Time Left: 12"
+
+[node name="EndTurnButton" type="Button" parent="LowerSection/TurnPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_font_sizes/font_size = 18
+text = "End Turn"
+
+[node name="BuyMenu" type="PanelContainer" parent="."]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -164.0
+offset_right = 500.0
+offset_bottom = -124.0
+grow_vertical = 0
+scale = Vector2(1.00378, 1)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="BuyMenu"]
+layout_mode = 2
 
 [node name="PlayerNameLabel" type="Label" parent="."]
-layout_mode = 0
-offset_left = 883.0
-offset_top = 18.0
-offset_right = 936.0
-offset_bottom = 41.0
-text = "Player:"
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Player: "
 
-[node name="TimeLeftLabel" type="Label" parent="."]
-layout_mode = 0
-offset_left = 877.0
-offset_top = 537.0
-offset_right = 917.0
-offset_bottom = 560.0
-text = "Time left:"
-
-[node name="move_button" type="Button" parent="."]
-layout_mode = 0
-offset_left = 885.0
-offset_top = 64.0
-offset_right = 936.0
-offset_bottom = 95.0
-text = "Move"
-
-[connection signal="button_down" from="InfantryButton" to="." method="select_unit_for_spawn" binds= [0]]
-[connection signal="button_down" from="AT_InfantryButton" to="." method="select_unit_for_spawn" binds= [1]]
-[connection signal="button_down" from="IMVButton" to="." method="select_unit_for_spawn" binds= [2]]
-[connection signal="button_down" from="IFVButton" to="." method="select_unit_for_spawn" binds= [3]]
-[connection signal="button_down" from="EndTurnButton" to="." method="_on_end_turn_button_button_down"]
-[connection signal="button_down" from="move_button" to="." method="_on_move_button_button_down"]
+[connection signal="button_down" from="LowerSection/DeployPanel/MarginContainer/VBoxContainer/DeployButton" to="." method="_on_deploy_button_down"]
+[connection signal="button_down" from="LowerSection/TurnPanel/MarginContainer/VBoxContainer/EndTurnButton" to="." method="_on_end_turn_button_down"]

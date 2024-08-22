@@ -105,3 +105,8 @@ func _move_unit(path_to_unit : NodePath, route : Array):
 	# Trigger a function for further cleanup in game manager
 	var _stay_in_action = unit.get_action_points_left() > 0
 	super.on_action_finished(true)
+
+# Getters
+# --------------------
+static func get_internal_name() -> String:
+	return "Action_Move"

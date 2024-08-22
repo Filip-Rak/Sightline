@@ -24,6 +24,11 @@ PathFinding="*res://Scripts/Autoloaded/PathFinding.gd"
 Utility="*res://Scripts/Autoloaded/Utility.gd"
 Network="*res://Scripts/Autoloaded/Network.gd"
 
+[display]
+
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+
 [input]
 
 camera_forward={

@@ -94,7 +94,10 @@ func get_usage_limit() -> int:
 
 func get_cooldown() -> int:
 	return _cooldown
-	
+
+static func get_internal_name() -> String:
+	return "Action"
+
 # Unit isntance
 func get_uses_left() -> int:
 	return _uses_left

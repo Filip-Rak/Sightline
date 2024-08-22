@@ -26,6 +26,7 @@ enum unit_type{
 static var type_properties = {
 	unit_type.INFANTRY: 
 	{ 
+		"display_name": "INF",
 		"price": 1.0,
 		"action_points": 1,
 		"sight_range": 3,
@@ -40,6 +41,7 @@ static var type_properties = {
 	},
 	unit_type.AT_INFANTRY: 
 	{ 
+		"display_name": "INF_AT",
 		"price": 2.0,
 		"action_points": 1,
 		"sight_range": 3,
@@ -54,6 +56,7 @@ static var type_properties = {
 	},
 	unit_type.IMV: 
 	{ 
+		"display_name": "IMV",
 		"price": 2.0,
 		"action_points": 3,
 		"sight_range": 1,
@@ -68,6 +71,7 @@ static var type_properties = {
 	},
 	unit_type.IFV: 
 	{ 
+		"display_name": "Bradley",
 		"price": 5.0,
 		"action_points": 2,
 		"sight_range": 2,
@@ -120,6 +124,25 @@ func get_can_transport() -> bool: return type_properties[type]["can_transport"]
 func get_can_be_transported() -> bool: return type_properties[type]["can_be_transported"]
 
 func get_scene() -> PackedScene: return type_properties[type]["scene"]
+
+static func get_spawnable_types() -> Array:
+	var spawnable_types : Array = []
+	
+	for u_type in type_properties:
+		if get_action(u_type, Action_Spawn.get_internal_name()):
+			spawnable_types.append(u_type)
+			
+	return spawnable_types
+
+static func get_action(u_type : unit_type, internal_name : String) -> Action:
+	for ac in get_actions(u_type): 
+		if ac.get_internal_name() == internal_name:
+			return ac
+			
+	return null
+
+static func get_display_name(u_type : unit_type) -> String:
+	return type_properties[u_type]["display_name"]
 
 # Instance Getters
 # --------------------

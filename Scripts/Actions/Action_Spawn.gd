@@ -67,7 +67,6 @@ func perform_action(_target : GridTile):
 	# Change mouse mode to inspect
 	MouseModeManager.set_mouse_mode(MouseModeManager.MOUSE_MODE.INSPECTION)
 
-
 # Remote Procedure Calls
 # --------------------
 @rpc("any_peer", "call_local")
@@ -94,3 +93,8 @@ func spawn_unit(target_tile_path : NodePath, unit_to_spawn : PlayerUnit.unit_typ
 	
 	# Recalculate the highlighting for other players
 	if !_game_manager.player_turn: _game_manager.highlight_manager.redo_highlighting(_game_manager.player_turn)
+
+# Getters
+# --------------------
+static func get_internal_name() -> String:
+	return "Action_Spawn"
