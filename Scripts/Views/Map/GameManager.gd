@@ -203,10 +203,9 @@ func peer_disconnected(id : int):
 func set_mouse_selection(selection):
 	mouse_selection = selection
 
-func set_game_ui(reference):
+func set_game_ui(reference : Game_UI):
 	game_ui = reference
 
-	
 # Getters
 # --------------------
 func get_tile_group_name() -> String:

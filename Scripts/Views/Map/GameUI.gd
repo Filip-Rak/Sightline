@@ -48,6 +48,7 @@ func populate_buy_menu():
 # --------------------
 func _process(_delta : float):
 	handle_timer()
+	handle_UI_mask()
 
 func handle_timer():
 	if game_in_progress:
@@ -58,7 +59,19 @@ func handle_timer():
 			time_left_label.text = "Time passed: " + str(floor(time_spent))
 		else:
 			time_left_label.text = "Time left: " + str(floor(time_max - time_spent))
-		 
+	
+func handle_UI_mask():
+	var mouse_in_mask = false
+	for ui_element in get_tree().get_nodes_in_group("ui_mask"):
+		var mouse_pos = get_viewport().get_mouse_position()
+		if ui_element.get_global_rect().has_point(mouse_pos):
+			mouse_in_mask = true
+			
+	MouseModeManager.set_suppress_raycast(mouse_in_mask)
+	# if mouse_in_mask:
+	# 	print ("in")
+	# else:
+	# 	print ("out")
 
 # External Control Functions
 # --------------------
@@ -134,7 +147,7 @@ func _on_unit_buy_button_pressed(unit_type : int):
 			game_manager.select_action(spawn_action)
 	else:
 		print("_on_unit_buy_button_pressed() -> Unit not spawnable")
-
+	
 # Utility
 # --------------------
 func _action_buttons_filter(arr : Array) -> Array:

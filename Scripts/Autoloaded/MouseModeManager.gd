@@ -18,6 +18,7 @@ var current_mouse_mode : MOUSE_MODE = MOUSE_MODE.STANDARD
 var raycast_camera = null
 var game_manager : Game_Manager = null
 var game_ui : Game_UI = null
+var _suppress_raycast : bool = false
 
 # Process Functions
 # --------------------
@@ -25,7 +26,10 @@ var game_ui : Game_UI = null
 func _process(_delta : float):
 	if current_mouse_mode == MOUSE_MODE.STANDARD || !game_manager || !raycast_camera: return
 	
-	var select = get_hovered_on_selectable()
+	var select = null
+	if !_suppress_raycast:
+		select = get_hovered_on_selectable()
+		
 	if !select: game_manager.highlight_manager.clear_mouse_over_highlight()
 	
 	match current_mouse_mode:
@@ -62,7 +66,6 @@ func handle_action(select):
 	if Input.is_action_just_pressed("secondary_interaction"): 
 		game_manager.execute_action(select)
 
-
 # Return 'false' when:
 # - no hit
 # - hit is not selectable
@@ -94,3 +97,6 @@ func set_game_manager(gm : Game_Manager):
 
 func set_game_ui(ui : Game_UI):
 	game_ui = ui
+
+func set_suppress_raycast(value : bool):
+	_suppress_raycast = value

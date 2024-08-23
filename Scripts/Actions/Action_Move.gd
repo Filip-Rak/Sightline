@@ -31,7 +31,7 @@ func _init(display_name : String = "", description : String = ""):
 # --------------------
 
 # Returns tiles available for movement
-func get_available_targets() -> Dictionary:	
+func get_available_targets() -> Dictionary:
 	# Get variables
 	var unit : Unit = _game_manager.get_mouse_selection()
 	var tile_matrix = _game_manager.get_tile_matrix()
