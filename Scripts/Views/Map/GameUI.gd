@@ -59,19 +59,18 @@ func handle_timer():
 			time_left_label.text = "Time passed: " + str(floor(time_spent))
 		else:
 			time_left_label.text = "Time left: " + str(floor(time_max - time_spent))
-	
+
+# Checks if mouse is over UI elements
 func handle_UI_mask():
+	# Find out if the mouse over UI
 	var mouse_in_mask = false
 	for ui_element in get_tree().get_nodes_in_group("ui_mask"):
 		var mouse_pos = get_viewport().get_mouse_position()
 		if ui_element.get_global_rect().has_point(mouse_pos):
 			mouse_in_mask = true
-			
+	
+	# Tell mouse to disable hit detection
 	MouseModeManager.set_suppress_raycast(mouse_in_mask)
-	# if mouse_in_mask:
-	# 	print ("in")
-	# else:
-	# 	print ("out")
 
 # External Control Functions
 # --------------------
@@ -124,7 +123,12 @@ func inspect_tile(_tile : Tile):
 	_set_element_activity(unit_selection_panel, false)
 	_set_element_activity(tile_selection_panel, true)
 	_set_element_activity(inspection_panel_empty, false)
-	
+
+func deselect_inspection():
+	_set_element_activity(unit_selection_panel, false)
+	_set_element_activity(tile_selection_panel, false)
+	_set_element_activity(inspection_panel_empty, true)
+
 # Links
 # --------------------
 func _on_action_button_down(action : Action):
