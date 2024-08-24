@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Scripts/Entities/unit_label_content.gd" id="1_xtj40"]
 
-[node name="UnitLabelContent" type="Control" node_paths=PackedStringArray("_action_points_label", "_unit_name_label", "_health_bar")]
+[node name="UnitLabelContent" type="Control" node_paths=PackedStringArray("_action_points_label", "_unit_name_label", "_health_bar", "_separator")]
 layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
@@ -17,6 +17,7 @@ script = ExtResource("1_xtj40")
 _action_points_label = NodePath("CenterContainer/PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ActionPoints")
 _unit_name_label = NodePath("CenterContainer/PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/UnitName")
 _health_bar = NodePath("CenterContainer/PanelContainer/VBoxContainer/ProgressBar")
+_separator = NodePath("CenterContainer/PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/VSeparator")
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
 layout_mode = 1

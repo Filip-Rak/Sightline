@@ -58,7 +58,6 @@ func reset_all_players():
 func add_unit(owner_id : int, unit : Unit):
 	players[owner_id]["units"].append(unit)
 
-
 # Remote Procedure Calls
 # --------------------
 @rpc("any_peer", "call_local")
