@@ -7,6 +7,8 @@ class_name Unit
 
 # Exported settings
 @export var _type : Unit_Properties.unit_type = Unit_Properties.unit_type.IMV
+@export var _unit_label : Unit_Label
+var _unit_label_content : Unit_Label_Content
 
 # Instance
 var _action_points_left : int
@@ -20,23 +22,45 @@ var _transported_unit : Unit
 func _ready():
 	_action_points_left = Unit_Properties.get_action_points_max(_type)
 	_hit_points_left = Unit_Properties.get_hit_points_max(_type)
+	if _unit_label:
+		_unit_label_content = _unit_label.get_content()
+		_unit_label_content.set_and_update(self)
+	else:
+		printerr("Unit.gd -> _ready(): No unit label assigned!")
 
 # Public Methods
 # --------------------
 
 # Returns 'true' if action_points are left
 func offset_action_points(offset : int) -> bool:
+	# Update value
 	_action_points_left += offset
+	
+	# Update UI
+	if _unit_label_content: 
+		_unit_label_content.update_action_points_label(_action_points_left)
+		
 	return _action_points_left > 0
 
 # Returns 'true' if hp is above 0, 'false' if below or equal 0
 func offset_hit_points(offset : float) -> bool:
+	# Update value
 	_hit_points_left += offset
+	
+	# Update UI
+	if _unit_label_content: 
+		_unit_label_content.update_health_bar(_hit_points_left)
+		
 	return _hit_points_left > 0
 	
 # Sets action points to the value in Unit_Properties
 func reset_action_points():
+	# Update value
 	_action_points_left = Unit_Properties.get_action_points_max(_type)
+	
+	# Update UI
+	if _unit_label_content: 
+		_unit_label_content.update_action_points_label(_action_points_left)
 
 # Getters
 # --------------------

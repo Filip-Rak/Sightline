@@ -13,7 +13,7 @@ enum unit_type{
 static var _type_properties = {
 	unit_type.INFANTRY: 
 	{ 
-		"display_name": "INF",
+		"display_name": "Motostrelki",
 		"price": 1.0,
 		"action_points": 1,
 		"sight_range": 3,
@@ -27,7 +27,7 @@ static var _type_properties = {
 	},
 	unit_type.AT_INFANTRY: 
 	{ 
-		"display_name": "INF_AT",
+		"display_name": "Panzergrenadiers",
 		"price": 2.0,
 		"action_points": 1,
 		"sight_range": 3,
@@ -41,7 +41,7 @@ static var _type_properties = {
 	},
 	unit_type.IMV: 
 	{ 
-		"display_name": "IMV",
+		"display_name": "HMMWV",
 		"price": 2.0,
 		"action_points": 3,
 		"sight_range": 1,
@@ -55,7 +55,7 @@ static var _type_properties = {
 	},
 	unit_type.IFV: 
 	{ 
-		"display_name": "Bradley",
+		"display_name": "M2A3 Bradley IFV",
 		"price": 5.0,
 		"action_points": 2,
 		"sight_range": 2,

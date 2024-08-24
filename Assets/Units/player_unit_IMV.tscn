@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://d1d0lyybr1434"]
+[gd_scene load_steps=8 format=3 uid="uid://d1d0lyybr1434"]
 
 [ext_resource type="Script" path="res://Scripts/Entities/Unit.gd" id="1_0ld7r"]
+[ext_resource type="PackedScene" uid="uid://d3sto7ohshikq" path="res://Assets/Units/unit_label.tscn" id="2_yd2ro"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jh45s"]
 
@@ -39,8 +40,12 @@ shadow_mesh = SubResource("ArrayMesh_kcfmp")
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_1u6jo"]
 points = PackedVector3Array(-0.147299, 0.0245889, -0.311789, 0.148642, 0.111182, -0.397851, -0.12305, 0.299422, 0.140274, -0.148091, 0.0127764, 0.299976, 0.128225, 0.288854, -0.242143, -0.147322, 0.246399, -0.378416, 0.1497, 0.00484128, -0.274276, 0.145467, 0.203604, 0.342919, -0.15552, 0.146277, 0.351051, 0.126477, 0.29776, 0.138428, 0.1497, 0.00484128, 0.271157, 0.143656, 0.248169, -0.385082, -0.15552, 0.111182, -0.397851, -0.124333, 0.300927, -0.199728, -0.14577, 0.00393012, -0.275828, 0.160361, 0.146277, -0.292436, -0.146987, 0.201904, 0.330821, 0.160361, 0.146277, 0.292479, -0.146266, 0.00343446, 0.27397, 0.148642, 0.146277, 0.351051, 0.127022, 0.298401, -0.196736, -0.1497, 0.0563454, 0.325956, 0.1497, 0.0266679, 0.3039, 0.1497, 0.015769, -0.29615, 0.138948, 0.25588, 0.140461, -0.143517, 0.244003, 0.052261, -0.147314, 0.0134964, -0.300696, -0.134377, 0.26702, -0.318852, -0.132801, 0.276533, 0.138893, 0.139218, 0.26702, -0.318852, -0.148101, 0.023906, 0.311106, 0.1497, 0.015769, 0.293031)
 
-[node name="PlayerUnit" type="Node3D"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_xh4qg"]
+viewport_path = NodePath("SubViewport")
+
+[node name="PlayerUnit" type="Node3D" node_paths=PackedStringArray("_unit_label")]
 script = ExtResource("1_0ld7r")
+_unit_label = NodePath("UnitLabel")
 
 [node name="Transport" type="MeshInstance3D" parent="."]
 mesh = SubResource("ArrayMesh_vft8r")
@@ -50,3 +55,6 @@ skeleton = NodePath("")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Transport/RigidBody3D"]
 shape = SubResource("ConvexPolygonShape3D_1u6jo")
+
+[node name="UnitLabel" parent="." instance=ExtResource("2_yd2ro")]
+texture = SubResource("ViewportTexture_xh4qg")
