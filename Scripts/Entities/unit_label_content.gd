@@ -10,10 +10,11 @@ class_name Unit_Label_Content
 @export var _unit_name_label : Label
 @export var _health_bar : ProgressBar
 @export var _separator : VSeparator
+@export var _delimiter : String = "/"
 var _assigned_unit : Unit
 
 # Unit properties
-var ac_points_max : int
+var _ac_points_max : int
 
 # Public Methods
 # --------------------
@@ -33,7 +34,7 @@ func set_and_update(unit : Unit):
 	# Action Points Label
 	# If the unit is in our team, set up the label
 	if PlayerManager.get_team_id(unit.get_player_owner_id()) == PlayerManager.get_my_team_id():
-		ac_points_max = Unit_Properties.get_action_points_max(unit.get_type())
+		_ac_points_max = Unit_Properties.get_action_points_max(unit.get_type())
 	# If it's in the opposite team, disable the label
 	else:
 		_action_points_label.visible = false
@@ -55,4 +56,4 @@ func update_health_bar(value : float):
 	_health_bar.value = value
 
 func update_action_points_label(left : int):
-	_action_points_label.text = str(left) + "/" + str(ac_points_max)
+	_action_points_label.text = str(left) + _delimiter + str(_ac_points_max)
