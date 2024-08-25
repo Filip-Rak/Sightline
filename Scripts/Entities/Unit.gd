@@ -8,6 +8,7 @@ class_name Unit
 # Exported settings
 @export var _type : Unit_Properties.unit_type = Unit_Properties.unit_type.IMV
 @export var _unit_label : Unit_Label_3D
+@export var _visual_element : Node3D
 
 # Instance
 var _action_points_left : int
@@ -95,8 +96,15 @@ func set_player_owner(id : int):
 func set_matrix_tile_position(new_position : Vector3): 
 	_matrix_tile_position = Vector3(new_position.x, 0, new_position.z)
 
-func enable_label_content(value : bool):
+func enable_visual_elements(value : bool):
+	if !_unit_label || !_visual_element:
+		printerr ("ERROR: Unit.gd -> enable_visual_elements(). Not assigned exports")
+		return
+	
 	if value:
 		_unit_label.add_child_content()
 	else:
 		_unit_label.remove_child_content()
+		
+	# In future make sure to also disable / enable the hitbox
+	_visual_element.visible = value

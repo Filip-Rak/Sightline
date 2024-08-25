@@ -3,6 +3,9 @@
 [ext_resource type="Script" path="res://Scripts/Entities/Unit.gd" id="1_6b331"]
 [ext_resource type="PackedScene" uid="uid://d3sto7ohshikq" path="res://Assets/Units/unit_label3D.tscn" id="2_wfune"]
 
+[sub_resource type="ViewportTexture" id="ViewportTexture_p3ynj"]
+viewport_path = NodePath("SubViewport")
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ti1tk"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_xwcrm"]
@@ -82,13 +85,14 @@ bind/16/pose = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 0, 0)
 [sub_resource type="BoxShape3D" id="BoxShape3D_umww4"]
 size = Vector3(0.2, 0.251001, 0.2)
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_p3ynj"]
-viewport_path = NodePath("SubViewport")
-
-[node name="PlayerUnit" type="Node3D" node_paths=PackedStringArray("_unit_label")]
+[node name="PlayerUnit" type="Node3D" node_paths=PackedStringArray("_unit_label", "_visual_element")]
 script = ExtResource("1_6b331")
 _type = 1
 _unit_label = NodePath("UnitLabel")
+_visual_element = NodePath("AT_Infantry")
+
+[node name="UnitLabel" parent="." instance=ExtResource("2_wfune")]
+texture = SubResource("ViewportTexture_p3ynj")
 
 [node name="AT_Infantry" type="Node3D" parent="."]
 
@@ -222,6 +226,3 @@ skin = SubResource("Skin_d2u8g")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="AT_Infantry/RigidBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.126557, 0)
 shape = SubResource("BoxShape3D_umww4")
-
-[node name="UnitLabel" parent="." instance=ExtResource("2_wfune")]
-texture = SubResource("ViewportTexture_p3ynj")

@@ -10,10 +10,11 @@ size = Vector3(0.2, 0.226465, 0.2)
 [sub_resource type="ViewportTexture" id="ViewportTexture_jrqy0"]
 viewport_path = NodePath("SubViewport")
 
-[node name="PlayerUnit" type="Node3D" node_paths=PackedStringArray("_unit_label")]
+[node name="PlayerUnit" type="Node3D" node_paths=PackedStringArray("_unit_label", "_visual_element")]
 script = ExtResource("1_hngpc")
 _type = 0
 _unit_label = NodePath("UnitLabel")
+_visual_element = NodePath("unit_infantry")
 
 [node name="unit_infantry" parent="." instance=ExtResource("2_6txcg")]
 

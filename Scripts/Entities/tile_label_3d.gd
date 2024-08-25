@@ -28,7 +28,6 @@ func update_label(units : Array):
 		_vbox.visible = true
 		_shared_label.visible = false
 		_viewport.size = _vbox.size
-		print("SIZE -> VIEWPORT: %s\tVBOX: %s" %[_viewport.size, _vbox.size])
 	else:
 		_clear_vbox() 
 		_shared_label.visible = false
@@ -45,7 +44,7 @@ func _clear_vbox():
 	for label : Unit_Label_Content in _vbox.get_children():
 		_vbox.remove_child(label)
 		label.owner = null
-		label.get_unit().enable_label_content(true)
+		label.get_unit().enable_visual_elements(true)
 
 # Not most efficient but simplest 
 # with higher chances of working under less predicitable cicumstances
@@ -59,7 +58,7 @@ func _set_vbox(units : Array):
 		var label : Unit_Label_Content = unit.get_label_conent()
 		if label != null:
 			# Disable parent's 3D label
-			unit.enable_label_content(false)
+			unit.enable_visual_elements(false)
 			
 			# Add label to vbox
 			label.owner = null
