@@ -6,6 +6,7 @@ class_name Unit_Label_Content
 # --------------------
 
 # References
+@export var _center_container : CenterContainer
 @export var _action_points_label : Label
 @export var _unit_name_label : Label
 @export var _health_bar : ProgressBar
@@ -57,3 +58,8 @@ func update_health_bar(value : float):
 
 func update_action_points_label(left : int):
 	_action_points_label.text = str(left) + _delimiter + str(_ac_points_max)
+
+# Getters
+# --------------------
+func get_center_container() -> CenterContainer:
+	return _center_container

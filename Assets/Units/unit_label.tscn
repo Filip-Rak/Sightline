@@ -6,13 +6,14 @@
 [sub_resource type="ViewportTexture" id="ViewportTexture_58m1b"]
 viewport_path = NodePath("SubViewport")
 
-[node name="UnitLabel" type="Sprite3D" node_paths=PackedStringArray("_unit_label_content")]
+[node name="UnitLabel" type="Sprite3D" node_paths=PackedStringArray("_viewport", "_unit_label_content")]
 transform = Transform3D(0.12, 0, 0, 0, 0.12, 0, 0, 0, 0.12, 0, 0.487775, 0)
 billboard = 1
 double_sided = false
 no_depth_test = true
 texture = SubResource("ViewportTexture_58m1b")
 script = ExtResource("1_0pvpp")
+_viewport = NodePath("SubViewport")
 _unit_label_content = NodePath("SubViewport/CanvasLayer/UnitLabelContent")
 
 [node name="SubViewport" type="SubViewport" parent="."]
