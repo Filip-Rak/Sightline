@@ -1,0 +1,63 @@
+[gd_scene load_steps=3 format=3 uid="uid://cyh2xihtipjs4"]
+
+[ext_resource type="Script" path="res://Scripts/Entities/tile_label_3d.gd" id="1_vk2mu"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_58m1b"]
+viewport_path = NodePath("SubViewport")
+
+[node name="TileLabel3D" type="Sprite3D" node_paths=PackedStringArray("_vbox", "_shared_label", "_viewport")]
+transform = Transform3D(0.12, 0, 0, 0, 0.12, 0, 0, 0, 0.12, 0, 0.487775, 0)
+billboard = 1
+double_sided = false
+no_depth_test = true
+texture = SubResource("ViewportTexture_58m1b")
+script = ExtResource("1_vk2mu")
+_vbox = NodePath("SubViewport/CanvasLayer/VBoxContainer")
+_shared_label = NodePath("SubViewport/CanvasLayer/SharedLabel")
+_viewport = NodePath("SubViewport")
+
+[node name="SubViewport" type="SubViewport" parent="."]
+transparent_bg = true
+size = Vector2i(1024, 256)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="SubViewport"]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SubViewport/CanvasLayer"]
+custom_minimum_size = Vector2(0, 1000)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_top = -4.0
+offset_bottom = 4.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 1
+
+[node name="SharedLabel" type="PanelContainer" parent="SubViewport/CanvasLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+
+[node name="MarginContainer" type="MarginContainer" parent="SubViewport/CanvasLayer/SharedLabel"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_right = 8
+
+[node name="Label" type="Label" parent="SubViewport/CanvasLayer/SharedLabel/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 64
+text = "( --------- )"

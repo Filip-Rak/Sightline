@@ -4,6 +4,7 @@ class_name Tile
 
 # Exported settings
 @export var _type : Tile_Properties.tile_type = Tile_Properties.tile_type.DEFAULT
+@export var _tile_label : Tile_Label_3D
 @export var _point_value : int = 1
 @export var _team_id : int = -1
 @export var _is_a_spawn : bool = false
@@ -16,10 +17,24 @@ var _support_calls : Array
 # Methods
 # --------------------
 func add_unit_to_tile(unit : Unit):
+	# Update Array
 	_units_in_tile.append(unit)
+	
+	# Update the label above tile
+	if _tile_label:
+		_tile_label.update_label(_units_in_tile)
+	else:
+		printerr ("ERROR: Tile.gd -> add_unit_to_tile(): _tile_label not set!")
 
 func remove_unit_from_tile(unit : Unit):
+	# Update Array
 	_units_in_tile.erase(unit)
+	
+	# Update the label above tile
+	if _tile_label:
+		_tile_label.update_label(_units_in_tile)
+	else:
+		printerr ("ERROR: Tile.gd -> remove_unit_from_tile(): _tile_label not set!")
 	
 func has_enemy():
 	for unit in _units_in_tile:

@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Scripts/Entities/Unit.gd" id="1_hngpc"]
 [ext_resource type="PackedScene" path="res://Assets/Units/unit_infantry.tscn" id="2_6txcg"]
-[ext_resource type="PackedScene" uid="uid://d3sto7ohshikq" path="res://Assets/Units/unit_label.tscn" id="3_isdln"]
+[ext_resource type="PackedScene" uid="uid://d3sto7ohshikq" path="res://Assets/Units/unit_label3D.tscn" id="3_isdln"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_gnulb"]
 size = Vector3(0.2, 0.226465, 0.2)

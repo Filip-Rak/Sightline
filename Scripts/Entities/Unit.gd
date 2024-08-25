@@ -7,7 +7,7 @@ class_name Unit
 
 # Exported settings
 @export var _type : Unit_Properties.unit_type = Unit_Properties.unit_type.IMV
-@export var _unit_label : Unit_Label
+@export var _unit_label : Unit_Label_3D
 
 # Instance
 var _action_points_left : int
@@ -80,6 +80,12 @@ func get_player_owner_id() -> int:
 func get_transported_unit() -> Unit: 
 	return _transported_unit
 
+func get_label_conent() -> Unit_Label_Content:
+	if _unit_label:
+		return _unit_label.get_content()
+	else:
+		return null
+
 # Setters
 # --------------------
 func set_player_owner(id : int): 
@@ -89,3 +95,8 @@ func set_player_owner(id : int):
 func set_matrix_tile_position(new_position : Vector3): 
 	_matrix_tile_position = Vector3(new_position.x, 0, new_position.z)
 
+func enable_label_content(value : bool):
+	if value:
+		_unit_label.add_child_content()
+	else:
+		_unit_label.remove_child_content()

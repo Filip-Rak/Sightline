@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://d1d0lyybr1434"]
 
 [ext_resource type="Script" path="res://Scripts/Entities/Unit.gd" id="1_0ld7r"]
-[ext_resource type="PackedScene" uid="uid://d3sto7ohshikq" path="res://Assets/Units/unit_label.tscn" id="2_yd2ro"]
+[ext_resource type="PackedScene" uid="uid://d3sto7ohshikq" path="res://Assets/Units/unit_label3D.tscn" id="2_yd2ro"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jh45s"]
 

@@ -2,26 +2,7 @@
 
 [ext_resource type="Script" path="res://Scripts/Entities/unit_label_content.gd" id="1_xtj40"]
 
-[node name="UnitLabelContent" type="Control" node_paths=PackedStringArray("_center_container", "_action_points_label", "_unit_name_label", "_health_bar", "_separator")]
-layout_mode = 3
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-script = ExtResource("1_xtj40")
-_center_container = NodePath("CenterContainer")
-_action_points_label = NodePath("CenterContainer/PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ActionPoints")
-_unit_name_label = NodePath("CenterContainer/PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/UnitName")
-_health_bar = NodePath("CenterContainer/PanelContainer/VBoxContainer/ProgressBar")
-_separator = NodePath("CenterContainer/PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/VSeparator")
-
-[node name="CenterContainer" type="CenterContainer" parent="."]
-layout_mode = 1
+[node name="UnitLabelContent" type="CenterContainer" node_paths=PackedStringArray("_action_points_label", "_unit_name_label", "_health_bar", "_separator")]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -33,16 +14,21 @@ offset_right = 108.5
 offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_xtj40")
+_action_points_label = NodePath("PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ActionPoints")
+_unit_name_label = NodePath("PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/UnitName")
+_health_bar = NodePath("PanelContainer/VBoxContainer/ProgressBar")
+_separator = NodePath("PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/VSeparator")
 
-[node name="PanelContainer" type="PanelContainer" parent="CenterContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/PanelContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="ProgressBar" type="ProgressBar" parent="CenterContainer/PanelContainer/VBoxContainer"]
+[node name="ProgressBar" type="ProgressBar" parent="PanelContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 15)
 layout_mode = 2
 size_flags_vertical = 3
@@ -51,27 +37,27 @@ value = 23.0
 rounded = true
 show_percentage = false
 
-[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/PanelContainer/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 8
 theme_override_constants/margin_right = 8
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/PanelContainer/VBoxContainer/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="ActionPoints" type="Label" parent="CenterContainer/PanelContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+[node name="ActionPoints" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 64
 text = "1/1"
 horizontal_alignment = 1
 
-[node name="VSeparator" type="VSeparator" parent="CenterContainer/PanelContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+[node name="VSeparator" type="VSeparator" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="UnitName" type="Label" parent="CenterContainer/PanelContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+[node name="UnitName" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 64
 text = "SET VIA SCRIPT"
