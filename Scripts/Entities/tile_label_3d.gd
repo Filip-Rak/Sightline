@@ -63,3 +63,26 @@ func _set_vbox(units : Array):
 			# Add label to vbox
 			label.owner = null
 			_vbox.add_child(label)
+
+# Input
+func _unhandled_input(_event):
+	if Input.is_action_just_pressed("main_interaction"):
+		var local_pos = _viewport.get_mouse_position()
+		if local_pos != Vector2.ZERO:
+			print ("INPUT: %s" % [local_pos])
+		
+		# Check which node in the VBox was clicked
+		var clicked_node = find_node_under_click(local_pos)
+		
+		if clicked_node:
+			print ("CLICKED ON %s" % [clicked_node])
+
+func find_node_under_click(local_pos: Vector2) -> Control:
+	# Iterate over all children of VBox to see which one was clicked
+	for child in _vbox.get_children():
+		if child is Control:
+			var rect = child.get_rect()
+			if rect.has_point(local_pos):
+				return child
+	return null
+

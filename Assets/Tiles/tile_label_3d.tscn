@@ -18,7 +18,8 @@ _viewport = NodePath("SubViewport")
 
 [node name="SubViewport" type="SubViewport" parent="."]
 transparent_bg = true
-size = Vector2i(1024, 256)
+handle_input_locally = false
+render_target_update_mode = 4
 
 [node name="CanvasLayer" type="CanvasLayer" parent="SubViewport"]
 

@@ -53,6 +53,8 @@ mesh = SubResource("ArrayMesh_vft8r")
 skeleton = NodePath("")
 
 [node name="RigidBody3D" type="RigidBody3D" parent="Transport"]
+freeze = true
+freeze_mode = 1
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Transport/RigidBody3D"]
 shape = SubResource("ConvexPolygonShape3D_1u6jo")

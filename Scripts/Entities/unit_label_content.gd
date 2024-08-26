@@ -46,6 +46,13 @@ func set_and_update(unit : Unit):
 	
 	# Call the function for updating the values
 	update_all_elements(unit)
+	
+	# Call the update on 3D when done
+	# This class was suppoused to be standalone
+	# And this is stupid, and dumb
+	# And so is GDScript
+	if _assigned_unit && _assigned_unit._unit_label:
+		_assigned_unit._unit_label.force_update_viewport_size()
 
 # Updates everything
 func update_all_elements(unit : Unit):

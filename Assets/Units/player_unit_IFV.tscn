@@ -19,6 +19,8 @@ _visual_element = NodePath("ifv_body")
 [node name="ifv_body" parent="." instance=ExtResource("2_8um86")]
 
 [node name="RigidBody3D" type="RigidBody3D" parent="ifv_body"]
+freeze = true
+freeze_mode = 1
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="ifv_body/RigidBody3D"]
 shape = SubResource("ConvexPolygonShape3D_pa1rv")

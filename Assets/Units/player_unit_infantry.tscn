@@ -19,6 +19,8 @@ _visual_element = NodePath("unit_infantry")
 [node name="unit_infantry" parent="." instance=ExtResource("2_6txcg")]
 
 [node name="RigidBody3D" type="RigidBody3D" parent="unit_infantry"]
+freeze = true
+freeze_mode = 1
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="unit_infantry/RigidBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.114289, 0)

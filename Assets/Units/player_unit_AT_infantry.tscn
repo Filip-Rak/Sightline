@@ -222,6 +222,8 @@ mesh = SubResource("ArrayMesh_xwcrm")
 skin = SubResource("Skin_d2u8g")
 
 [node name="RigidBody3D" type="RigidBody3D" parent="AT_Infantry"]
+freeze = true
+freeze_mode = 1
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="AT_Infantry/RigidBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.126557, 0)

@@ -24,6 +24,7 @@ func _ready():
 	_hit_points_left = Unit_Properties.get_hit_points_max(_type)
 	if _unit_label:
 		_unit_label._unit_label_content.set_and_update(self)
+		_unit_label.force_update_viewport_size()
 	else:
 		printerr("Unit.gd -> _ready(): No unit label assigned!")
 
