@@ -88,7 +88,7 @@ func get_x_size() -> int:
 	return x_size
 
 func get_z_size() -> int:
-	return x_size
+	return z_size
 
 func get_pos_offset_x() -> int:
 	return positional_offset_x

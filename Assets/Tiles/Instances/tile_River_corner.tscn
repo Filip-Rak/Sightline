@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://dqycrby8dtxpk"]
+[gd_scene load_steps=9 format=3 uid="uid://dqycrby8dtxpk"]
 
 [ext_resource type="Script" path="res://Scripts/Entities/Tile.gd" id="1_a5r8y"]
+[ext_resource type="PackedScene" uid="uid://cyh2xihtipjs4" path="res://Assets/Tiles/tile_label_3d.tscn" id="2_fn5fw"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4dc8t"]
 albedo_color = Color(0.1296, 0.48, 0.42744, 1)
@@ -42,9 +43,13 @@ shadow_mesh = SubResource("ArrayMesh_txcf4")
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_0qa14"]
 points = PackedVector3Array(0.206237, 0.134921, 0.190426, -0.507937, -0.00793651, -0.507937, -0.507937, -0.00793651, 0.507937, 0.507937, -0.00793651, -0.507937, 0.507937, -0.00793651, 0.507937, -0.269779, 0.119035, -0.333321, 0.412674, 0.134921, -0.3015, -0.507937, 0.0555633, 0.507937, 0.507937, 0.0555633, 0.507937, -0.507937, 0.0555633, -0.507937, -0.365042, 0.119035, 0.3015, 0.507937, 0.0555633, -0.507937, 0.349132, 0.119035, 0.349132, 0.190426, 0.134921, 0.174516, -0.365042, 0.119035, 0.269779, 0.412674, 0.134921, -0.285689, 0.396763, 0.134921, -0.3015, 0.333321, 0.119035, 0.349132, 0.190426, 0.134921, 0.190426)
 
-[node name="Tile" type="Node3D"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_vof24"]
+viewport_path = NodePath("SubViewport")
+
+[node name="Tile" type="Node3D" node_paths=PackedStringArray("_tile_label")]
 script = ExtResource("1_a5r8y")
 _type = 6
+_tile_label = NodePath("TileLabel3D")
 
 [node name="tile_River_corner" type="MeshInstance3D" parent="."]
 material_override = SubResource("StandardMaterial3D_4dc8t")
@@ -55,3 +60,6 @@ skeleton = NodePath("")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="tile_River_corner/StaticBody3D"]
 shape = SubResource("ConvexPolygonShape3D_0qa14")
+
+[node name="TileLabel3D" parent="." instance=ExtResource("2_fn5fw")]
+texture = SubResource("ViewportTexture_vof24")

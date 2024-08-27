@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://qjx8est1huum"]
+[gd_scene load_steps=9 format=3 uid="uid://qjx8est1huum"]
 
 [ext_resource type="Script" path="res://Scripts/Entities/Tile.gd" id="1_7cn6m"]
+[ext_resource type="PackedScene" uid="uid://cyh2xihtipjs4" path="res://Assets/Tiles/tile_label_3d.tscn" id="2_86n0t"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ebckr"]
 albedo_color = Color(0.54, 0.51255, 0.2106, 1)
@@ -42,9 +43,13 @@ shadow_mesh = SubResource("ArrayMesh_ttfsb")
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_di16u"]
 points = PackedVector3Array(-0.158764, 0.182521, -0.285689, 0.507937, 0.0555732, 0.507937, -0.507874, 0.0555732, 0.507937, -0.465723, 0, -0.465783, 0.507937, 0.0555732, -0.507937, 0.0633701, 0.182521, 0.476116, 0.465694, 0, 0.465692, 0.460308, 0.166639, -0.158705, -0.428427, 0.166639, -0.333321, -0.465723, 0, 0.465783, 0.465694, 0, -0.465692, -0.507874, 0.0555732, -0.507937, -0.460246, 0.166639, -0.222148, -0.364989, 0.119028, 0.444395, 0.403581, 0.159351, 0.216191, -0.0158783, 0.182521, -0.285689, 0.428489, 0.119028, 0.428484, 0.422881, 0.160187, -0.233317, -0.0952261, 0.166639, 0.444395, 0.0951888, 0.182521, 0.333321, -0.158764, 0.182521, -0.253968, -0.396807, 0.166639, -0.333321)
 
-[node name="Tile" type="Node3D"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_lafrj"]
+viewport_path = NodePath("SubViewport")
+
+[node name="Tile" type="Node3D" node_paths=PackedStringArray("_tile_label")]
 script = ExtResource("1_7cn6m")
 _type = 5
+_tile_label = NodePath("TileLabel3D")
 
 [node name="tile_Town" type="MeshInstance3D" parent="."]
 material_override = SubResource("StandardMaterial3D_ebckr")
@@ -55,3 +60,6 @@ skeleton = NodePath("")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="tile_Town/StaticBody3D"]
 shape = SubResource("ConvexPolygonShape3D_di16u")
+
+[node name="TileLabel3D" parent="." instance=ExtResource("2_86n0t")]
+texture = SubResource("ViewportTexture_lafrj")

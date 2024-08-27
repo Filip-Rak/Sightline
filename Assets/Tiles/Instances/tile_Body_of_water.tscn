@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://detnfrch1wh4d"]
+[gd_scene load_steps=9 format=3 uid="uid://detnfrch1wh4d"]
 
 [ext_resource type="Script" path="res://Scripts/Entities/Tile.gd" id="1_i4fuj"]
+[ext_resource type="PackedScene" uid="uid://cyh2xihtipjs4" path="res://Assets/Tiles/tile_label_3d.tscn" id="2_lf0k3"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mu4fi"]
 albedo_color = Color(0.18, 0.453, 0.6, 1)
@@ -42,9 +43,13 @@ shadow_mesh = SubResource("ArrayMesh_ekhty")
 [sub_resource type="BoxShape3D" id="BoxShape3D_4kkdw"]
 size = Vector3(1, 0.0493774, 1)
 
-[node name="Tile" type="Node3D"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_vxrlc"]
+viewport_path = NodePath("SubViewport")
+
+[node name="Tile" type="Node3D" node_paths=PackedStringArray("_tile_label")]
 script = ExtResource("1_i4fuj")
 _type = 1
+_tile_label = NodePath("TileLabel3D")
 
 [node name="tile_Body_of_water" type="MeshInstance3D" parent="."]
 material_override = SubResource("StandardMaterial3D_mu4fi")
@@ -56,3 +61,6 @@ skeleton = NodePath("")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="tile_Body_of_water/StaticBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0281677, 0)
 shape = SubResource("BoxShape3D_4kkdw")
+
+[node name="TileLabel3D" parent="." instance=ExtResource("2_lf0k3")]
+texture = SubResource("ViewportTexture_vxrlc")
