@@ -30,7 +30,7 @@ func get_available_targets() -> Dictionary:
 	var tile_matrix = _game_manager.get_tile_matrix()
 	
 	# Save mouse_selection as unit
-	var unit : Unit_Properties.unit_type = _game_manager.mouse_selection
+	var unit : Unit_Properties.unit_type = _game_manager.get_mouse_selection()
 	
 	# Find all the tiles suitable for spawning
 	var good_tiles = []
@@ -57,12 +57,12 @@ func perform_action(_target : Tile):
 	var tree : NodePath = self.get_path()
 	var player_id : int = multiplayer.get_unique_id()
 	
-	rpc("spawn_unit", spawn_path, _game_manager.mouse_selection, player_id, tree) 
+	rpc("spawn_unit", spawn_path, _game_manager.get_mouse_selection(), player_id, tree) 
 	
 	# Clear all selections after spawning - consider not doing so for 'shift' effect
 	_game_manager.highlight_manager.clear_mouse_over_highlight()
 	_game_manager.highlight_manager.clear_mass_highlight()	
-	_game_manager.mouse_selection = null
+	_game_manager.set_mouse_selection(null)
 
 	# Change mouse mode to inspect
 	MouseModeManager.set_mouse_mode(MouseModeManager.MOUSE_MODE.INSPECTION)

@@ -7,13 +7,14 @@ class_name Unit_Label_Content
 
 # References
 @export var _sprite3D : Sprite3D
-@export var _action_points_label : Label
+@export var _actions : HBoxContainer
+@export var _selection : HBoxContainer
 @export var _unit_name_label : Label
+@export var _action_points_label : Label
 @export var _health_bar : ProgressBar
-@export var _separator : VSeparator
 @export var _delimiter : String = "/"
-var _assigned_unit : Unit
 var _initial_pos : Vector2
+var _assigned_unit : Unit
 
 # Unit properties
 var _ac_points_max : int
@@ -45,18 +46,13 @@ func set_and_update(unit : Unit, sprite3D : Sprite3D):
 		_ac_points_max = Unit_Properties.get_action_points_max(unit.get_type())
 	# If it's in the opposite team, disable the label
 	else:
-		_action_points_label.visible = false
-		_separator.visible = false
+		_actions.visible = false
+	
+	# Disable the selction icon
+	_selection.visible = false
 	
 	# Call the function for updating the values
 	update_all_elements(unit)
-	
-	# Call the update on 3D when done
-	# This class was suppoused to be standalone
-	# And this is stupid, and dumb
-	# And so is GDScript
-	if _assigned_unit && _assigned_unit._unit_label:
-		_assigned_unit._unit_label.force_update_viewport_size()
 
 # Updates everything
 func update_all_elements(unit : Unit):
@@ -76,6 +72,14 @@ func update_action_points_label(left : int):
 func reset_pos():
 	position = _initial_pos
 
+# Private Methods
+# --------------------
+func _notification(what):
+	if what == NOTIFICATION_RESIZED:
+		# Update the size of the viewport
+		if _assigned_unit && _assigned_unit.get_label():
+			_assigned_unit.get_label().force_update_viewport_size()
+
 # Getters
 # --------------------
 func get_unit() -> Unit:
@@ -86,3 +90,8 @@ func get_unit() -> Unit:
 func set_sprite_3D(sprite : Sprite3D):
 	_sprite3D = sprite
 
+func set_selection_vis(value : bool):
+	if PlayerManager.get_team_id(_assigned_unit.get_player_owner_id()) == PlayerManager.get_my_team_id():
+		_selection.visible = value
+	else:
+		_selection.visible = false

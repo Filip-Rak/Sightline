@@ -109,6 +109,7 @@ func _remove_selection():
 	game_manager.highlight_manager.clear_mouse_over_highlight()
 	game_manager.highlight_manager.clear_mass_highlight()
 	game_manager.selected_action = null
+	game_manager.set_mouse_selection(null)
 	
 	# Set Mouse Mode to Inspection
 	current_mouse_mode = MOUSE_MODE.INSPECTION

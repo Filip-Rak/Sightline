@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Scripts/Entities/unit_label_content.gd" id="1_xtj40"]
 
-[node name="UnitLabelContent" type="CenterContainer" node_paths=PackedStringArray("_action_points_label", "_unit_name_label", "_health_bar", "_separator")]
+[node name="UnitLabelContent" type="CenterContainer" node_paths=PackedStringArray("_actions", "_selection", "_unit_name_label", "_action_points_label", "_health_bar")]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -15,10 +15,11 @@ offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_xtj40")
-_action_points_label = NodePath("PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ActionPoints")
+_actions = NodePath("PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/Actions")
+_selection = NodePath("PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/Selection")
 _unit_name_label = NodePath("PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/UnitName")
+_action_points_label = NodePath("PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/Actions/ActionPoints")
 _health_bar = NodePath("PanelContainer/VBoxContainer/ProgressBar")
-_separator = NodePath("PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/VSeparator")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 2
@@ -46,14 +47,17 @@ theme_override_constants/margin_right = 8
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="ActionPoints" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+[node name="Actions" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="ActionPoints" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/Actions"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 64
 text = "1/1"
 horizontal_alignment = 1
 
-[node name="VSeparator" type="VSeparator" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+[node name="VSeparator" type="VSeparator" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/Actions"]
 layout_mode = 2
 size_flags_horizontal = 3
 
@@ -62,3 +66,15 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 64
 text = "SET VIA SCRIPT"
 horizontal_alignment = 1
+
+[node name="Selection" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="VSeparator2" type="VSeparator" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/Selection"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/Selection"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+text = "#"

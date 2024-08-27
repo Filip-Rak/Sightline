@@ -150,7 +150,10 @@ func deselect_inspection():
 
 func select_in_ui(unit : Unit):
 	MouseModeManager.handle_inspection(unit)
-	game_manager.set_mouse_selection(unit)
+	
+	# I am pretty sure I should do it like that
+	# But I am tired and don't care
+	MouseModeManager.current_mouse_mode = MouseModeManager.MOUSE_MODE.STANDARD
 
 # Links
 # --------------------

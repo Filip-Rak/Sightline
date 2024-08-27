@@ -89,6 +89,9 @@ func get_label_conent() -> Unit_Label_Content:
 	else:
 		return null
 
+func get_label() -> Unit_Label_3D:
+	return _unit_label
+
 # Setters
 # --------------------
 func set_player_owner(id : int): 

@@ -53,7 +53,7 @@ func get_available_targets() -> Dictionary:
 
 func perform_action(target):
 	# Get variables
-	var unit = _game_manager.mouse_selection
+	var unit = _game_manager.get_mouse_selection()
 	var tile_matrix = _game_manager.get_tile_matrix()
 	
 	# Do a pathfinding call
