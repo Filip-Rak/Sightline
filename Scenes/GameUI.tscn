@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://bec3g8cgjax13"]
+[gd_scene load_steps=5 format=3 uid="uid://bec3g8cgjax13"]
 
 [ext_resource type="Script" path="res://Scripts/Views/Map/GameUI.gd" id="1_5uulx"]
+[ext_resource type="Texture2D" uid="uid://bmu2ocjq7drcx" path="res://Assets/debug/crosshair.png" id="2_k2au3"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o0jpd"]
 draw_center = false
@@ -8,7 +9,7 @@ draw_center = false
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d5pqr"]
 draw_center = false
 
-[node name="GameUI" type="CanvasLayer" node_paths=PackedStringArray("player_turn_label", "player_name_label", "time_left_label", "buy_menu", "inspection_panel_empty", "unit_selection_panel", "tile_selection_panel")]
+[node name="GameUI" type="CanvasLayer" node_paths=PackedStringArray("player_turn_label", "player_name_label", "time_left_label", "buy_menu", "inspection_panel_empty", "unit_selection_panel", "tile_selection_panel", "debug_crosshair", "debug_rect")]
 script = ExtResource("1_5uulx")
 player_turn_label = NodePath("LowerSection/TurnPanel/MarginContainer/VBoxContainer/HBoxContainer/PlayerTurnLabel")
 player_name_label = NodePath("PlayerNameLabel")
@@ -17,6 +18,8 @@ buy_menu = NodePath("BuyMenu")
 inspection_panel_empty = NodePath("LowerSection/MiddlePanel/InspectionPanel")
 unit_selection_panel = NodePath("LowerSection/MiddlePanel/UnitSelectionPanel")
 tile_selection_panel = NodePath("LowerSection/MiddlePanel/TileSelectionPanel")
+debug_crosshair = NodePath("DebugCrosshair")
+debug_rect = NodePath("ReferenceRect")
 
 [node name="LowerSection" type="HBoxContainer" parent="." groups=["ui_mask"]]
 anchors_preset = 12
@@ -250,6 +253,19 @@ offset_right = 40.0
 offset_bottom = 23.0
 text = "Player: "
 metadata/_edit_use_anchors_ = true
+
+[node name="DebugCrosshair" type="Sprite2D" parent="."]
+position = Vector2(-90, 0)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("2_k2au3")
+
+[node name="ReferenceRect" type="ReferenceRect" parent="."]
+offset_left = -114.0
+offset_top = 62.0
+offset_right = -74.0
+offset_bottom = 102.0
+mouse_filter = 2
+editor_only = false
 
 [connection signal="button_down" from="LowerSection/DeployPanel/MarginContainer/VBoxContainer/DeployButton" to="." method="_on_deploy_button_down"]
 [connection signal="button_down" from="LowerSection/TurnPanel/MarginContainer/VBoxContainer/EndTurnButton" to="." method="_on_end_turn_button_down"]

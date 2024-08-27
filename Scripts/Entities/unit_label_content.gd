@@ -6,6 +6,7 @@ class_name Unit_Label_Content
 # --------------------
 
 # References
+@export var _sprite3D : Sprite3D
 @export var _action_points_label : Label
 @export var _unit_name_label : Label
 @export var _health_bar : ProgressBar
@@ -21,9 +22,12 @@ var _ac_points_max : int
 # --------------------
 
 # For initial set up of the elements
-func set_and_update(unit : Unit):
+func set_and_update(unit : Unit, sprite3D : Sprite3D):
 	# Save unit reference
 	_assigned_unit = unit
+	
+	# Save sprite3D reference
+	_sprite3D = sprite3D
 	
 	# Save initial positions
 	_initial_pos = position
@@ -76,3 +80,9 @@ func reset_pos():
 # --------------------
 func get_unit() -> Unit:
 	return _assigned_unit
+
+# Setters
+# --------------------
+func set_sprite_3D(sprite : Sprite3D):
+	_sprite3D = sprite
+

@@ -97,7 +97,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 3)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 1)
 
 [node name="PlayerCamera" parent="." instance=ExtResource("6_mp15b")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.59917, 0, 4.14529)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6, 0, 4.145)
 enable_collision_avoidance = false
 
 [node name="GameUI" parent="." node_paths=PackedStringArray("game_manager") instance=ExtResource("8_vnqxy")]

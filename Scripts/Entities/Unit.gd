@@ -23,7 +23,7 @@ func _ready():
 	_action_points_left = Unit_Properties.get_action_points_max(_type)
 	_hit_points_left = Unit_Properties.get_hit_points_max(_type)
 	if _unit_label:
-		_unit_label._unit_label_content.set_and_update(self)
+		_unit_label._unit_label_content.set_and_update(self, _unit_label)
 		_unit_label.force_update_viewport_size()
 	else:
 		printerr("Unit.gd -> _ready(): No unit label assigned!")
@@ -103,6 +103,7 @@ func enable_visual_elements(value : bool):
 		return
 	
 	if value:
+		_unit_label.get_content().set_sprite_3D(_unit_label)
 		_unit_label.add_child_content()
 	else:
 		_unit_label.remove_child_content()

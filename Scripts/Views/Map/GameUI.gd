@@ -14,6 +14,8 @@ class_name Game_UI
 @export var inspection_panel_empty : PanelContainer
 @export var unit_selection_panel : PanelContainer
 @export var tile_selection_panel : PanelContainer
+@export var debug_crosshair : Sprite2D
+@export var debug_rect : ReferenceRect
 
 var game_in_progress = false
 

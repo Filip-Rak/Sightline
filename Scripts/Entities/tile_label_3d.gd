@@ -62,6 +62,7 @@ func _set_vbox(units : Array):
 			
 			# Add label to vbox
 			label.owner = null
+			label.set_sprite_3D(self)
 			_vbox.add_child(label)
 
 # Input
