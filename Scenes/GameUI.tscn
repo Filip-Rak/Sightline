@@ -9,7 +9,7 @@ draw_center = false
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d5pqr"]
 draw_center = false
 
-[node name="GameUI" type="CanvasLayer" node_paths=PackedStringArray("player_turn_label", "player_name_label", "time_left_label", "buy_menu", "inspection_panel_empty", "unit_selection_panel", "tile_selection_panel", "debug_crosshair", "debug_rect")]
+[node name="GameUI" type="CanvasLayer" node_paths=PackedStringArray("player_turn_label", "player_name_label", "time_left_label", "buy_menu", "inspection_panel_empty", "unit_selection_panel", "tile_selection_panel", "unit_grid_container", "debug_crosshair", "debug_rect")]
 script = ExtResource("1_5uulx")
 player_turn_label = NodePath("LowerSection/TurnPanel/MarginContainer/VBoxContainer/HBoxContainer/PlayerTurnLabel")
 player_name_label = NodePath("PlayerNameLabel")
@@ -18,6 +18,7 @@ buy_menu = NodePath("BuyMenu")
 inspection_panel_empty = NodePath("LowerSection/MiddlePanel/InspectionPanel")
 unit_selection_panel = NodePath("LowerSection/MiddlePanel/UnitSelectionPanel")
 tile_selection_panel = NodePath("LowerSection/MiddlePanel/TileSelectionPanel")
+unit_grid_container = NodePath("LowerSection/MiddlePanel/TileSelectionPanel/HBoxContainer/Units/UnitGridContainer")
 debug_crosshair = NodePath("DebugCrosshair")
 debug_rect = NodePath("ReferenceRect")
 
@@ -71,6 +72,7 @@ mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_o0jpd")
 
 [node name="InspectionPanel" type="PanelContainer" parent="LowerSection/MiddlePanel"]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 6.0
@@ -158,18 +160,34 @@ size_flags_vertical = 3
 text = "6"
 
 [node name="TileSelectionPanel" type="PanelContainer" parent="LowerSection/MiddlePanel"]
-visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 6.0
 mouse_filter = 2
 
-[node name="Label" type="Label" parent="LowerSection/MiddlePanel/TileSelectionPanel"]
+[node name="HBoxContainer" type="HBoxContainer" parent="LowerSection/MiddlePanel/TileSelectionPanel"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 24
-text = "Tile
-"
-horizontal_alignment = 1
+
+[node name="TileDetails" type="PanelContainer" parent="LowerSection/MiddlePanel/TileSelectionPanel/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 5.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_d5pqr")
+
+[node name="Label" type="Label" parent="LowerSection/MiddlePanel/TileSelectionPanel/HBoxContainer/TileDetails"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Tile details"
+
+[node name="Units" type="ScrollContainer" parent="LowerSection/MiddlePanel/TileSelectionPanel/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.0
+
+[node name="UnitGridContainer" type="GridContainer" parent="LowerSection/MiddlePanel/TileSelectionPanel/HBoxContainer/Units"]
+layout_mode = 2
+columns = 2
 
 [node name="TurnPanel" type="PanelContainer" parent="LowerSection"]
 layout_mode = 2

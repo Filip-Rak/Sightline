@@ -9,6 +9,7 @@ class_name Unit
 @export var _type : Unit_Properties.unit_type = Unit_Properties.unit_type.IMV
 @export var _unit_label : Unit_Label_3D
 @export var _visual_element : Node3D
+@export var _collision_shape : CollisionShape3D
 
 # Instance
 var _action_points_left : int
@@ -108,5 +109,5 @@ func enable_visual_elements(value : bool):
 	else:
 		_unit_label.remove_child_content()
 		
-	# In future make sure to also disable / enable the hitbox
 	_visual_element.visible = value
+	_collision_shape.disabled = !value

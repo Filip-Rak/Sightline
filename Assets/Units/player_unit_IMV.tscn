@@ -43,10 +43,11 @@ points = PackedVector3Array(-0.147299, 0.0245889, -0.311789, 0.148642, 0.111182,
 [sub_resource type="ViewportTexture" id="ViewportTexture_xh4qg"]
 viewport_path = NodePath("SubViewport")
 
-[node name="PlayerUnit" type="Node3D" node_paths=PackedStringArray("_unit_label", "_visual_element")]
+[node name="PlayerUnit" type="Node3D" node_paths=PackedStringArray("_unit_label", "_visual_element", "_collision_shape")]
 script = ExtResource("1_0ld7r")
 _unit_label = NodePath("UnitLabel")
 _visual_element = NodePath("Transport")
+_collision_shape = NodePath("Transport/RigidBody3D/CollisionShape3D")
 
 [node name="Transport" type="MeshInstance3D" parent="."]
 mesh = SubResource("ArrayMesh_vft8r")

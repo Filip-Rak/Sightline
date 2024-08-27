@@ -14,6 +14,7 @@ class_name Game_UI
 @export var inspection_panel_empty : PanelContainer
 @export var unit_selection_panel : PanelContainer
 @export var tile_selection_panel : PanelContainer
+@export var unit_grid_container : GridContainer
 @export var debug_crosshair : Sprite2D
 @export var debug_rect : ReferenceRect
 
@@ -32,6 +33,9 @@ func set_externals():
 func set_UI():
 	populate_buy_menu()
 	player_name_label.text = "Player: " + PlayerManager.get_player_name(multiplayer.get_unique_id()) + " " + str(multiplayer.get_unique_id())
+	_set_element_activity(unit_selection_panel, false)
+	_set_element_activity(tile_selection_panel, false)
+	_set_element_activity(inspection_panel_empty, true)
 
 func populate_buy_menu():
 	var hbox
@@ -108,7 +112,7 @@ func inspect_unit(unit : Unit):
 			button.text = action.get_display_name()
 			
 			# Connect the button's "button_down" signal to function, passing the action as an argument
-			button.connect("button_down", Callable(self, "_on_action_button_down").bind(action))
+			button.connect("button_down", Callable(self, "_on_action_button_down").bind(action, unit))
 			
 			# Enable the button since it has an assigned action
 			button.disabled = false
@@ -121,19 +125,37 @@ func inspect_unit(unit : Unit):
 	if actions.size() > action_buttons.size():
 		print("inspect_unit() -> Warning: Too many actions, not all actions will be assigned to buttons")
 
-func inspect_tile(_tile : Tile):
+func inspect_tile(tile : Tile):
 	_set_element_activity(unit_selection_panel, false)
 	_set_element_activity(tile_selection_panel, true)
 	_set_element_activity(inspection_panel_empty, false)
+	
+	# Reset unit grid container
+	for child in unit_grid_container.get_children():
+		child.queue_free()
+	
+	# Fill the unit grid container
+	var units = tile.get_units_in_tile()
+	for unit : Unit in units:
+		var unit_button = Button.new()
+		unit_button.connect("button_down", Callable(self, "select_in_ui").bind(unit))
+		unit_button.text = Unit_Properties.get_display_name(unit.get_type())
+		
+		unit_grid_container.add_child(unit_button)
 
 func deselect_inspection():
 	_set_element_activity(unit_selection_panel, false)
 	_set_element_activity(tile_selection_panel, false)
 	_set_element_activity(inspection_panel_empty, true)
 
+func select_in_ui(unit : Unit):
+	MouseModeManager.handle_inspection(unit)
+	game_manager.set_mouse_selection(unit)
+
 # Links
 # --------------------
-func _on_action_button_down(action : Action):
+func _on_action_button_down(action : Action, unit : Unit):
+	game_manager.mouse_selection = unit
 	game_manager.select_action(action)
 
 func _on_end_turn_button_down():

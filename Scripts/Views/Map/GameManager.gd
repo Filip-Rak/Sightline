@@ -74,6 +74,8 @@ func _ready():
 			action.set_game_manager(self)
 			add_child(action)
 
+# Process Functions
+# --------------------
 func _process(_delta : float):
 	pass
 

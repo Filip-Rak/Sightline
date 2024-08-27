@@ -85,11 +85,12 @@ bind/16/pose = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 0, 0)
 [sub_resource type="BoxShape3D" id="BoxShape3D_umww4"]
 size = Vector3(0.2, 0.251001, 0.2)
 
-[node name="PlayerUnit" type="Node3D" node_paths=PackedStringArray("_unit_label", "_visual_element")]
+[node name="PlayerUnit" type="Node3D" node_paths=PackedStringArray("_unit_label", "_visual_element", "_collision_shape")]
 script = ExtResource("1_6b331")
 _type = 1
 _unit_label = NodePath("UnitLabel")
 _visual_element = NodePath("AT_Infantry")
+_collision_shape = NodePath("AT_Infantry/RigidBody3D/CollisionShape3D")
 
 [node name="UnitLabel" parent="." instance=ExtResource("2_wfune")]
 texture = SubResource("ViewportTexture_p3ynj")
