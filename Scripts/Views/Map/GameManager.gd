@@ -206,16 +206,6 @@ func peer_disconnected(id : int):
 # Setters
 # --------------------
 func set_mouse_selection(selection):
-	# Disable current selection
-	if mouse_selection is Unit:
-		var label_content : Unit_Label_Content = mouse_selection.get_label_conent()
-		if label_content: label_content.set_selection_vis(false)
-	
-	# Enable new selection
-	if selection is Unit:
-		var label_content : Unit_Label_Content = selection.get_label_conent()
-		if label_content: label_content.set_selection_vis(true)
-		
 	# Reassign the global var
 	mouse_selection = selection
 

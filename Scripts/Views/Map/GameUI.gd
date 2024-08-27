@@ -19,6 +19,7 @@ class_name Game_UI
 @export var debug_rect : ReferenceRect
 
 var game_in_progress = false
+var _tracked_unit : Unit
 
 # Ready Functions
 # --------------------
@@ -90,6 +91,9 @@ func inspect_unit(unit : Unit):
 	_set_element_activity(tile_selection_panel, false)
 	_set_element_activity(inspection_panel_empty, false)
 	
+	# Update unit label's visual properties
+	_track_unit(unit)
+	
 	var action_buttons: Array = get_tree().get_nodes_in_group("action_buttons")
 	var actions: Array = Unit_Properties.get_actions(unit.get_type())
 	
@@ -126,9 +130,13 @@ func inspect_unit(unit : Unit):
 		print("inspect_unit() -> Warning: Too many actions, not all actions will be assigned to buttons")
 
 func inspect_tile(tile : Tile):
+	# Set visibility to panels
 	_set_element_activity(unit_selection_panel, false)
 	_set_element_activity(tile_selection_panel, true)
 	_set_element_activity(inspection_panel_empty, false)
+	
+	# Update unit label's visual properties
+	_track_unit(null)
 	
 	# Reset unit grid container
 	for child in unit_grid_container.get_children():
@@ -144,9 +152,13 @@ func inspect_tile(tile : Tile):
 		unit_grid_container.add_child(unit_button)
 
 func deselect_inspection():
+	# Set visibility to panels
 	_set_element_activity(unit_selection_panel, false)
 	_set_element_activity(tile_selection_panel, false)
 	_set_element_activity(inspection_panel_empty, true)
+	
+	# Update unit label's visual properties
+	_track_unit(null)
 
 func select_in_ui(unit : Unit):
 	MouseModeManager.handle_inspection(unit)
@@ -209,3 +221,17 @@ func _action_buttons_filter(arr : Array) -> Array:
 func _set_element_activity(element, value : bool):
 	# element.disable = value
 	element.visible = value
+
+func _track_unit(new_track : Unit):
+	# Disable old selection
+	if _tracked_unit:
+		var label_content : Unit_Label_Content = _tracked_unit.get_label_conent()
+		if label_content: label_content.set_selection_vis(false)
+	
+	# Enable new selection
+	if new_track:
+		var label_content : Unit_Label_Content = new_track.get_label_conent()
+		if label_content: label_content.set_selection_vis(true)
+	
+	# Save the selection
+	_tracked_unit = new_track
