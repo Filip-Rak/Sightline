@@ -11,24 +11,30 @@ var players : Dictionary = {}
 # 	'player_name': string
 # 	'team_id' : int
 # 	"units": Unit Array
+#	"deployment_points" : float
 # 	"ack": bool flag for synchronization
 #	"connected": only used in selected scenes, the player will usually be deleted on disconnected
 
 # Ready Functions
 # --------------------
 func _ready():
+	# Add the default player
 	add_default_player()
+	
+	# Add signals
+	add_user_signal("deployment_points_update")
 
 func add_default_player():
 	add_player(multiplayer.get_unique_id(), "Player", -1, [])
 
-# Functions For External Setup
+# Public Methods
 # --------------------
 func add_player(player_id : int, player_name : String, team_id : int, units : Array):
 	players[player_id] = {
 		"player_name": player_name,
 		"team_id": team_id,
 		"units": units,
+		"deployment_points": 0.0,
 		"ack": false,
 		"connected": true
 	}
@@ -58,8 +64,22 @@ func reset_all_players():
 func add_unit(owner_id : int, unit : Unit):
 	players[owner_id]["units"].append(unit)
 
+func offset_deployment_points(player_id : int, offset : float):
+	var new_val = players[player_id]["deployment_points"] - offset
+	if new_val < 0: new_val = 0
+	
+	# Update on the net
+	rpc("_update_deployment_points_of_player", player_id, new_val)
+
 # Remote Procedure Calls
 # --------------------
+@rpc("any_peer", "call_local")
+func _update_deployment_points_of_player(player_id : int, value : float):
+	players[player_id]["deployment_points"] = value
+	
+	# Emit a signal for other scripts to act on
+	emit_signal("deployment_points_update")
+
 @rpc("any_peer", "call_local")
 func reassign_unit(unit_path : NodePath, giver_id : int, receiver_id : int):
 	var unit = get_node(unit_path)
@@ -91,6 +111,9 @@ func set_ack(player_id : int, value : bool):
 
 func set_player_connected(id : int, value : bool):
 	players[id]["connected"] = value
+
+func set_deployment_points(player_id : int, value : float):
+	rpc("_update_deployment_points_of_player", player_id, value)
 
 # Getters
 # --------------------
@@ -140,3 +163,6 @@ func get_teammates_ids(id : int) -> Array:
 			teammates.append(player_id)
 			
 	return teammates
+
+func get_deployment_points(player_id : int) -> float:
+	return players[player_id]["deployment_points"]

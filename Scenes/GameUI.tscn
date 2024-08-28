@@ -9,11 +9,13 @@ draw_center = false
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d5pqr"]
 draw_center = false
 
-[node name="GameUI" type="CanvasLayer" node_paths=PackedStringArray("player_turn_label", "player_name_label", "time_left_label", "buy_menu", "inspection_panel_empty", "unit_selection_panel", "tile_selection_panel", "unit_grid_container", "debug_crosshair", "debug_rect")]
+[node name="GameUI" type="CanvasLayer" node_paths=PackedStringArray("player_turn_label", "player_name_label", "turn_num_label", "time_left_label", "_deploy_button", "buy_menu", "inspection_panel_empty", "unit_selection_panel", "tile_selection_panel", "unit_grid_container", "debug_crosshair", "debug_rect")]
 script = ExtResource("1_5uulx")
 player_turn_label = NodePath("LowerSection/TurnPanel/MarginContainer/VBoxContainer/HBoxContainer/PlayerTurnLabel")
 player_name_label = NodePath("PlayerNameLabel")
+turn_num_label = NodePath("LowerSection/TurnPanel/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/TurnNumLabel")
 time_left_label = NodePath("LowerSection/TurnPanel/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/TimeLeftLabel")
+_deploy_button = NodePath("LowerSection/DeployPanel/MarginContainer/VBoxContainer/DeployButton")
 buy_menu = NodePath("BuyMenu")
 inspection_panel_empty = NodePath("LowerSection/MiddlePanel/InspectionPanel")
 unit_selection_panel = NodePath("LowerSection/MiddlePanel/UnitSelectionPanel")
@@ -233,11 +235,11 @@ theme_override_constants/margin_right = 12
 [node name="HBoxContainer" type="HBoxContainer" parent="LowerSection/TurnPanel/MarginContainer/VBoxContainer/MarginContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="LowerSection/TurnPanel/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+[node name="TurnNumLabel" type="Label" parent="LowerSection/TurnPanel/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 6
 theme_override_font_sizes/font_size = 12
-text = "Turn: 4"
+text = "Turn: 0"
 
 [node name="TimeLeftLabel" type="Label" parent="LowerSection/TurnPanel/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2

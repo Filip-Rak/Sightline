@@ -14,7 +14,6 @@ static var _type_properties = {
 	unit_type.INFANTRY: 
 	{ 
 		"display_name": "Motostrelki",
-		"price": 1.0,
 		"action_points": 1,
 		"sight_range": 3,
 		"hit_points_max": 100,
@@ -28,7 +27,6 @@ static var _type_properties = {
 	unit_type.AT_INFANTRY: 
 	{ 
 		"display_name": "Panzergrenadiers",
-		"price": 2.0,
 		"action_points": 1,
 		"sight_range": 3,
 		"hit_points_max": 80,
@@ -42,28 +40,26 @@ static var _type_properties = {
 	unit_type.IMV: 
 	{ 
 		"display_name": "HMMWV",
-		"price": 2.0,
 		"action_points": 3,
 		"sight_range": 1,
 		"hit_points_max": 40,
 		"can_be_transported": false,
 		"scene": preload("res://Assets/Units/player_unit_IMV.tscn"),
 		"actions" : [
-				Action_Spawn.new(2, 2),
+				Action_Spawn.new(2, 2, 1),
 				Action_Move.new("IMV MOVE")
 			]
 	},
 	unit_type.IFV: 
 	{ 
 		"display_name": "M2A3 Bradley IFV",
-		"price": 5.0,
 		"action_points": 2,
 		"sight_range": 2,
 		"hit_points_max": 120,
 		"can_be_transported": false,
 		"scene": preload("res://Assets/Units/player_unit_IFV.tscn"),
 		"actions" : [
-				Action_Spawn.new(5, 1),
+				Action_Spawn.new(5, 1, 2),
 				Action_Move.new("IFV MOVE")
 			]
 	},

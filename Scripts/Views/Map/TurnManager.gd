@@ -22,6 +22,7 @@ var set_timer_type : TIMER_TYPE = TIMER_TYPE.DISABLED
 var base_time_limit : float = 10.0
 var time_limit : float = base_time_limit
 var time_spent_in_turn : float = 0
+var current_turn : int = 0
 
 # Order related
 var order : Array
@@ -121,12 +122,15 @@ func start_new_turn():
 	# Disable current turn
 	rpc("end_player_turn", order[current_index])
 	
+	# Update turn num
+	if current_index == 0: current_turn += 1
+	
 	# Update order index
 	current_index += 1
 	current_index %= order.size()
 	
 	# Inform clients with new turn details
-	rpc("distribute_turn_data", order[current_index], time_limit)
+	rpc("distribute_turn_data", order[current_index], time_limit, current_turn)
 	
 	# Enable player's turn
 	rpc("start_player_turn", order[current_index])
@@ -149,9 +153,9 @@ func end_player_turn(player_id : int):
 		game_manager.disable_turn()
 	
 @rpc("any_peer", "call_local")
-func distribute_turn_data(player_id : int, given_time : float):
+func distribute_turn_data(player_id : int, given_time : float, turn_num : int):
 	time_limit = given_time
 	time_spent_in_turn = 0
 	current_turn_player_id = player_id
-	game_manager.game_ui.update_turn_ui(player_id, given_time)
+	game_manager.game_ui.update_turn_ui(player_id, given_time, turn_num)
 	pass

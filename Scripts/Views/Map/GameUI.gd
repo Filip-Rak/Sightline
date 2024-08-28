@@ -9,7 +9,9 @@ class_name Game_UI
 @export var game_manager : Game_Manager
 @export var player_turn_label : Label
 @export var player_name_label : Label
+@export var turn_num_label : Label
 @export var time_left_label : Label
+@export var _deploy_button : Button
 @export var buy_menu : PanelContainer
 @export var inspection_panel_empty : PanelContainer
 @export var unit_selection_panel : PanelContainer
@@ -30,6 +32,9 @@ func _ready():
 func set_externals():
 	if game_manager: game_manager.set_game_ui(self)
 	MouseModeManager.set_game_ui(self)
+	
+	# Set signals
+	PlayerManager.connect("deployment_points_update", _on_deployment_points_update)
 
 func set_UI():
 	populate_buy_menu()
@@ -81,9 +86,10 @@ func handle_UI_mask():
 
 # External Control Functions
 # --------------------
-func update_turn_ui(player_id : int, _given_time : float):
+func update_turn_ui(player_id : int, _given_time : float, turn_num : int):
 	player_turn_label.text = PlayerManager.get_player_name(player_id)
 	game_in_progress = true
+	turn_num_label.text = "Turn: %d" % turn_num
 
 func inspect_unit(unit : Unit):
 	# Set visibility to panels
@@ -190,7 +196,11 @@ func _on_unit_buy_button_pressed(unit_type : int):
 			game_manager.select_action(spawn_action)
 	else:
 		print("_on_unit_buy_button_pressed() -> Unit not spawnable")
-	
+
+func _on_deployment_points_update():
+	var new_val : float = PlayerManager.get_deployment_points(multiplayer.get_unique_id())
+	_deploy_button.text = "%d" % int(new_val)
+
 # Utility
 # --------------------
 func _action_buttons_filter(arr : Array) -> Array:
