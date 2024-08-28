@@ -33,7 +33,7 @@ static var _type_properties = {
 		"blocks_line_of_sight": false,
 		"defense_modifier" : 0.6,
 		"range_bonus": 1,
-		"movement_cost" : 1,
+		"movement_cost" : 3,
 		"accesible_to": [
 			Unit_Properties.unit_type.IFV,
 			]
@@ -43,7 +43,7 @@ static var _type_properties = {
 		"blocks_line_of_sight": true,
 		"defense_modifier" : 1.3,
 		"range_bonus": 0,
-		"movement_cost" : 1,
+		"movement_cost" : 3,
 		"accesible_to": [
 			Unit_Properties.unit_type.INFANTRY,
 			Unit_Properties.unit_type.AT_INFANTRY,
@@ -55,7 +55,7 @@ static var _type_properties = {
 		"blocks_line_of_sight": true,
 		"defense_modifier" : 1,
 		"range_bonus": 1,
-		"movement_cost" : 1,
+		"movement_cost" : 3,
 		"accesible_to": [
 			
 			]
@@ -78,7 +78,7 @@ static var _type_properties = {
 		"blocks_line_of_sight": true,
 		"defense_modifier" : 1.5,
 		"range_bonus": 1,
-		"movement_cost" : 1,
+		"movement_cost" : 2,
 		"accesible_to": [
 			Unit_Properties.unit_type.INFANTRY,
 			Unit_Properties.unit_type.AT_INFANTRY,
@@ -90,7 +90,7 @@ static var _type_properties = {
 		"blocks_line_of_sight": false,
 		"defense_modifier" : 1.4,
 		"range_bonus": 0,
-		"movement_cost" : 1,
+		"movement_cost" : 3,
 		"accesible_to": [
 			Unit_Properties.unit_type.IFV,
 			]

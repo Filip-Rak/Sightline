@@ -36,6 +36,7 @@ func _ready():
 func offset_action_points(offset : int) -> bool:
 	# Update value
 	_action_points_left += offset
+	if _action_points_left < 0: _action_points_left = 0
 	
 	# Update UI
 	if _unit_label: 

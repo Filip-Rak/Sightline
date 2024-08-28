@@ -119,7 +119,6 @@ _is_a_spawn = true
 
 [node name="Tile21" parent="Map" instance=ExtResource("3_lsupy")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 2)
-_point_value = 3
 _team_id = 0
 
 [node name="Tile35" parent="Map" instance=ExtResource("3_lsupy")]

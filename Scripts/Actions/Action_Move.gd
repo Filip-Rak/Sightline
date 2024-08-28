@@ -76,7 +76,7 @@ func _move_unit(path_to_unit : NodePath, route : Array):
 	
 	if path_to_unit == null: return
 	if route == null: return
-	
+
 	# Get the unit
 	var unit = get_node(path_to_unit)
 	if unit == null: return

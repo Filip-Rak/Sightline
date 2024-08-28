@@ -44,9 +44,6 @@ func get_reachable_tiles(tile_matrix : Array, unit : Unit) -> Dictionary:
 			var neighbor_tile = tile_matrix[neighbor_pos.x][neighbor_pos.z]
 			var movement_cost = Tile_Properties.get_movement_cost(neighbor_tile.get_type())
 			
-			# Check if the unit has enough movement points to move to this tile
-			if ac_left < movement_cost: continue
-			
 			# Check if tile hasn't been visited yt
 			if visited.has(neighbor_pos): continue
 			
@@ -57,10 +54,11 @@ func get_reachable_tiles(tile_matrix : Array, unit : Unit) -> Dictionary:
 			# This check should be rewritten to happen ONLY for visible enemies, which is currently not implemented anyway
 			if neighbor_tile.has_enemy(): continue
 			
-			# Update the tile
-			queue.append({"pos": neighbor_pos, "ac_left":ac_left - movement_cost})
-			visited[neighbor_pos] = true
-			movement_costs[neighbor_pos] = movement_costs.get(current_pos, 0) + movement_cost
+			# Allow the unit to move to this tile even if it depletes all its action points
+			if ac_left >= movement_cost or (ac_left > 0 and ac_left < movement_cost):
+				queue.append({"pos": neighbor_pos, "ac_left": max(ac_left - movement_cost, 0)})
+				visited[neighbor_pos] = true
+				movement_costs[neighbor_pos] = movement_costs.get(current_pos, 0) + movement_cost
 
 	# Return reachable tiles and their movement costs
 	return {"tiles": reachable_tiles, "costs": movement_costs}
@@ -94,27 +92,25 @@ func find_path(tile_matrix : Array, unit : Unit, end_pos : Vector3, viable_tiles
 		
 		# Explore neighbors
 		for neighbor_pos in Utility.find_neighbours_pos(tile_matrix, current_pos):
-
-			# Make sure neighbours are within bounds
-			if neighbor_pos.x < 0 || neighbor_pos.x >= tile_matrix.size(): continue
-			if neighbor_pos.z < 0 || neighbor_pos.z >= tile_matrix[0].size(): continue
+			# Make sure neighbors are within bounds
+			if neighbor_pos.x < 0 or neighbor_pos.x >= tile_matrix.size(): continue
+			if neighbor_pos.z < 0 or neighbor_pos.z >= tile_matrix[0].size(): continue
 			
 			var neighbor_tile = tile_matrix[neighbor_pos.x][neighbor_pos.z]
 			
-			# If the tile is on closed list diregard it
+			# If the tile is on closed list disregard it
 			if closed_list.has(neighbor_pos): continue
 			
 			# Discard tiles which were not shown to the player as valid
 			if !viable_tiles.has(neighbor_tile): continue
 			
 			# Calculate the g_cost from movement
-			var tentative_g_cost = g_costs[current_pos] + Tile_Properties.get_movement_cost(neighbor_tile.get_type())
+			var movement_cost = Tile_Properties.get_movement_cost(neighbor_tile.get_type())
+			var tentative_g_cost = g_costs[current_pos] + movement_cost
 			
-			# Skip the tile if the cost has been exceeded
-			if tentative_g_cost > unit.get_action_points_left(): continue
-			
-			# Check if the Path is Better
-			if !g_costs.has(neighbor_pos) || tentative_g_cost < g_costs[neighbor_pos]:
+			# Check if the path is better or if this tile hasn't been visited yet
+			if !g_costs.has(neighbor_pos) or tentative_g_cost < g_costs[neighbor_pos]:
+				# Even if the tentative_g_cost exceeds action points, allow the move
 				came_from[neighbor_pos] = current_pos
 				g_costs[neighbor_pos] = tentative_g_cost
 				f_costs[neighbor_pos] = g_costs[neighbor_pos] + heuristic_cost_estimate(neighbor_pos, end_pos)
@@ -124,6 +120,9 @@ func find_path(tile_matrix : Array, unit : Unit, end_pos : Vector3, viable_tiles
 					open_list.append(neighbor_pos)
 
 	return []
+
+
+
 
 func compare_f_costs(a, b) -> int:
 	if f_costs[a] < f_costs[b]:
