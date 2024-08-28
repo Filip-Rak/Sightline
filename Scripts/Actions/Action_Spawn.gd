@@ -11,20 +11,29 @@ var _spawns_with_action_points : bool
 
 # Constructor
 # --------------------
-func _init(cost : int, availability : int, spawn_cooldown : int = 0, spawns_with_action_points : bool = true):
+func _init(cost : int, availability : int, spawn_cooldown : int = 0, initial_cooldown : bool = false, spawns_with_action_points : bool = true):
 	# Subclass variables
 	_unit_cost = cost
 	_spawns_with_action_points = spawns_with_action_points
-		
+	
 	# Initiliaze parent's constructor
 	var ap_cost = 0
 	var usage_limit = availability
 	var cooldown = spawn_cooldown
-	super._init("", "", ap_cost, usage_limit, cooldown)
+	super._init("", "", ap_cost, usage_limit, cooldown, initial_cooldown)
 
 # Public Methods
 # --------------------
 func get_available_targets() -> Dictionary:
+	# Check the requirements
+	
+	# If enugh points
+	if PlayerManager.get_deployment_points(multiplayer.get_unique_id()) < _unit_cost: return {}
+	# If not to many deployed
+	if _usage_limit <= 0: return {}
+	# If the cooldown expired
+	if super.get_cooldown_left() > 0: return {}
+		
 	
 	# Get tile_matrix
 	var tile_matrix = _game_manager.get_tile_matrix()
@@ -66,6 +75,9 @@ func perform_action(_target : Tile):
 
 	# Change mouse mode to inspect
 	MouseModeManager.set_mouse_mode(MouseModeManager.MOUSE_MODE.INSPECTION)
+	
+	# Update the buy menu
+	_game_manager.game_ui.update_buy_menu()
 
 # Remote Procedure Calls
 # --------------------
@@ -94,7 +106,9 @@ func spawn_unit(target_tile_path : NodePath, unit_to_spawn : Unit_Properties.uni
 	# Recalculate the highlighting for other players
 	if !_game_manager.player_turn: _game_manager.highlight_manager.redo_highlighting(_game_manager.player_turn)
 	
-	# super.on_action_finished(false)
+	PlayerManager.offset_deployment_points(spawning_player, -_unit_cost)
+	
+	super.on_action_finished(false)
 
 # Getters
 # --------------------

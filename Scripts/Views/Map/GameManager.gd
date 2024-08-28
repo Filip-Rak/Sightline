@@ -78,7 +78,7 @@ func _ready():
 	# Tell players how many points they start with
 	# For now just assign everyone a constnat value
 	for player_id in PlayerManager.players.keys():
-		PlayerManager.set_deployment_points(player_id, 20)
+		PlayerManager.set_deployment_points(player_id, 10)
 
 # Process Functions
 # --------------------
@@ -137,6 +137,8 @@ func execute_action(target):
 	
 	# Make sure mouse selection isnt null and selected target is among available ones
 	if mouse_selection == null: return
+	if targets_and_costs == null: return
+	if !targets_and_costs.has("tiles"): return
 	if targets_and_costs["tiles"].find(target) == -1: return
 	
 	# Call execution on the action

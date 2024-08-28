@@ -254,12 +254,11 @@ theme_override_font_sizes/font_size = 18
 text = "End Turn"
 
 [node name="BuyMenu" type="PanelContainer" parent="." groups=["ui_mask"]]
-visible = false
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
 offset_top = -164.0
-offset_right = 500.0
+offset_right = 890.0
 offset_bottom = -124.0
 grow_vertical = 0
 scale = Vector2(1.00378, 1)

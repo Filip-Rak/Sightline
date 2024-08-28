@@ -42,6 +42,7 @@ func set_UI():
 	_set_element_activity(unit_selection_panel, false)
 	_set_element_activity(tile_selection_panel, false)
 	_set_element_activity(inspection_panel_empty, true)
+	buy_menu.visible = false
 
 func populate_buy_menu():
 	var hbox
@@ -52,10 +53,22 @@ func populate_buy_menu():
 
 	for unit_type in Unit_Properties.get_spawnable_types():
 		var button = Button.new()
-		button.text = Unit_Properties.get_display_name(unit_type)
+		button.text = _prepare_buy_button_string(unit_type)
+		button.set_meta("type", unit_type)
 		button.connect("button_down", Callable(self, "_on_unit_buy_button_pressed").bind(unit_type))
 		hbox.add_child(button)
 
+func _prepare_buy_button_string(type : Unit_Properties.unit_type) -> String:
+	var spawn_action : Action_Spawn = Unit_Properties.get_action(type, Action_Spawn.get_internal_name())
+	var unit_name : String = Unit_Properties.get_display_name(type)
+	var price : int = spawn_action._unit_cost
+	var availability : int = spawn_action.get_usage_limit()
+	var cooldown_left : int = spawn_action.get_cooldown_left()
+	
+	var text : String = "%s |%d|%d|%d" %[unit_name, price, availability, cooldown_left]
+	
+	return text
+	
 # Proccess
 # --------------------
 func _process(_delta : float):
@@ -90,6 +103,8 @@ func update_turn_ui(player_id : int, _given_time : float, turn_num : int):
 	player_turn_label.text = PlayerManager.get_player_name(player_id)
 	game_in_progress = true
 	turn_num_label.text = "Turn: %d" % turn_num
+	
+	update_buy_menu()
 
 func inspect_unit(unit : Unit):
 	# Set visibility to panels
@@ -172,6 +187,17 @@ func select_in_ui(unit : Unit):
 	# I am pretty sure I should do it like that
 	# But I am tired and don't care
 	MouseModeManager.current_mouse_mode = MouseModeManager.MOUSE_MODE.STANDARD
+
+func update_buy_menu():
+	var hbox
+	for child in buy_menu.get_children():
+		if child is HBoxContainer:
+			hbox = child
+			break
+			
+	for child in hbox.get_children():
+		if child is Button:
+			child.text = _prepare_buy_button_string(child.get_meta("type"))
 
 # Links
 # --------------------

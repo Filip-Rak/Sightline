@@ -157,5 +157,11 @@ func distribute_turn_data(player_id : int, given_time : float, turn_num : int):
 	time_limit = given_time
 	time_spent_in_turn = 0
 	current_turn_player_id = player_id
+	current_turn = turn_num
 	game_manager.game_ui.update_turn_ui(player_id, given_time, turn_num)
 	pass
+
+# Getters
+# --------------------
+func get_turn_num() -> int:
+	return current_turn

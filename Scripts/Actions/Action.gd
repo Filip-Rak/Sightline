@@ -16,24 +16,29 @@ var _description : String = "action_base_class_description_name"
 var _ap_cost : int
 var _usage_limit : int
 var _cooldown : int
+var _starts_on_cooldown : bool
 
 # Instance specific
 var _uses_left : int
-var _cooldown_left : int
+var _last_use_turn : int
 
 # Constructor
 # --------------------
-func _init(display_name : String, description : String, ap_cost : int, usage_limit : int, cooldown : int):
+func _init(display_name : String, description : String, ap_cost : int, usage_limit : int, cooldown : int, starts_on_cooldown : bool = false):
 	# Constants
 	self._display_name = display_name
 	self._description = description
 	self._ap_cost = ap_cost
 	self._usage_limit = usage_limit
 	self._cooldown = cooldown
+	self._starts_on_cooldown = starts_on_cooldown
 	
 	# Unit isntance
 	self._uses_left = usage_limit
-	self._cooldown_left = 0
+	if starts_on_cooldown:
+		self._last_use_turn = 0
+	else:
+		_last_use_turn = -1000
 
 # Protected Methods 
 # --------------------
@@ -62,6 +67,10 @@ func on_action_finished(stay_in_action : bool):
 	
 	# Recalculate the highlighting for other players
 	_game_manager.highlight_manager.redo_highlighting(_game_manager.player_turn)
+	
+	# Update propterties of the action
+	_last_use_turn = _game_manager.turn_manager.get_turn_num()
+	_usage_limit -= 1
 
 # Public Methods 
 # --------------------
@@ -103,7 +112,13 @@ func get_uses_left() -> int:
 	return _uses_left
 	
 func get_cooldown_left() -> int:
-	return _cooldown_left
+	if !_game_manager: return 0
+	if !_game_manager.turn_manager: return 0
+	
+	var cooldown_left = _cooldown - (_game_manager.turn_manager.get_turn_num() - _last_use_turn)
+	if cooldown_left < 0: cooldown_left = 0
+	
+	return cooldown_left
 
 # Setters
 # --------------------
