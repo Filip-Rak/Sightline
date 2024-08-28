@@ -74,9 +74,8 @@ func _ready():
 			action.set_game_manager(self)
 			add_child(action)
 			
-			
 	# Tell players how many points they start with
-	# For now just assign everyone a constnat value
+	# For now just assign everyone a constant value
 	for player_id in PlayerManager.players.keys():
 		PlayerManager.set_deployment_points(player_id, 10)
 

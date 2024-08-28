@@ -1,20 +1,25 @@
-[gd_scene load_steps=3 format=3 uid="uid://cyh2xihtipjs4"]
+[gd_scene load_steps=4 format=3 uid="uid://cyh2xihtipjs4"]
 
 [ext_resource type="Script" path="res://Scripts/Entities/tile_label_3d.gd" id="1_vk2mu"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_58m1b"]
 viewport_path = NodePath("SubViewport")
 
-[node name="TileLabel3D" type="Sprite3D" node_paths=PackedStringArray("_vbox", "_shared_label", "_viewport")]
+[sub_resource type="ViewportTexture" id="ViewportTexture_jsyw5"]
+viewport_path = NodePath("InfoSprite/SubViewport")
+
+[node name="TileLabel3D" type="Sprite3D" node_paths=PackedStringArray("_unit_vbox", "_shared_unit_label", "_unit_viewport", "_info_sprite", "_info_label")]
 transform = Transform3D(0.12, 0, 0, 0, 0.12, 0, 0, 0, 0.12, 0, 0.25, 0)
 billboard = 1
 double_sided = false
 no_depth_test = true
 texture = SubResource("ViewportTexture_58m1b")
 script = ExtResource("1_vk2mu")
-_vbox = NodePath("SubViewport/CanvasLayer/VBoxContainer")
-_shared_label = NodePath("SubViewport/CanvasLayer/SharedLabel")
-_viewport = NodePath("SubViewport")
+_unit_vbox = NodePath("SubViewport/CanvasLayer/VBoxContainer")
+_shared_unit_label = NodePath("SubViewport/CanvasLayer/SharedLabel")
+_unit_viewport = NodePath("SubViewport")
+_info_sprite = NodePath("InfoSprite")
+_info_label = NodePath("InfoSprite/SubViewport/CanvasLayer/PanelContainer/MarginContainer/InfoLabel")
 
 [node name="SubViewport" type="SubViewport" parent="."]
 transparent_bg = true
@@ -63,3 +68,42 @@ layout_mode = 2
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 64
 text = "( --------- )"
+
+[node name="InfoSprite" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+visible = false
+billboard = 1
+texture = SubResource("ViewportTexture_jsyw5")
+
+[node name="SubViewport" type="SubViewport" parent="InfoSprite"]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(1024, 256)
+render_target_update_mode = 4
+
+[node name="CanvasLayer" type="CanvasLayer" parent="InfoSprite/SubViewport"]
+
+[node name="PanelContainer" type="PanelContainer" parent="InfoSprite/SubViewport/CanvasLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+
+[node name="MarginContainer" type="MarginContainer" parent="InfoSprite/SubViewport/CanvasLayer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_right = 8
+
+[node name="InfoLabel" type="Label" parent="InfoSprite/SubViewport/CanvasLayer/PanelContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 64
+text = "Value: 7 | Team: 1"
