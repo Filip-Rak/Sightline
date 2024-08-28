@@ -48,6 +48,7 @@ static var _type_properties = {
 			Unit_Properties.unit_type.INFANTRY,
 			Unit_Properties.unit_type.AT_INFANTRY,
 			Unit_Properties.unit_type.IMV,
+			Unit_Properties.unit_type.IFV,
 			]
 	},
 	tile_type.MOUNTAIN: 
