@@ -23,6 +23,7 @@ MouseModeManager="*res://Scripts/Autoloaded/MouseModeManager.gd"
 PathFinding="*res://Scripts/Autoloaded/PathFinding.gd"
 Utility="*res://Scripts/Autoloaded/Utility.gd"
 Network="*res://Scripts/Autoloaded/Network.gd"
+TeamManager="*res://Scripts/Autoloaded/TeamManager.gd"
 
 [display]
 

@@ -36,6 +36,9 @@ var reachable_tiles_and_costs : Dictionary
 @onready var camera = $PlayerCamera
 var player_turn : bool = false
 
+# Game Settings
+var const_income = 5
+
 # Ready Functions
 # --------------------
 
@@ -157,7 +160,7 @@ func disable_turn():
 	highlight_manager.redo_highlighting(false)
 	
 func enable_turn():
-	# Disable certain actions
+	# Enable certain actions
 	player_turn = true
 	
 	if MouseModeManager.current_mouse_mode == MouseModeManager.MOUSE_MODE.ACTION:
@@ -165,6 +168,9 @@ func enable_turn():
 	
 	# Recalculate highlighting on the screen for the next turn
 	highlight_manager.redo_highlighting(player_turn)
+	
+	# Update player's deployment points
+	PlayerManager.offset_deployment_points(multiplayer.get_unique_id(), const_income)
 
 func reset_action_points():
 	var units = PlayerManager.get_units(multiplayer.get_unique_id())

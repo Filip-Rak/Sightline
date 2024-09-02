@@ -25,6 +25,9 @@ func add_unit_to_tile(unit : Unit):
 	# Update Array
 	_units_in_tile.append(unit)
 	
+	# Change tile ownership
+	_team_id = PlayerManager.get_team_id(unit.get_player_owner_id())
+	
 	# Update the label above tile
 	if _tile_label:
 		_tile_label.update_label(_units_in_tile)
