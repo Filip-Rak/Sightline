@@ -65,13 +65,13 @@ func perform_action(target):
 	# Here any checks if the path is inside any enemy zones of control would happen
 	
 	# Move the unit on the server
-	rpc("_move_unit", unit.get_path(), path)
+	rpc("_move_unit", unit.get_path(), path, multiplayer.get_unique_id())
 
 # Remote Procedure Calls
 # --------------------
 
 @rpc("any_peer", "call_local")
-func _move_unit(path_to_unit : NodePath, route : Array):
+func _move_unit(path_to_unit : NodePath, route : Array, caller_id : int):
 	var tile_matrix : Array = _game_manager.get_tile_matrix()
 	
 	if path_to_unit == null: return
@@ -104,7 +104,7 @@ func _move_unit(path_to_unit : NodePath, route : Array):
 	
 	# Trigger a function for further cleanup in game manager
 	var _stay_in_action = unit.get_action_points_left() > 0
-	super.on_action_finished(true)
+	super.on_action_finished(true, caller_id)
 
 # Getters
 # --------------------

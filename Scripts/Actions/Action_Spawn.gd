@@ -108,7 +108,7 @@ func spawn_unit(target_tile_path : NodePath, unit_to_spawn : Unit_Properties.uni
 	
 	PlayerManager.offset_deployment_points(spawning_player, -_unit_cost)
 	
-	super.on_action_finished(false)
+	super.on_action_finished(false, spawning_player)
 
 # Getters
 # --------------------

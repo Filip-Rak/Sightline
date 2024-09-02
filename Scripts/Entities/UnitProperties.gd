@@ -46,7 +46,7 @@ static var _type_properties = {
 		"can_be_transported": false,
 		"scene": preload("res://Assets/Units/player_unit_IMV.tscn"),
 		"actions" : [
-				Action_Spawn.new(2, 2, 1),
+				Action_Spawn.new(2, 2),
 				Action_Move.new("IMV MOVE")
 			]
 	},
