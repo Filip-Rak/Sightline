@@ -170,7 +170,8 @@ func enable_turn():
 	highlight_manager.redo_highlighting(player_turn)
 	
 	# Update player's deployment points
-	PlayerManager.offset_deployment_points(multiplayer.get_unique_id(), const_income)
+	if turn_manager.get_turn_num() > 1:
+		PlayerManager.offset_deployment_points(multiplayer.get_unique_id(), const_income)
 
 func reset_action_points():
 	var units = PlayerManager.get_units(multiplayer.get_unique_id())
