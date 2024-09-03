@@ -35,7 +35,11 @@ var game_manager : Game_Manager
 var current_turn_player_id : int
 
 func _ready():
+	# Connect signals
 	multiplayer.peer_disconnected.connect(peer_disconnected)
+	
+	# Add custom signals
+	add_user_signal("new_game_turn")
 
 # Setup Functions
 # --------------------
@@ -123,7 +127,9 @@ func start_new_turn():
 	rpc("end_player_turn", order[current_index])
 	
 	# Update turn num
-	if current_index == 0: current_turn += 1
+	if current_index == 0: 
+		current_turn += 1
+		emit_signal("new_game_turn")
 	
 	# Update order index
 	current_index += 1

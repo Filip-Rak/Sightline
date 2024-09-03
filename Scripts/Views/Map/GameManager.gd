@@ -46,9 +46,14 @@ func _ready():
 	# This is the begining of the scene
 	print ("Waiting for players")
 	
+	# Create other scripts
+	turn_manager = Turn_Manager.new()
+	add_child(turn_manager)
+	
 	# Set up signals
 	Network.connect("synchronization_complete", on_all_players_loaded)
 	multiplayer.peer_disconnected.connect(peer_disconnected)
+	turn_manager.connect("new_game_turn", _on_new_game_turn)
 	
 	# Set up the mouse mode manager
 	MouseModeManager.set_game_manager(self)
@@ -93,8 +98,6 @@ func _process(_delta : float):
 # Function for receiving game settings
 func set_up(_parameters):
 	# Settings for turn manager
-	turn_manager = Turn_Manager.new()
-	add_child(turn_manager)
 	turn_manager.set_up(self)
 	
 	# Modify the matrix based on the settings
@@ -102,7 +105,7 @@ func set_up(_parameters):
 	# Set up teams
 	# Done by teh host
 	if multiplayer.get_unique_id() == 1:
-		TeamManager.set_up_teams()
+		TeamManager.set_up_teams(tile_matrix)
 	
 	# Acknowledge completion of finishing the setup proccess
 	# Host call the function manually
@@ -221,6 +224,9 @@ func peer_disconnected(id : int):
 	for player in PlayerManager.get_players():
 		print("Owner: %s" % [player])
 		print("Units %s" % [PlayerManager.get_units(player)])
+
+func _on_new_game_turn():
+	pass
 
 # Setters
 # --------------------
