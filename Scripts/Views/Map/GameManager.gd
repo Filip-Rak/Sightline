@@ -99,7 +99,12 @@ func set_up(_parameters):
 	
 	# Modify the matrix based on the settings
 	
-	# Acknowledge completion of loading the map
+	# Set up teams
+	# Done by teh host
+	if multiplayer.get_unique_id() == 1:
+		TeamManager.set_up_teams()
+	
+	# Acknowledge completion of finishing the setup proccess
 	# Host call the function manually
 	if multiplayer.get_unique_id() == 1:
 		Network.send_ack(1)

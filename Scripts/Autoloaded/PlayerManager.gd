@@ -38,8 +38,6 @@ func add_player(player_id : int, player_name : String, team_id : int, units : Ar
 		"ack": false,
 		"connected": true
 	}
-	
-	# TeamManager.set_player_team(player_id, team_id)
 
 func change_id(previous_id : int, new_id : int): 
 	if players.has(new_id):
@@ -103,7 +101,6 @@ func set_player_name(id : int, player_name : String):
 
 func set_player_team(player_id : int, team_id : int):
 	players[player_id]["team_id"] = team_id
-	# TeamManager.set_player_team(player_id, team_id)
 
 func set_ack_all(value : bool):
 	for player_id in players:
