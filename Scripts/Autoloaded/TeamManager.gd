@@ -5,8 +5,7 @@ extends Node
 
 # Template. Index is team_id
 #	player_ids : Array [int]
-#	tile_matrix_x : Array [int]
-#	tile_matrix_z : Array [int]
+#	tile_matrix_pos : [Vector3],
 # 	score : float
 
 var _teams : Dictionary = {}
@@ -32,35 +31,30 @@ func set_up_teams(tile_matrix : Array):
 	# Call all clients to synchronise their data
 	rpc("_sync_to_host", _teams)
 
+func change_tile_owner(matrix_pos : Vector3, old_owner_id : int, new_owner_id : int):
+	if _teams.has(old_owner_id): _teams[old_owner_id]["tile_matrix_pos"].erase(matrix_pos)
+	if _teams.has(new_owner_id): _teams[new_owner_id]["tile_matrix_pos"].append(matrix_pos)
+	
+	print ("CLIENT %s" % multiplayer.get_unique_id())
+	print (_teams)
+
 # Private Methods
 # --------------------
 func _create_team(team_id : int):
 	_teams[team_id] = {
 		"player_ids" : [],
-		"tile_matrix_x" : [],
-		"tile_matrix_z" : [],
+		"tile_matrix_pos" : [],
 		"score" : 0.0
 	}
 	
-func _fill_owned_tiles(team_id : int, tile_matrix : Array) -> Array:
-	var tiles : Array = []
+func _fill_owned_tiles(team_id : int, tile_matrix : Array):
 	for x in range(tile_matrix.size()):
 		for z in range(tile_matrix[x].size()):
 			if tile_matrix[x][z].get_team_id() == team_id:
-				_teams[team_id]["tile_matrix_x"] = x
-				_teams[team_id]["tile_matrix_z"] = z
-				
-	return tiles
-	
+				_teams[team_id]["tile_matrix_pos"].append(tile_matrix[x][z].get_matrix_position())
 	
 # Remote Procedure Calls
 # --------------------
 @rpc("authority")
 func _sync_to_host(teams : Dictionary):
 	_teams = teams
-	
-	print("-------- CLIENT ID %s --------------" % multiplayer.get_unique_id())
-	for team_id in _teams.keys():
-		print ("TEAM_ID %s" % team_id)
-		print (_teams[team_id]["tile_matrix_x"])
-		print (_teams[team_id]["tile_matrix_z"])

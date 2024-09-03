@@ -26,7 +26,12 @@ func add_unit_to_tile(unit : Unit):
 	_units_in_tile.append(unit)
 	
 	# Change tile ownership
-	_team_id = PlayerManager.get_team_id(unit.get_player_owner_id())
+	var new_id = PlayerManager.get_team_id(unit.get_player_owner_id())
+	
+	if new_id != _team_id:
+		TeamManager.change_tile_owner(_matrix_position, _team_id, new_id)
+		_team_id = new_id
+
 	
 	# Update the label above tile
 	if _tile_label:
