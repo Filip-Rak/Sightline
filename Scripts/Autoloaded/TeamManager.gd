@@ -6,7 +6,7 @@ extends Node
 # Template. Index is team_id
 #	player_ids : Array [int]
 #	tile_matrix_pos : [Vector3],
-# 	score : float
+#	score : float
 
 var _teams : Dictionary = {}
 
@@ -38,6 +38,12 @@ func change_tile_owner(matrix_pos : Vector3, old_owner_id : int, new_owner_id : 
 	print ("CLIENT %s" % multiplayer.get_unique_id())
 	print (_teams)
 
+func update_score(tile_matrix : Array):
+	for team_id : int in _teams.keys():
+		var addition = 0
+		for pos : Vector3 in _teams[team_id]["tile_matrix_pos"]:
+			addition += tile_matrix[pos.x][pos.z].get_point_value()
+			
 # Private Methods
 # --------------------
 func _create_team(team_id : int):

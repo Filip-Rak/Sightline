@@ -226,7 +226,8 @@ func peer_disconnected(id : int):
 		print("Units %s" % [PlayerManager.get_units(player)])
 
 func _on_new_game_turn():
-	pass
+	if turn_manager.get_turn_num() > 1:
+		TeamManager.update_score(get_tile_matrix())
 
 # Setters
 # --------------------
