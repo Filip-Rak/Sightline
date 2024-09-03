@@ -43,8 +43,3 @@ func _create_team(team_id : int):
 func _sync_to_host(teams : Dictionary):
 	_teams = teams
 	
-	print ("----------- CLIENT ID : %s -----------" % multiplayer.get_unique_id())
-	print (_teams)
-	
-	
-	
