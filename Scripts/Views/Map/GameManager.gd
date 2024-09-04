@@ -121,6 +121,7 @@ func select_action(action_arg : Action):
 	# Since this fucntion would never be triggered without said UI element being available
 	# And such a button would only be available in a situation when the unit is indeed selected
 	if !(mouse_selection is Unit || mouse_selection is Unit_Properties.unit_type): return
+	if !(action_arg is Action): return
 	
 	MouseModeManager.set_mouse_mode(MouseModeManager.MOUSE_MODE.ACTION)
 	

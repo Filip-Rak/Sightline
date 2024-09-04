@@ -34,16 +34,15 @@ func set_up_teams(tile_matrix : Array):
 func change_tile_owner(matrix_pos : Vector3, old_owner_id : int, new_owner_id : int):
 	if _teams.has(old_owner_id): _teams[old_owner_id]["tile_matrix_pos"].erase(matrix_pos)
 	if _teams.has(new_owner_id): _teams[new_owner_id]["tile_matrix_pos"].append(matrix_pos)
-	
-	print ("CLIENT %s" % multiplayer.get_unique_id())
-	print (_teams)
 
 func update_score(tile_matrix : Array):
 	for team_id : int in _teams.keys():
 		var addition = 0
 		for pos : Vector3 in _teams[team_id]["tile_matrix_pos"]:
 			addition += tile_matrix[pos.x][pos.z].get_point_value()
-			
+		
+		_teams[team_id]["score"] += addition
+		
 # Private Methods
 # --------------------
 func _create_team(team_id : int):

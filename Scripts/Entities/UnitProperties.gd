@@ -21,7 +21,8 @@ static var _type_properties = {
 		"scene": preload("res://Assets/Units/player_unit_infantry.tscn"),
 		"actions" : [
 				Action_Spawn.new(1, 5),
-				Action_Move.new("INF MOVE")
+				Action_Move.new("INF MOVE"),
+				Action_Range_Attack.new("INF ATTACK", "", 1, 1, 1, 1)
 			]
 	},
 	unit_type.AT_INFANTRY: 
@@ -34,7 +35,9 @@ static var _type_properties = {
 		"scene": preload("res://Assets/Units/player_unit_AT_infantry.tscn"),
 		"actions" : [
 				Action_Spawn.new(2, 2),
-				Action_Move.new("AT MOVE")
+				Action_Move.new("AT MOVE"),
+				Action_Range_Attack.new("AT ATTACK", "", 1, 1, 1, 1),
+				Action_Range_Attack.new("ATGM ATTACK", "", 2, 1, 1, 1)
 			]
 	},
 	unit_type.IMV: 
@@ -47,7 +50,8 @@ static var _type_properties = {
 		"scene": preload("res://Assets/Units/player_unit_IMV.tscn"),
 		"actions" : [
 				Action_Spawn.new(2, 2),
-				Action_Move.new("IMV MOVE")
+				Action_Move.new("IMV MOVE"),
+				Action_Range_Attack.new("MG ATTACK", "", 2, 1, 1, 1)
 			]
 	},
 	unit_type.IFV: 
@@ -60,7 +64,8 @@ static var _type_properties = {
 		"scene": preload("res://Assets/Units/player_unit_IFV.tscn"),
 		"actions" : [
 				Action_Spawn.new(5, 1, 2),
-				Action_Move.new("IFV MOVE")
+				Action_Move.new("IFV MOVE"),
+				Action_Range_Attack.new("AUTOCANNON ATTACK", "", 3, 1, 1, 1)
 			]
 	},
 }

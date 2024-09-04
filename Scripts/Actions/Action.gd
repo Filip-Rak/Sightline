@@ -82,7 +82,7 @@ func get_available_targets() -> Dictionary:
 
 # Checks if the action can be done on selected target and returns 'true' if succeeds 
 func perform_action(_target):
-	print ("ERROR: perform_action called on base class")
+	printerr("ERROR: perform_action called on base class")
 	return false
 
 # Getters
