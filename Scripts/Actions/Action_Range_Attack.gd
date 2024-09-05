@@ -102,7 +102,7 @@ func _filter_LOS(unit_pos : Vector3, tiles : Array, tile_matrix : Array):
 	var to_remove : Array = []
 	
 	for i in range(tiles.size()):
-		if _is_line_of_sight_blocked(unit_pos, tiles[i].get_matrix_position(), tile_matrix):
+		if _is_line_of_sight_blocked(unit_pos, tiles[i].get_matrix_position(), tile_matrix) ||_is_line_of_sight_blocked(tiles[i].get_matrix_position(), unit_pos, tile_matrix):
 			to_remove.append(i)
 			
 	# Remove elements in reverse order
@@ -142,7 +142,7 @@ func _is_line_of_sight_blocked(origin: Vector3, target: Vector3, tile_matrix: Ar
 		if current_x == end_x && current_z == end_z: break
 
 		# Check if the current tile blocks line of sight
-		if tile_matrix[current_z][current_x] && Tile_Properties.get_blocks_line_of_sight(tile_matrix[current_z][current_x].get_type()):
+		if tile_matrix[current_x][current_z] && Tile_Properties.get_blocks_line_of_sight(tile_matrix[current_x][current_z].get_type()):
 			return true
 			
 	return false

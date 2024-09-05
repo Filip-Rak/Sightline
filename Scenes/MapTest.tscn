@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://bpxleqntw6wjw"]
+[gd_scene load_steps=13 format=3 uid="uid://bpxleqntw6wjw"]
 
 [ext_resource type="PackedScene" uid="uid://dhaetwn3aoaik" path="res://Assets/Tiles/Instances/tile_Default.tscn" id="2_f1n7r"]
 [ext_resource type="PackedScene" uid="uid://4lnq37ykrjtc" path="res://Assets/Tiles/Instances/tile_Forest.tscn" id="3_lsupy"]
@@ -9,7 +9,6 @@
 [ext_resource type="PackedScene" uid="uid://bec3g8cgjax13" path="res://Scenes/GameUI.tscn" id="8_vnqxy"]
 [ext_resource type="PackedScene" uid="uid://dqycrby8dtxpk" path="res://Assets/Tiles/Instances/tile_River_corner.tscn" id="9_dmqai"]
 [ext_resource type="PackedScene" uid="uid://bj5quiy4pdajy" path="res://Assets/Tiles/Instances/tile_River_straight.tscn" id="9_xsuk0"]
-[ext_resource type="PackedScene" uid="uid://fdgnhhavq205" path="res://Assets/Tiles/Instances/tile_Mountain_default.tscn" id="10_8a2o2"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_74iu0"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -144,6 +143,10 @@ _team_id = 0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 2)
 _team_id = 0
 
+[node name="Tile45" parent="Map" instance=ExtResource("4_ct17t")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 4)
+_team_id = 0
+
 [node name="Tile20" parent="Map" instance=ExtResource("4_ct17t")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 1)
 _team_id = 0
@@ -230,6 +233,3 @@ enable_collision_avoidance = false
 
 [node name="GameUI" parent="." node_paths=PackedStringArray("game_manager") instance=ExtResource("8_vnqxy")]
 game_manager = NodePath("..")
-
-[node name="Tile" parent="." instance=ExtResource("10_8a2o2")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 4)
