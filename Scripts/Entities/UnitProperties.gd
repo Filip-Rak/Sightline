@@ -57,7 +57,7 @@ static var _type_properties = {
 		"actions" : [
 				Action_Spawn.new(2, 2),
 				Action_Move.new("IMV MOVE"),
-				Action_Range_Attack.new("MG ATTACK", "", 2, 1, 10, 30)
+				Action_Range_Attack.new("MG ATTACK", "", 2, 1, 10, 20)
 			]
 	},
 	unit_type.IFV: 

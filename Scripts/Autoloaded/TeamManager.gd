@@ -63,3 +63,16 @@ func _fill_owned_tiles(team_id : int, tile_matrix : Array):
 @rpc("authority")
 func _sync_to_host(teams : Dictionary):
 	_teams = teams
+
+
+# Getters
+# --------------------
+func get_team_ids() -> Array:
+	var ids : Array = []
+	for team_id in _teams.keys():
+		ids.append(team_id)
+		
+	return ids
+
+func get_team_score(team_id : int) -> float:
+	return _teams[team_id]["score"]

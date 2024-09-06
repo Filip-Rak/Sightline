@@ -5,20 +5,32 @@ extends CanvasLayer
 
 class_name Game_UI
 
-# Nodes
+# Scripts
 @export var game_manager : Game_Manager
+
+# Turn panel
 @export var player_turn_label : Label
-@export var player_name_label : Label
 @export var turn_num_label : Label
 @export var time_left_label : Label
+
+# Buy menu
 @export var _deploy_button : Button
 @export var buy_menu : PanelContainer
+
+# Middle panel
 @export var inspection_panel_empty : PanelContainer
 @export var unit_selection_panel : PanelContainer
 @export var tile_selection_panel : PanelContainer
 @export var unit_grid_container : GridContainer
+
+# Debug
 @export var debug_crosshair : Sprite2D
 @export var debug_rect : ReferenceRect
+
+# Upper right section
+@export var player_name_label : Label
+@export var team_name_label : Label
+@export var score_vbox: VBoxContainer
 
 var game_in_progress = false
 var _tracked_unit : Unit
@@ -35,14 +47,27 @@ func set_externals():
 	
 	# Set signals
 	PlayerManager.connect("deployment_points_update", _on_deployment_points_update)
+	Network.connect("synchronization_complete", _on_sync_complete)
 
 func set_UI():
+	# Buy menu
 	populate_buy_menu()
-	player_name_label.text = "Player: " + PlayerManager.get_player_name(multiplayer.get_unique_id()) + " " + str(multiplayer.get_unique_id())
+	buy_menu.visible = false
+	
+	# Player and team names
+	# In case of custom names, the line below should be updated with the custom name in _on_sync_complete function
+	team_name_label.text = "Team: %s" % PlayerManager.get_team_id(multiplayer.get_unique_id())
+	player_name_label.text = PlayerManager.get_player_name(multiplayer.get_unique_id()) + " " + str(multiplayer.get_unique_id())
+	
+	# Clear the score_vbox from placeholders
+	# Filled with data in _on_sync_complete
+	for child in score_vbox.get_children():
+		child.queue_free()
+		
+	# Enable only inspection middle panel
 	_set_element_activity(unit_selection_panel, false)
 	_set_element_activity(tile_selection_panel, false)
 	_set_element_activity(inspection_panel_empty, true)
-	buy_menu.visible = false
 
 func populate_buy_menu():
 	var hbox
@@ -199,6 +224,21 @@ func update_buy_menu():
 		if child is Button:
 			child.text = _prepare_buy_button_string(child.get_meta("type"))
 
+# Private Methods
+# --------------------
+func _update_score_vbox():
+	# Clear the vbox
+	for child in score_vbox.get_children():
+		child.queue_free()
+	
+	# Fill the vbox with new content
+	var team_ids : Array = TeamManager.get_team_ids()
+	for id in team_ids:
+		var label = Label.new()
+		label.text = "Team %s: %s" % [id, TeamManager.get_team_score(id)]
+		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		score_vbox.add_child(label)
+
 # Links
 # --------------------
 func _on_action_button_down(action : Action, unit : Unit):
@@ -226,6 +266,18 @@ func _on_unit_buy_button_pressed(unit_type : int):
 func _on_deployment_points_update():
 	var new_val : float = PlayerManager.get_deployment_points(multiplayer.get_unique_id())
 	_deploy_button.text = "%d" % int(new_val)
+
+func _on_sync_complete():
+	# Set signals to additional dependencies
+	game_manager.get_turn_manager().connect("new_game_turn", _on_new_game_turn)
+	
+	# Set and update the score vbox
+	# Not most efficient but it will be rewritten anyway
+	_update_score_vbox()
+		
+func _on_new_game_turn():
+	# Later add update of turn UI and remove it from turn manager along with self reference 
+	_update_score_vbox()
 
 # Utility
 # --------------------

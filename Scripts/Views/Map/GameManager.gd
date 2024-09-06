@@ -103,12 +103,12 @@ func set_up(_parameters):
 	# Modify the matrix based on the settings
 	
 	# Set up teams
-	# Done by teh host
+	# Done by the host
 	if multiplayer.get_unique_id() == 1:
 		TeamManager.set_up_teams(tile_matrix)
 	
 	# Acknowledge completion of finishing the setup proccess
-	# Host call the function manually
+	# Host calls the function manually
 	if multiplayer.get_unique_id() == 1:
 		Network.send_ack(1)
 	else:
@@ -252,3 +252,6 @@ func get_tile_matrix() -> Array:
 
 func get_mouse_selection():
 	return mouse_selection
+
+func get_turn_manager() -> Turn_Manager:
+	return turn_manager

@@ -9,10 +9,9 @@ draw_center = false
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d5pqr"]
 draw_center = false
 
-[node name="GameUI" type="CanvasLayer" node_paths=PackedStringArray("player_turn_label", "player_name_label", "turn_num_label", "time_left_label", "_deploy_button", "buy_menu", "inspection_panel_empty", "unit_selection_panel", "tile_selection_panel", "unit_grid_container", "debug_crosshair", "debug_rect")]
+[node name="GameUI" type="CanvasLayer" node_paths=PackedStringArray("player_turn_label", "turn_num_label", "time_left_label", "_deploy_button", "buy_menu", "inspection_panel_empty", "unit_selection_panel", "tile_selection_panel", "unit_grid_container", "debug_crosshair", "debug_rect", "player_name_label", "team_name_label", "score_vbox")]
 script = ExtResource("1_5uulx")
 player_turn_label = NodePath("LowerSection/TurnPanel/MarginContainer/VBoxContainer/HBoxContainer/PlayerTurnLabel")
-player_name_label = NodePath("PlayerNameLabel")
 turn_num_label = NodePath("LowerSection/TurnPanel/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/TurnNumLabel")
 time_left_label = NodePath("LowerSection/TurnPanel/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/TimeLeftLabel")
 _deploy_button = NodePath("LowerSection/DeployPanel/MarginContainer/VBoxContainer/DeployButton")
@@ -21,8 +20,88 @@ inspection_panel_empty = NodePath("LowerSection/MiddlePanel/InspectionPanel")
 unit_selection_panel = NodePath("LowerSection/MiddlePanel/UnitSelectionPanel")
 tile_selection_panel = NodePath("LowerSection/MiddlePanel/TileSelectionPanel")
 unit_grid_container = NodePath("LowerSection/MiddlePanel/TileSelectionPanel/HBoxContainer/Units/UnitGridContainer")
-debug_crosshair = NodePath("DebugCrosshair")
-debug_rect = NodePath("ReferenceRect")
+debug_crosshair = NodePath("Debug/DebugCrosshair")
+debug_rect = NodePath("Debug/ReferenceRect")
+player_name_label = NodePath("UpperRighSection/NameContainer/MarginContainer/VBoxContainer/PlayerNameLabel")
+team_name_label = NodePath("UpperRighSection/NameContainer/MarginContainer/VBoxContainer/TeamNameLabel")
+score_vbox = NodePath("UpperRighSection/ScoreContainer/MarginContainer/VBoxContainer/ScoreVbox")
+
+[node name="UpperRighSection" type="VBoxContainer" parent="." groups=["ui_mask"]]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -160.0
+offset_bottom = 160.0
+grow_horizontal = 0
+size_flags_vertical = 3
+
+[node name="NameContainer" type="PanelContainer" parent="UpperRighSection"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.5
+
+[node name="MarginContainer" type="MarginContainer" parent="UpperRighSection/NameContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UpperRighSection/NameContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="PlayerNameLabel" type="Label" parent="UpperRighSection/NameContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "SlayvSeller"
+horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="TeamNameLabel" type="Label" parent="UpperRighSection/NameContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Team 1"
+horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="ScoreContainer" type="PanelContainer" parent="UpperRighSection"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="UpperRighSection/ScoreContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UpperRighSection/ScoreContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UpperRighSection/ScoreContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Score"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="UpperRighSection/ScoreContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ScoreVbox" type="VBoxContainer" parent="UpperRighSection/ScoreContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UpperRighSection/ScoreContainer/MarginContainer/VBoxContainer/ScoreVbox"]
+layout_mode = 2
+text = "Team 1: 13"
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="UpperRighSection/ScoreContainer/MarginContainer/VBoxContainer/ScoreVbox"]
+layout_mode = 2
+text = "Team 2: 113"
+horizontal_alignment = 1
+
+[node name="Label3" type="Label" parent="UpperRighSection/ScoreContainer/MarginContainer/VBoxContainer/ScoreVbox"]
+layout_mode = 2
+text = "Team 3: 0"
+horizontal_alignment = 1
 
 [node name="LowerSection" type="HBoxContainer" parent="." groups=["ui_mask"]]
 anchors_preset = 12
@@ -267,18 +346,18 @@ mouse_filter = 2
 [node name="HBoxContainer" type="HBoxContainer" parent="BuyMenu"]
 layout_mode = 2
 
-[node name="PlayerNameLabel" type="Label" parent="."]
+[node name="Debug" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
 offset_right = 40.0
-offset_bottom = 23.0
-text = "Player: "
-metadata/_edit_use_anchors_ = true
+offset_bottom = 40.0
 
-[node name="DebugCrosshair" type="Sprite2D" parent="."]
+[node name="DebugCrosshair" type="Sprite2D" parent="Debug"]
 position = Vector2(-90, 0)
 scale = Vector2(0.1, 0.1)
 texture = ExtResource("2_k2au3")
 
-[node name="ReferenceRect" type="ReferenceRect" parent="."]
+[node name="ReferenceRect" type="ReferenceRect" parent="Debug"]
 offset_left = -114.0
 offset_top = 62.0
 offset_right = -74.0
