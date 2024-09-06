@@ -57,7 +57,7 @@ func handle_inspection(select):
 				
 		# Raycast was enabled and missed
 		elif !_suppress_raycast:
-			_remove_selection()
+			remove_selection()
 
 func handle_action(select):
 	if select: 
@@ -75,10 +75,26 @@ func handle_action(select):
 	# If thats not the case, and we just got no hits
 	# Then we have undone the selection
 	elif Input.is_action_just_pressed("main_interaction") && !_suppress_raycast:
-		_remove_selection()
+		remove_selection()
 
 	if Input.is_action_just_pressed("secondary_interaction"): 
 		game_manager.execute_action(select)
+
+# Public Methods
+# --------------------
+func remove_selection():
+	# Iform UI
+	if game_ui: game_ui.deselect_inspection()
+			
+	# Clear highlighting and selected action
+	game_manager.highlight_manager.clear_mouse_over_highlight()
+	game_manager.highlight_manager.clear_mass_highlight()
+	game_manager.selected_action = null
+	game_manager.set_mouse_selection(null)
+	
+	# Set Mouse Mode to Inspection
+	current_mouse_mode = MOUSE_MODE.INSPECTION
+
 
 # Private Methods
 # --------------------
@@ -101,22 +117,9 @@ func get_hovered_on_selectable():
 		
 	return false
 
-func _remove_selection():
-	# Iform UI
-	if game_ui: game_ui.deselect_inspection()
-			
-	# Clear highlighting and selected action
-	game_manager.highlight_manager.clear_mouse_over_highlight()
-	game_manager.highlight_manager.clear_mass_highlight()
-	game_manager.selected_action = null
-	game_manager.set_mouse_selection(null)
-	
-	# Set Mouse Mode to Inspection
-	current_mouse_mode = MOUSE_MODE.INSPECTION
-
 func _unhandled_input(_event):
 	if Input.is_action_just_pressed("cancel_interaction"):
-		_remove_selection()
+		remove_selection()
 
 # Setters
 # --------------------

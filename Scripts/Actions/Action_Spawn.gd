@@ -98,7 +98,7 @@ func spawn_unit(target_tile_path : NodePath, unit_to_spawn : Unit_Properties.uni
 	
 	# Add the unit to the tree
 	var tree = get_node(parent_node_path)
-	tree.add_child(spawned_unit)
+	tree.add_child(spawned_unit, true)
 	
 	# Add the unit to list of units of a player
 	PlayerManager.add_unit(spawning_player, spawned_unit)

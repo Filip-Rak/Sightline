@@ -12,16 +12,18 @@ var _ap_damage : float
 var _he_damage : float
 var _respects_LOS : bool
 var _needs_spot : bool
+var _ap_required : bool
 
 var _available_tiles : Array
 
 # Constructor
 # --------------------
-func _init(display_name : String, description : String, attack_range : int, attack_min_range : int, ap_damage : float, he_damage : float, ap_cost : int = -1, respects_LOS : bool = true, needs_spot : bool = true):
+func _init(display_name : String, description : String, attack_range : int, attack_min_range : int, ap_damage : float, he_damage : float, ap_cost : int = -1, ap_required : bool = true, respects_LOS : bool = true, needs_spot : bool = true):
 	# Super class
 	self._display_name = display_name
 	self._description = description
 	self._ap_cost = ap_cost
+	self._ap_required = ap_required
 	self._usage_limit = 0
 	self._cooldown = 0
 	self._starts_on_cooldown = false
@@ -44,6 +46,10 @@ func get_available_targets() -> Dictionary:
 	var unit : Unit = _game_manager.get_mouse_selection()
 	var tile_matrix = _game_manager.get_tile_matrix()
 	
+	# Run checks
+	if !unit.get_can_attack(): return {"tiles" : [], "costs" : []}
+	if _ap_required && unit.get_action_points_left() <= 0: return {"tiles" : [], "costs" : []}
+	
 	# Check if the unit belongs to the player
 	if unit.get_player_owner_id() != multiplayer.get_unique_id(): 
 		MouseModeManager.set_mouse_mode(MouseModeManager.MOUSE_MODE.INSPECTION)
@@ -59,6 +65,34 @@ func get_available_targets() -> Dictionary:
 	
 	# Return results for visualization
 	return {"tiles" : _available_tiles, "costs" : []}
+
+func perform_action(target : Tile):
+	if !target is Tile: return
+	
+	# Get variables
+	var unit : Unit = _game_manager.get_mouse_selection()
+		
+	# Make sure the selected target is within legal targets
+	if _available_tiles.find(target) == -1: return
+	
+	# Handle cooldowns here
+	# Reduce action points
+	# If set to -1 deplete them completely
+	if _ap_cost <= -1:
+		unit.offset_action_points(-Unit_Properties.get_action_points_max(unit.get_type()))
+		unit.set_can_attack(false)
+	else:
+		unit.offset_action_points(-_ap_cost)
+		if unit.get_action_points_left() == 0: 
+			unit.set_can_attack(false)
+		
+	# Apply attack on the net	
+	var defense_modifier = Tile_Properties.get_defense_modifier(target.get_type())
+	rpc("apply_attack", _ap_damage, _he_damage, target.get_path(), defense_modifier)
+	
+	# Trigger a function for further cleanup in game manager
+	var _stay_in_action = unit.get_action_points_left() > 0
+	super.on_action_finished(unit.get_can_attack(), multiplayer.get_unique_id(), false, false)
 
 
 # Private Methods
@@ -147,3 +181,18 @@ func _is_line_of_sight_blocked(origin: Vector3, target: Vector3, tile_matrix: Ar
 			
 	return false
 
+# Remote Procedure Calls
+# --------------------
+@rpc("any_peer", "call_local")
+func apply_attack(ap_damage : float, he_damage : float, target_tile_path : NodePath, defense_mod : float):
+	var target_tile : Tile = get_node(target_tile_path)
+	
+	for unit : Unit in target_tile.get_units_in_tile():
+		unit.offset_hit_points(ap_damage, he_damage, defense_mod)
+		if unit.get_hit_points_left() <= 0:
+			unit.destroy_unit(_game_manager)
+
+# Getters
+# --------------------
+static func get_internal_name() -> String:
+	return "Action_Range_Attack"

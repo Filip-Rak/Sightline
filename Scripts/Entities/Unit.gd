@@ -13,6 +13,7 @@ class_name Unit
 
 # Instance
 var _action_points_left : int
+var _can_attack : bool
 var _hit_points_left : float
 var _matrix_tile_position : Vector3
 var _player_owner_id : int
@@ -22,12 +23,33 @@ var _transported_unit : Unit
 # --------------------
 func _ready():
 	_action_points_left = Unit_Properties.get_action_points_max(_type)
+	_can_attack = true
 	_hit_points_left = Unit_Properties.get_hit_points_max(_type)
 	if _unit_label:
 		_unit_label._unit_label_content.set_and_update(self, _unit_label)
 		_unit_label.force_update_viewport_size()
 	else:
 		printerr("Unit.gd -> _ready(): No unit label assigned!")
+
+# Private Methods
+# --------------------
+func destroy_unit(game_manager : Game_Manager):
+	# Get the reference to the tile
+	var tile : Tile = game_manager.get_tile_matrix()[_matrix_tile_position.x][_matrix_tile_position.z]
+	
+	# Remove the unit from tile
+	tile.remove_unit_from_tile(self)
+	
+	# Clear player's selections if the unit is selected
+	var selection = game_manager.get_mouse_selection()
+	if typeof(selection) == TYPE_OBJECT && selection == self:
+		MouseModeManager.remove_selection()
+	
+	# Remove unit from player manager
+	PlayerManager.remove_unit(self)
+	
+	# Delete the unit
+	queue_free()
 
 # Public Methods
 # --------------------
@@ -45,9 +67,16 @@ func offset_action_points(offset : int) -> bool:
 	return _action_points_left > 0
 
 # Returns 'true' if hp is above 0, 'false' if below or equal 0
-func offset_hit_points(offset : float) -> bool:
-	# Update value
-	_hit_points_left += offset
+func offset_hit_points(ap_damage : float, he_damage : float, defense_mod : float = 2) -> bool:
+	# Calculate multipliers
+	var ap_multi = (1 - Unit_Properties.get_ap_resistance(_type))
+	var he_multi = (1 - Unit_Properties.get_he_resistance(_type))
+	var tile_multi = defense_mod
+	
+	# Update HP
+	# Currently, tile modifier is not used on ap damage
+	_hit_points_left -= ap_damage * ap_multi
+	_hit_points_left -= he_damage * he_multi * tile_multi
 	
 	# Update UI
 	if _unit_label: 
@@ -59,6 +88,7 @@ func offset_hit_points(offset : float) -> bool:
 func reset_action_points():
 	# Update value
 	_action_points_left = Unit_Properties.get_action_points_max(_type)
+	_can_attack = true
 	
 	# Update UI
 	if _unit_label: 
@@ -93,6 +123,9 @@ func get_label_conent() -> Unit_Label_Content:
 func get_label() -> Unit_Label_3D:
 	return _unit_label
 
+func get_can_attack() -> bool:
+	return _can_attack
+
 # Setters
 # --------------------
 func set_player_owner(id : int): 
@@ -115,3 +148,6 @@ func enable_visual_elements(value : bool):
 		
 	_visual_element.visible = value
 	_collision_shape.disabled = !value
+
+func set_can_attack(value : bool):
+	_can_attack = value

@@ -260,12 +260,12 @@ func _set_element_activity(element, value : bool):
 
 func _track_unit(new_track : Unit):
 	# Disable old selection
-	if _tracked_unit:
+	if is_instance_valid(_tracked_unit):
 		var label_content : Unit_Label_Content = _tracked_unit.get_label_conent()
 		if label_content: label_content.set_selection_vis(false)
 	
 	# Enable new selection
-	if new_track:
+	if is_instance_valid(new_track):
 		var label_content : Unit_Label_Content = new_track.get_label_conent()
 		if label_content: label_content.set_selection_vis(true)
 	

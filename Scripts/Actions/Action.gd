@@ -55,7 +55,7 @@ func _highlight_tiles(tiles : Array):
 func _highlight_units():
 	pass
 
-func on_action_finished(stay_in_action : bool, caller_id : int):
+func on_action_finished(stay_in_action : bool, caller_id : int, handle_cooldown : bool = true, recalc_highlight_for_others : bool = true):
 	if stay_in_action:
 		# Redo the calculations to check now available targets
 		_game_manager.select_action(_game_manager.selected_action)
@@ -65,10 +65,11 @@ func on_action_finished(stay_in_action : bool, caller_id : int):
 		_game_manager.highlight_manager.clear_mass_highlight()
 	
 	# Recalculate the highlighting for other players
-	_game_manager.highlight_manager.redo_highlighting(_game_manager.player_turn)
+	if recalc_highlight_for_others:
+		_game_manager.highlight_manager.redo_highlighting(_game_manager.player_turn)
 	
 	# Update propterties of the action for the caller
-	if multiplayer.get_unique_id() == caller_id:
+	if handle_cooldown && multiplayer.get_unique_id() == caller_id:
 		_last_use_turn = _game_manager.turn_manager.get_turn_num()
 		_usage_limit -= 1
 

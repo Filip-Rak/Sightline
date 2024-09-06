@@ -64,6 +64,9 @@ func reset_all_players():
 func add_unit(owner_id : int, unit : Unit):
 	players[owner_id]["units"].append(unit)
 
+func remove_unit(unit : Unit):
+	players[unit.get_player_owner_id()]["units"].erase(unit)
+
 func offset_deployment_points(player_id : int, offset : float):
 	var new_val = players[player_id]["deployment_points"] + offset
 	if new_val < 0: new_val = 0

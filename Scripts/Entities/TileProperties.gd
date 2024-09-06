@@ -18,7 +18,7 @@ static var _type_properties = {
 	tile_type.DEFAULT: 
 	{ 
 		"blocks_line_of_sight": false,
-		"defense_modifier" : 1.0,
+		"defense_modifier" : 1,
 		"range_bonus": 0,
 		"movement_cost" : 1,
 		"accesible_to": [
@@ -31,7 +31,7 @@ static var _type_properties = {
 	tile_type.WATER: 
 	{ 
 		"blocks_line_of_sight": false,
-		"defense_modifier" : 0.6,
+		"defense_modifier" : 1.2,
 		"range_bonus": 1,
 		"movement_cost" : 3,
 		"accesible_to": [
@@ -41,7 +41,7 @@ static var _type_properties = {
 	tile_type.FOREST: 
 	{ 
 		"blocks_line_of_sight": true,
-		"defense_modifier" : 1.3,
+		"defense_modifier" : 0.6,
 		"range_bonus": 0,
 		"movement_cost" : 3,
 		"accesible_to": [
@@ -54,7 +54,7 @@ static var _type_properties = {
 	tile_type.MOUNTAIN: 
 	{ 
 		"blocks_line_of_sight": true,
-		"defense_modifier" : 1,
+		"defense_modifier" : 0.8,
 		"range_bonus": 1,
 		"movement_cost" : 3,
 		"accesible_to": [
@@ -64,7 +64,7 @@ static var _type_properties = {
 	tile_type.HILL: 
 	{ 
 		"blocks_line_of_sight": true,
-		"defense_modifier" : 1.1,
+		"defense_modifier" : 1,
 		"range_bonus": 1,
 		"movement_cost" : 1,
 		"accesible_to": [
@@ -77,7 +77,7 @@ static var _type_properties = {
 	tile_type.TOWN: 
 	{ 
 		"blocks_line_of_sight": true,
-		"defense_modifier" : 1.5,
+		"defense_modifier" : 0.4,
 		"range_bonus": 1,
 		"movement_cost" : 2,
 		"accesible_to": [
@@ -90,7 +90,7 @@ static var _type_properties = {
 	tile_type.RIVER: 
 	{ 
 		"blocks_line_of_sight": false,
-		"defense_modifier" : 1.4,
+		"defense_modifier" : 0.8,
 		"range_bonus": 0,
 		"movement_cost" : 3,
 		"accesible_to": [
@@ -100,7 +100,7 @@ static var _type_properties = {
 	tile_type.BRIDGE: 
 	{ 
 		"blocks_line_of_sight": false,
-		"defense_modifier" : 1.1,
+		"defense_modifier" : 0.8,
 		"range_bonus": 0,
 		"movement_cost" : 1,
 		"accesible_to": [
