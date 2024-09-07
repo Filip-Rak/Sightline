@@ -70,7 +70,7 @@ func perform_action(target):
 # Remote Procedure Calls
 # --------------------
 
-@rpc("any_peer", "call_local")
+@rpc("any_peer", "call_local", "reliable")
 func _move_unit(path_to_unit : NodePath, route : Array, caller_id : int):
 	var tile_matrix : Array = _game_manager.get_tile_matrix()
 	

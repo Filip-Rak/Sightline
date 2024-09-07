@@ -33,7 +33,7 @@ func remove_child_content():
 
 func add_child_content():
 	visible = true
-	_content_parent.add_child(_unit_label_content)
+	_content_parent.add_child(_unit_label_content, true)
 	_unit_label_content.reset_pos()
 
 # Getters

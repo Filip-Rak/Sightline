@@ -25,13 +25,16 @@ func add_unit_to_tile(unit : Unit):
 	# Update Array
 	_units_in_tile.append(unit)
 	
-	# Change tile ownership
+	# Get new team_id
 	var new_id = PlayerManager.get_team_id(unit.get_player_owner_id())
 	
 	if new_id != _team_id:
+		# Change ownership
 		TeamManager.change_tile_owner(_matrix_position, _team_id, new_id)
 		_team_id = new_id
-
+		
+		# Disable the spawn
+		_is_a_spawn = false
 	
 	# Update the label above tile
 	if _tile_label:

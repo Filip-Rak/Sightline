@@ -19,14 +19,14 @@ func _ready():
 
 # Remote Procedure Calls
 # --------------------
-@rpc("any_peer", "call_local")
+@rpc("any_peer", "call_local", "reliable")
 func update_player_list():
 	player_list_node.text = "Player list:\n"
 	var players = PlayerManager.get_players()
 	for i in players:
 		player_list_node.text += (players[i]["player_name"] + " " + str(i) + "\n")
 
-@rpc("any_peer", "call_local")
+@rpc("any_peer", "call_local", "reliable")
 func start_game():
 	if !Network.has_connection_to_server():
 		# Set player name and team

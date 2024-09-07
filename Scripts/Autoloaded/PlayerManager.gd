@@ -76,14 +76,14 @@ func offset_deployment_points(player_id : int, offset : float):
 
 # Remote Procedure Calls
 # --------------------
-@rpc("any_peer", "call_local")
+@rpc("any_peer", "call_local", "reliable")
 func _update_deployment_points_of_player(player_id : int, value : float):
 	players[player_id]["deployment_points"] = value
 	
 	# Emit a signal for other scripts to act on
 	emit_signal("deployment_points_update")
 
-@rpc("any_peer", "call_local")
+@rpc("any_peer", "call_local", "reliable")
 func reassign_unit(unit_path : NodePath, giver_id : int, receiver_id : int):
 	var unit = get_node(unit_path)
 	

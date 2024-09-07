@@ -48,7 +48,7 @@ func _ready():
 	
 	# Create other scripts
 	turn_manager = Turn_Manager.new()
-	add_child(turn_manager)
+	add_child(turn_manager, true)
 	
 	# Set up signals
 	Network.connect("synchronization_complete", on_all_players_loaded)
@@ -62,7 +62,7 @@ func _ready():
 	
 	# Set up highligt manager
 	highlight_manager = Highlight_Manager.new(self)
-	add_child(highlight_manager)
+	add_child(highlight_manager, true)
 	
 	# Load the map and get its properties
 	# In the future this is where procedural generation would be added
@@ -80,7 +80,7 @@ func _ready():
 	for action in Unit_Properties.get_all_actions():
 		if !action.is_inside_tree():
 			action.set_game_manager(self)
-			add_child(action)
+			add_child(action, true)
 			
 	# Tell players how many points they start with
 	# For now just assign everyone a constant value

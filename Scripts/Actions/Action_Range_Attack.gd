@@ -183,7 +183,7 @@ func _is_line_of_sight_blocked(origin: Vector3, target: Vector3, tile_matrix: Ar
 
 # Remote Procedure Calls
 # --------------------
-@rpc("any_peer", "call_local")
+@rpc("any_peer", "call_local", "reliable")
 func apply_attack(ap_damage : float, he_damage : float, target_tile_path : NodePath, defense_mod : float):
 	var target_tile : Tile = get_node(target_tile_path)
 	

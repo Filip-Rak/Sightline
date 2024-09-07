@@ -81,7 +81,7 @@ func populate_buy_menu():
 		button.text = _prepare_buy_button_string(unit_type)
 		button.set_meta("type", unit_type)
 		button.connect("button_down", Callable(self, "_on_unit_buy_button_pressed").bind(unit_type))
-		hbox.add_child(button)
+		hbox.add_child(button, true)
 
 func _prepare_buy_button_string(type : Unit_Properties.unit_type) -> String:
 	var spawn_action : Action_Spawn = Unit_Properties.get_action(type, Action_Spawn.get_internal_name())
@@ -195,7 +195,7 @@ func inspect_tile(tile : Tile):
 		unit_button.connect("button_down", Callable(self, "select_in_ui").bind(unit))
 		unit_button.text = Unit_Properties.get_display_name(unit.get_type())
 		
-		unit_grid_container.add_child(unit_button)
+		unit_grid_container.add_child(unit_button, true)
 
 func deselect_inspection():
 	# Set visibility to panels
@@ -237,7 +237,7 @@ func _update_score_vbox():
 		var label = Label.new()
 		label.text = "Team %s: %s" % [id, TeamManager.get_team_score(id)]
 		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		score_vbox.add_child(label)
+		score_vbox.add_child(label, true)
 
 # Links
 # --------------------

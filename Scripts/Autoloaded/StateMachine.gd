@@ -42,7 +42,7 @@ func _change_scene(new_scene, parameters):
 		get_tree().current_scene.queue_free()
 		
 	# Add the new scene to the root node first
-	get_tree().root.add_child(new_scene)
+	get_tree().root.add_child(new_scene, true)
 	
 	# Set the new scene as the current scene
 	get_tree().set_current_scene(new_scene)

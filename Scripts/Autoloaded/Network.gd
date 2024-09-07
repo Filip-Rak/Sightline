@@ -129,7 +129,7 @@ func update_player_data_fast(data : Dictionary, caller_id : int):
 	# Update the data
 	PlayerManager.set_player(caller_id, data)
 
-@rpc("any_peer")
+@rpc("any_peer", "reliable")
 func send_ack(sender_id : int):
 	PlayerManager.set_ack(sender_id, true)
 	
@@ -137,7 +137,7 @@ func send_ack(sender_id : int):
 		rpc("emit_signal_globbaly", "synchronization_complete")
 		PlayerManager.set_ack_all(false)
 
-@rpc("any_peer")
+@rpc("any_peer", "reliable")
 func send_player_information(player_data : Dictionary, id : int, last_one : bool = false):
 	# Send data to server
 	if !PlayerManager.is_player(id):
@@ -151,7 +151,7 @@ func send_player_information(player_data : Dictionary, id : int, last_one : bool
 	if last_one:
 		emit_signal("player_data_updated")
 
-@rpc("any_peer", "call_local")
+@rpc("any_peer", "call_local", "reliable")
 func distribute_player_information():
 	var players = PlayerManager.get_players()
 	var player_keys = players.keys()
@@ -167,7 +167,7 @@ func distribute_player_information():
 		else:
 			rpc("send_player_information", player_data, player_id)
 
-@rpc("any_peer", "call_local")
+@rpc("any_peer", "call_local", "reliable")
 func emit_signal_globbaly(signal_name : String):
 	emit_signal(signal_name)
 

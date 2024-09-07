@@ -60,7 +60,7 @@ func _fill_owned_tiles(team_id : int, tile_matrix : Array):
 	
 # Remote Procedure Calls
 # --------------------
-@rpc("authority")
+@rpc("authority", "reliable")
 func _sync_to_host(teams : Dictionary):
 	_teams = teams
 

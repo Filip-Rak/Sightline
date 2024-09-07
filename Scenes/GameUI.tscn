@@ -358,6 +358,7 @@ scale = Vector2(0.1, 0.1)
 texture = ExtResource("2_k2au3")
 
 [node name="ReferenceRect" type="ReferenceRect" parent="Debug"]
+layout_mode = 0
 offset_left = -114.0
 offset_top = 62.0
 offset_right = -74.0

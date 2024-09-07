@@ -81,7 +81,7 @@ func perform_action(_target : Tile):
 
 # Remote Procedure Calls
 # --------------------
-@rpc("any_peer", "call_local")
+@rpc("any_peer", "call_local", "reliable")
 func spawn_unit(target_tile_path : NodePath, unit_to_spawn : Unit_Properties.unit_type, spawning_player: int, parent_node_path : NodePath):
 	# Get the tile to spawn in
 	var target_tile = get_node(target_tile_path)

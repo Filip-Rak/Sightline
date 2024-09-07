@@ -143,22 +143,22 @@ func start_new_turn():
 
 # Remote Procedure Calls
 # --------------------
-@rpc("any_peer", "call_remote")
+@rpc("any_peer", "call_remote", "reliable")
 func request_turn_skip(caller_id : int):
 	if caller_id == order[current_index]:
 		start_new_turn()
 
-@rpc("any_peer", "call_local")
+@rpc("any_peer", "call_local", "reliable")
 func start_player_turn(player_id : int):
 	if multiplayer.get_unique_id() == player_id:
 		game_manager.enable_turn()
 
-@rpc("any_peer", "call_local")
+@rpc("any_peer", "call_local", "reliable")
 func end_player_turn(player_id : int):
 	if multiplayer.get_unique_id() == player_id:
 		game_manager.disable_turn()
 	
-@rpc("any_peer", "call_local")
+@rpc("any_peer", "call_local", "reliable")
 func distribute_turn_data(player_id : int, given_time : float, turn_num : int):
 	time_limit = given_time
 	time_spent_in_turn = 0
@@ -167,7 +167,7 @@ func distribute_turn_data(player_id : int, given_time : float, turn_num : int):
 	game_manager.game_ui.update_turn_ui(player_id, given_time, turn_num)
 	pass
 
-@rpc("any_peer", "call_local")
+@rpc("any_peer", "call_local", "reliable")
 func send_signal_on_net(signal_name : String):
 	emit_signal(signal_name)
 
