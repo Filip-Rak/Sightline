@@ -9,7 +9,7 @@ draw_center = false
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d5pqr"]
 draw_center = false
 
-[node name="GameUI" type="CanvasLayer" node_paths=PackedStringArray("player_turn_label", "turn_num_label", "time_left_label", "_deploy_button", "buy_menu", "inspection_panel_empty", "unit_selection_panel", "unit_selection_name", "unit_selection_action", "unit_selection_hp", "unit_selection_sight", "unit_selection_res", "unit_selection_owner", "tile_selection_panel", "unit_grid_container", "debug_crosshair", "debug_rect", "player_name_label", "team_name_label", "score_vbox")]
+[node name="GameUI" type="CanvasLayer" node_paths=PackedStringArray("player_turn_label", "turn_num_label", "time_left_label", "_deploy_button", "buy_menu", "inspection_panel_empty", "unit_selection_panel", "unit_selection_name", "unit_selection_action", "unit_selection_hp", "unit_selection_sight", "unit_selection_res", "unit_selection_owner", "tile_selection_panel", "tile_selection_name", "tile_selection_defense", "tile_selection_movement", "tile_selection_spawn", "tile_selection_value", "tile_selection_owner", "unit_grid_container", "debug_crosshair", "debug_rect", "player_name_label", "team_name_label", "score_vbox")]
 script = ExtResource("1_5uulx")
 player_turn_label = NodePath("LowerSection/TurnPanel/MarginContainer/VBoxContainer/HBoxContainer/PlayerTurnLabel")
 turn_num_label = NodePath("LowerSection/TurnPanel/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/TurnNumLabel")
@@ -25,7 +25,13 @@ unit_selection_sight = NodePath("LowerSection/MiddlePanel/UnitSelectionPanel/HBo
 unit_selection_res = NodePath("LowerSection/MiddlePanel/UnitSelectionPanel/HBoxContainer/UnitDetails/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/UnitSelRes")
 unit_selection_owner = NodePath("LowerSection/MiddlePanel/UnitSelectionPanel/HBoxContainer/UnitDetails/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2/UnitSelOwner")
 tile_selection_panel = NodePath("LowerSection/MiddlePanel/TileSelectionPanel")
-unit_grid_container = NodePath("LowerSection/MiddlePanel/TileSelectionPanel/HBoxContainer/Units/UnitGridContainer")
+tile_selection_name = NodePath("LowerSection/MiddlePanel/TileSelectionPanel/HBoxContainer/TileDetails/MarginContainer/VBoxContainer/TileSelName")
+tile_selection_defense = NodePath("LowerSection/MiddlePanel/TileSelectionPanel/HBoxContainer/TileDetails/MarginContainer/VBoxContainer/HBoxContainer/TileSelDef")
+tile_selection_movement = NodePath("LowerSection/MiddlePanel/TileSelectionPanel/HBoxContainer/TileDetails/MarginContainer/VBoxContainer/HBoxContainer/TileSelMove")
+tile_selection_spawn = NodePath("LowerSection/MiddlePanel/TileSelectionPanel/HBoxContainer/TileDetails/MarginContainer/VBoxContainer/HBoxContainer/TileSelSpawn")
+tile_selection_value = NodePath("LowerSection/MiddlePanel/TileSelectionPanel/HBoxContainer/TileDetails/MarginContainer/VBoxContainer/HBoxContainer/TileSelVal")
+tile_selection_owner = NodePath("LowerSection/MiddlePanel/TileSelectionPanel/HBoxContainer/TileDetails/MarginContainer/VBoxContainer/HBoxContainer2/TileSelOwner")
+unit_grid_container = NodePath("LowerSection/MiddlePanel/TileSelectionPanel/HBoxContainer/MarginContainer/Units/UnitGridContainer")
 debug_crosshair = NodePath("Debug/DebugCrosshair")
 debug_rect = NodePath("Debug/ReferenceRect")
 player_name_label = NodePath("UpperRighSection/NameContainer/MarginContainer/VBoxContainer/PlayerNameLabel")
@@ -172,6 +178,7 @@ text = "Select Unit or Tile to display details"
 horizontal_alignment = 1
 
 [node name="UnitSelectionPanel" type="PanelContainer" parent="LowerSection/MiddlePanel"]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 6.0
@@ -204,7 +211,7 @@ layout_mode = 2
 
 [node name="UnitSelName" type="Label" parent="LowerSection/MiddlePanel/UnitSelectionPanel/HBoxContainer/UnitDetails/HBoxContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 18
+theme_override_font_sizes/font_size = 20
 text = "M2A1 Bradley IFV"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -307,7 +314,6 @@ size_flags_vertical = 3
 text = "6"
 
 [node name="TileSelectionPanel" type="PanelContainer" parent="LowerSection/MiddlePanel"]
-visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 6.0
@@ -323,17 +329,72 @@ size_flags_stretch_ratio = 5.0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_d5pqr")
 
-[node name="Label" type="Label" parent="LowerSection/MiddlePanel/TileSelectionPanel/HBoxContainer/TileDetails"]
+[node name="MarginContainer" type="MarginContainer" parent="LowerSection/MiddlePanel/TileSelectionPanel/HBoxContainer/TileDetails"]
 layout_mode = 2
-size_flags_horizontal = 4
-text = "Tile details"
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
 
-[node name="Units" type="ScrollContainer" parent="LowerSection/MiddlePanel/TileSelectionPanel/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="LowerSection/MiddlePanel/TileSelectionPanel/HBoxContainer/TileDetails/MarginContainer"]
+layout_mode = 2
+
+[node name="TileSelName" type="Label" parent="LowerSection/MiddlePanel/TileSelectionPanel/HBoxContainer/TileDetails/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Town"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="LowerSection/MiddlePanel/TileSelectionPanel/HBoxContainer/TileDetails/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="LowerSection/MiddlePanel/TileSelectionPanel/HBoxContainer/TileDetails/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="TileSelDef" type="Label" parent="LowerSection/MiddlePanel/TileSelectionPanel/HBoxContainer/TileDetails/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Defense: 1.5"
+
+[node name="TileSelMove" type="Label" parent="LowerSection/MiddlePanel/TileSelectionPanel/HBoxContainer/TileDetails/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+text = "Movement: 2"
+
+[node name="TileSelVal" type="Label" parent="LowerSection/MiddlePanel/TileSelectionPanel/HBoxContainer/TileDetails/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+text = "Value: 5"
+
+[node name="TileSelSpawn" type="Label" parent="LowerSection/MiddlePanel/TileSelectionPanel/HBoxContainer/TileDetails/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+text = "Spawn: Yes"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="LowerSection/MiddlePanel/TileSelectionPanel/HBoxContainer/TileDetails/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="TileSelOwner" type="Label" parent="LowerSection/MiddlePanel/TileSelectionPanel/HBoxContainer/TileDetails/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Owner Team: 1"
+
+[node name="MarginContainer" type="MarginContainer" parent="LowerSection/MiddlePanel/TileSelectionPanel/HBoxContainer"]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="Units" type="ScrollContainer" parent="LowerSection/MiddlePanel/TileSelectionPanel/HBoxContainer/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 3.0
 
-[node name="UnitGridContainer" type="GridContainer" parent="LowerSection/MiddlePanel/TileSelectionPanel/HBoxContainer/Units"]
+[node name="UnitGridContainer" type="GridContainer" parent="LowerSection/MiddlePanel/TileSelectionPanel/HBoxContainer/MarginContainer/Units"]
 layout_mode = 2
 columns = 2
 

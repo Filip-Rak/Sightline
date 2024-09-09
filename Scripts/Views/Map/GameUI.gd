@@ -31,6 +31,12 @@ class_name Game_UI
 
 # Tile selection panel
 @export var tile_selection_panel : PanelContainer
+@export var tile_selection_name : Label
+@export var tile_selection_defense : Label
+@export var tile_selection_movement : Label
+@export var tile_selection_spawn : Label
+@export var tile_selection_value : Label
+@export var tile_selection_owner : Label
 @export var unit_grid_container : GridContainer
 
 # Debug
@@ -45,6 +51,7 @@ class_name Game_UI
 # Status
 var game_in_progress = false
 var _tracked_unit : Unit
+var _tracked_tile : Tile
 
 # Ready Functions
 # --------------------
@@ -150,6 +157,7 @@ func inspect_unit(unit : Unit):
 	
 	# Update unit label's visual properties
 	_track_unit(unit)
+	_track_tile(null)
 	
 	# Set unit details
 	_set_up_unit_details(unit)
@@ -163,21 +171,15 @@ func inspect_tile(tile : Tile):
 	_set_element_activity(tile_selection_panel, true)
 	_set_element_activity(inspection_panel_empty, false)
 	
-	# Update unit label's visual properties
+	# Update trackers
 	_track_unit(null)
+	_track_tile(tile)
 	
-	# Reset unit grid container
-	for child in unit_grid_container.get_children():
-		child.queue_free()
+	# Update unit grid container
+	_set_up_unit_grid_container(tile)
 	
-	# Fill the unit grid container
-	var units = tile.get_units_in_tile()
-	for unit : Unit in units:
-		var unit_button = Button.new()
-		unit_button.connect("button_down", Callable(self, "select_in_ui").bind(unit))
-		unit_button.text = Unit_Properties.get_display_name(unit.get_type())
-		
-		unit_grid_container.add_child(unit_button, true)
+	# Update tile details
+	_set_up_tile_details(tile)
 
 func deselect_inspection():
 	# Set visibility to panels
@@ -187,6 +189,7 @@ func deselect_inspection():
 	
 	# Update unit label's visual properties
 	_track_unit(null)
+	_track_tile(null)
 
 func select_in_ui(unit : Unit):
 	MouseModeManager.handle_inspection(unit)
@@ -288,6 +291,57 @@ func _set_up_action_buttons(unit : Unit):
 	if actions.size() > action_buttons.size():
 		print("inspect_unit() -> Warning: Too many actions, not all actions will be assigned to buttons")
 
+func _set_up_unit_grid_container(tile : Tile):
+	# Reset unit grid container
+	for child in unit_grid_container.get_children():
+		child.queue_free()
+	
+	# Fill the unit grid container
+	var units = tile.get_units_in_tile()
+	for unit : Unit in units:
+		var unit_button = Button.new()
+		unit_button.connect("button_down", Callable(self, "select_in_ui").bind(unit))
+		unit_button.text = Unit_Properties.get_display_name(unit.get_type())
+		
+		unit_grid_container.add_child(unit_button, true)
+
+func _set_up_tile_details(tile : Tile):
+	# Display name
+	var tile_name = Tile_Properties.get_display_name(tile.get_type())
+	tile_selection_name.text = tile_name
+	
+	# Defense modifier
+	var def = Tile_Properties.get_defense_modifier(tile.get_type())
+	tile_selection_defense.text = "Defense: %.1f" % def
+	
+	# Movement cost
+	var movement_cost = Tile_Properties.get_movement_cost(tile.get_type())
+	tile_selection_movement.text = "Movement: %.1f" % movement_cost
+	
+	# Is a spawn
+	if tile.get_is_a_spawn():
+		tile_selection_spawn.text = "Spawn"
+		tile_selection_spawn.visible = true
+	else:
+		tile_selection_spawn.visible = false
+		
+	# Point value
+	var value = tile.get_point_value()
+	if value > 0:
+		tile_selection_value.text = "Value: %.1f" % value
+		tile_selection_value.visible = true
+	else:
+		tile_selection_value.visible = false
+		
+	# Team owner
+	var team_owner = tile.get_team_id()
+	if team_owner > 0:
+		tile_selection_owner.text = "Team owner: %s" % team_owner
+		tile_selection_owner.visible = true
+	else:
+		tile_selection_owner.visible = false
+		
+
 # Links
 # --------------------
 func _on_action_button_down(action : Action, unit : Unit):
@@ -336,6 +390,11 @@ func _on_unit_sel_tile_button():
 		var pos = _tracked_unit.get_matrix_tile_position()
 		var tile : Tile = game_manager.get_tile_matrix()[pos.x][pos.z]
 		MouseModeManager.handle_inspection(tile)
+
+func _on_tile_data_changed():
+	_set_up_tile_details(_tracked_tile)
+	_set_up_unit_grid_container(_tracked_tile)
+
 # Utility
 # --------------------
 func _action_buttons_filter(arr : Array) -> Array:
@@ -389,3 +448,17 @@ func _track_unit(new_track : Unit):
 	
 	# Save the selection
 	_tracked_unit = new_track
+
+func _track_tile(new_track : Tile):
+	# Delete old reference
+	if is_instance_valid(_tracked_tile):
+		# Disconnect the signal
+		_tracked_tile.disconnect("tile_data_changed", _on_tile_data_changed)
+	
+	# Set new reference
+	if is_instance_valid(new_track):
+		# Connect the signal
+		if !new_track.is_connected("tile_data_changed", _on_tile_data_changed):
+			new_track.connect("tile_data_changed", _on_tile_data_changed)
+	
+	_tracked_tile = new_track

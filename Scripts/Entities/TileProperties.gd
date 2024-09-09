@@ -16,7 +16,8 @@ enum tile_type{
 # Dictionaries for type-specific properties and scenes
 static var _type_properties = {
 	tile_type.DEFAULT: 
-	{ 
+	{
+		"display_name": "Plains",
 		"blocks_line_of_sight": false,
 		"defense_modifier" : 1,
 		"range_bonus": 0,
@@ -30,6 +31,7 @@ static var _type_properties = {
 	},
 	tile_type.WATER: 
 	{ 
+		"display_name": "Water",
 		"blocks_line_of_sight": false,
 		"defense_modifier" : 1.2,
 		"range_bonus": 1,
@@ -40,6 +42,7 @@ static var _type_properties = {
 	},
 	tile_type.FOREST: 
 	{ 
+		"display_name": "Forest",
 		"blocks_line_of_sight": true,
 		"defense_modifier" : 0.6,
 		"range_bonus": 0,
@@ -53,6 +56,7 @@ static var _type_properties = {
 	},
 	tile_type.MOUNTAIN: 
 	{ 
+		"display_name": "Mountain",
 		"blocks_line_of_sight": true,
 		"defense_modifier" : 0.8,
 		"range_bonus": 1,
@@ -63,6 +67,7 @@ static var _type_properties = {
 	},
 	tile_type.HILL: 
 	{ 
+		"display_name": "Hill",
 		"blocks_line_of_sight": true,
 		"defense_modifier" : 1,
 		"range_bonus": 1,
@@ -76,6 +81,7 @@ static var _type_properties = {
 	},
 	tile_type.TOWN: 
 	{ 
+		"display_name": "Town",
 		"blocks_line_of_sight": true,
 		"defense_modifier" : 0.4,
 		"range_bonus": 1,
@@ -89,6 +95,7 @@ static var _type_properties = {
 	},		
 	tile_type.RIVER: 
 	{ 
+		"display_name": "River",
 		"blocks_line_of_sight": false,
 		"defense_modifier" : 0.8,
 		"range_bonus": 0,
@@ -99,6 +106,7 @@ static var _type_properties = {
 	},		
 	tile_type.BRIDGE: 
 	{ 
+		"display_name": "Bridge",
 		"blocks_line_of_sight": false,
 		"defense_modifier" : 0.8,
 		"range_bonus": 0,
@@ -136,3 +144,5 @@ static func get_range_bonus(type : tile_type) -> int:
 static func get_movement_cost(type : tile_type) -> int:
 	return _type_properties[type]["movement_cost"] 
 
+static func get_display_name(type : tile_type) -> String:
+		return _type_properties[type]["display_name"] 

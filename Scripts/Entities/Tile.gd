@@ -16,6 +16,10 @@ var _support_calls : Array
 
 # Ready Functions
 func _ready():
+	# Signals
+	add_user_signal("tile_data_changed")
+	
+	# Tile label
 	if _tile_label:
 		_tile_label.update_info_label(_point_value, _team_id)
 
@@ -42,6 +46,8 @@ func add_unit_to_tile(unit : Unit):
 		_tile_label.update_info_label(_point_value, _team_id)
 	else:
 		printerr ("ERROR: Tile.gd -> add_unit_to_tile(): _tile_label not set!")
+		
+	emit_signal("tile_data_changed")
 
 func remove_unit_from_tile(unit : Unit):
 	# Update Array
@@ -54,6 +60,8 @@ func remove_unit_from_tile(unit : Unit):
 	else:
 		printerr ("ERROR: Tile.gd -> remove_unit_from_tile(): _tile_label not set!")
 	
+	emit_signal("tile_data_changed")
+
 func has_enemy():
 	for unit in _units_in_tile:
 		if PlayerManager.get_team_id(unit.get_player_owner_id()) != PlayerManager.get_my_team_id():
