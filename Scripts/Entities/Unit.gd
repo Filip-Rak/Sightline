@@ -22,6 +22,10 @@ var _transported_unit : Unit
 # Ready Functions
 # --------------------
 func _ready():
+	# Signals
+	add_user_signal("unit_details_changed")
+	
+	# Basic values
 	_action_points_left = Unit_Properties.get_action_points_max(_type)
 	_can_attack = true
 	_hit_points_left = Unit_Properties.get_hit_points_max(_type)
@@ -64,6 +68,8 @@ func offset_action_points(offset : int) -> bool:
 	if _unit_label: 
 		_unit_label.update_all(self)
 		
+	emit_signal("unit_details_changed")
+	
 	return _action_points_left > 0
 
 # Returns 'true' if hp is above 0, 'false' if below or equal 0
@@ -81,7 +87,9 @@ func offset_hit_points(ap_damage : float, he_damage : float, defense_mod : float
 	# Update UI
 	if _unit_label: 
 		_unit_label.update_all(self)
-		
+	
+	emit_signal("unit_details_changed")
+	
 	return _hit_points_left > 0
 	
 # Sets action points to the value in Unit_Properties
@@ -93,6 +101,8 @@ func reset_action_points():
 	# Update UI
 	if _unit_label: 
 		_unit_label.update_all(self)
+		
+	emit_signal("unit_details_changed")
 
 # Getters
 # --------------------

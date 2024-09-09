@@ -19,7 +19,17 @@ class_name Game_UI
 
 # Middle panel
 @export var inspection_panel_empty : PanelContainer
+
+# Unit selection panel
 @export var unit_selection_panel : PanelContainer
+@export var unit_selection_name : Label
+@export var unit_selection_action : Label
+@export var unit_selection_hp : Label
+@export var unit_selection_sight : Label
+@export var unit_selection_res : Label
+@export var unit_selection_owner : Label
+
+# Tile selection panel
 @export var tile_selection_panel : PanelContainer
 @export var unit_grid_container : GridContainer
 
@@ -32,6 +42,7 @@ class_name Game_UI
 @export var team_name_label : Label
 @export var score_vbox: VBoxContainer
 
+# Status
 var game_in_progress = false
 var _tracked_unit : Unit
 
@@ -140,40 +151,11 @@ func inspect_unit(unit : Unit):
 	# Update unit label's visual properties
 	_track_unit(unit)
 	
-	var action_buttons: Array = get_tree().get_nodes_in_group("action_buttons")
-	var actions: Array = Unit_Properties.get_actions(unit.get_type())
+	# Set unit details
+	_set_up_unit_details(unit)
 	
-	# Ignore certain actions in setting up buttons
-	actions = _action_buttons_filter(actions)
-	
-	# Iterate over all action buttons
-	for i in range(action_buttons.size()):
-		var button : Button = action_buttons[i] 
-		
-		# Disconnect any existing connections to avoid duplicates
-		if button.is_connected("button_down", _on_action_button_down):
-			button.disconnect("button_down", _on_action_button_down)
-		
-		# Check if there's an action for this button index
-		if i < actions.size():
-			var action = actions[i]
-			
-			# Assign the button's text to the action's display name
-			button.text = action.get_display_name()
-			
-			# Connect the button's "button_down" signal to function, passing the action as an argument
-			button.connect("button_down", Callable(self, "_on_action_button_down").bind(action, unit))
-			
-			# Enable the button since it has an assigned action
-			button.disabled = false
-		else:
-			# Disable buttons without actions
-			button.text = ""
-			button.disabled = true
-			
-	# Handle too many actions scenario
-	if actions.size() > action_buttons.size():
-		print("inspect_unit() -> Warning: Too many actions, not all actions will be assigned to buttons")
+	# Set action buttons
+	_set_up_action_buttons(unit)
 
 func inspect_tile(tile : Tile):
 	# Set visibility to panels
@@ -239,6 +221,73 @@ func _update_score_vbox():
 		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		score_vbox.add_child(label, true)
 
+func _set_up_unit_details(unit : Unit):
+	# Display name
+	var unit_name = Unit_Properties.get_display_name(unit.get_type())
+	unit_selection_name.text = unit_name
+	
+	# Action points
+	var ac_left = unit.get_action_points_left()
+	if PlayerManager.get_team_id(unit.get_player_owner_id()) != PlayerManager.get_my_team_id():
+		ac_left = "?"
+	var ac_max = Unit_Properties.get_action_points_max(unit.get_type())
+	unit_selection_action.text = "Action: %s/%s" % [ac_left, ac_max]
+	
+	# Health points
+	var hp_left = ceil(unit.get_hit_points_left())
+	var hp_max = Unit_Properties.get_hit_points_max(unit.get_type())
+	unit_selection_hp.text = "HP: %s/%s" % [hp_left, hp_max]
+	
+	# Sight range
+	var sight = Unit_Properties.get_action_points_max(unit.get_type())
+	unit_selection_sight.text = "Sight: %s" % sight
+	
+	# Resistances
+	var HE_res = Unit_Properties.get_he_resistance(unit.get_type()) 
+	var AP_res = Unit_Properties.get_ap_resistance(unit.get_type()) 
+	unit_selection_res.text = "RES: %.1f/%.1f" % [AP_res, HE_res]
+	
+	# Owner
+	var player_name = PlayerManager.get_player_name(unit.get_player_owner_id())
+	unit_selection_owner.text = "Owner: %s" % player_name
+
+func _set_up_action_buttons(unit : Unit):
+	# Set up action buttons
+	var action_buttons: Array = get_tree().get_nodes_in_group("action_buttons")
+	var actions: Array = Unit_Properties.get_actions(unit.get_type())
+	
+	# Ignore certain actions in setting up buttons
+	actions = _action_buttons_filter(actions)
+	
+	# Iterate over all action buttons
+	for i in range(action_buttons.size()):
+		var button : Button = action_buttons[i] 
+		
+		# Disconnect any existing connections to avoid duplicates
+		if button.is_connected("button_down", _on_action_button_down):
+			button.disconnect("button_down", _on_action_button_down)
+		
+		# Check if there's an action for this button index
+		if i < actions.size():
+			var action = actions[i]
+			
+			# Assign the button's text to the action's display name
+			button.text = action.get_display_name()
+			
+			# Connect the button's "button_down" signal to function, passing the action as an argument
+			button.connect("button_down", Callable(self, "_on_action_button_down").bind(action, unit))
+			
+			# Enable the button since it has an assigned action
+			button.disabled = false
+		else:
+			# Disable buttons without actions
+			button.text = ""
+			button.disabled = true
+			
+	# Handle too many actions scenario
+	if actions.size() > action_buttons.size():
+		print("inspect_unit() -> Warning: Too many actions, not all actions will be assigned to buttons")
+
 # Links
 # --------------------
 func _on_action_button_down(action : Action, unit : Unit):
@@ -279,6 +328,14 @@ func _on_new_game_turn():
 	# Later add update of turn UI and remove it from turn manager along with self reference 
 	_update_score_vbox()
 
+func _on_unit_details_changed():
+	_set_up_unit_details(_tracked_unit)
+
+func _on_unit_sel_tile_button():
+	if _tracked_unit:
+		var pos = _tracked_unit.get_matrix_tile_position()
+		var tile : Tile = game_manager.get_tile_matrix()[pos.x][pos.z]
+		MouseModeManager.handle_inspection(tile)
 # Utility
 # --------------------
 func _action_buttons_filter(arr : Array) -> Array:
@@ -313,13 +370,22 @@ func _set_element_activity(element, value : bool):
 func _track_unit(new_track : Unit):
 	# Disable old selection
 	if is_instance_valid(_tracked_unit):
+		# Label content
 		var label_content : Unit_Label_Content = _tracked_unit.get_label_conent()
 		if label_content: label_content.set_selection_vis(false)
+		
+		# Signals
+		_tracked_unit.disconnect("unit_details_changed", _on_unit_details_changed)
 	
 	# Enable new selection
 	if is_instance_valid(new_track):
+		# Label content
 		var label_content : Unit_Label_Content = new_track.get_label_conent()
 		if label_content: label_content.set_selection_vis(true)
+		
+		# Signals
+		if !new_track.is_connected("unit_details_changed", _on_unit_details_changed):
+			new_track.connect("unit_details_changed", _on_unit_details_changed)
 	
 	# Save the selection
 	_tracked_unit = new_track

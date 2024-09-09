@@ -91,7 +91,7 @@ func set_sprite_3D(sprite : Sprite3D):
 	_sprite3D = sprite
 
 func set_selection_vis(value : bool):
-	if PlayerManager.get_team_id(_assigned_unit.get_player_owner_id()) == PlayerManager.get_my_team_id():
-		_selection.visible = value
-	else:
-		_selection.visible = false
+	# if PlayerManager.get_team_id(_assigned_unit.get_player_owner_id()) == PlayerManager.get_my_team_id():
+	_selection.visible = value
+	# else:
+	#	_selection.visible = false
