@@ -205,6 +205,10 @@ func update_buy_menu():
 		if child is Button:
 			child.text = _prepare_buy_button_string(child.get_meta("type"))
 
+func update_unit_grid():
+	if _tracked_tile:
+		_set_up_unit_grid_container(_tracked_tile)
+
 # Private Methods
 # --------------------
 func _update_score_vbox():
@@ -297,7 +301,18 @@ func _set_up_unit_grid_container(tile : Tile):
 	for unit : Unit in units:
 		var unit_button = Button.new()
 		unit_button.connect("button_down", Callable(self, "select_in_ui").bind(unit))
-		unit_button.text = Unit_Properties.get_display_name(unit.get_type())
+		
+		# Set the string of a unit button
+		var ap_left = unit.get_action_points_left()
+		var display_name = Unit_Properties.get_display_name(unit.get_type())
+		var hp_left = unit.get_hit_points_left()
+		var unit_text = "%d|%s|%d" % [ap_left, display_name, hp_left]
+		
+		# Make a change for different team
+		if PlayerManager.get_team_id(unit._player_owner_id) != PlayerManager.get_my_team_id():
+			unit_text = "%s|%d" % [display_name, hp_left]
+		
+		unit_button.text = unit_text
 		
 		unit_grid_container.add_child(unit_button, true)
 

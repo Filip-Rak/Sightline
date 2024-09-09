@@ -154,19 +154,25 @@ func execute_action(target):
 	
 	# Call execution on the action
 	selected_action.perform_action(target)
+	
+	# Update the UI elements
+	rpc("update_ui")
 
 func disable_turn():
 	# Disable certain actions
 	player_turn = false
 	
 	# Reset action points for visualization of next turn
-	reset_action_points()
+	rpc("reset_action_points", multiplayer.get_unique_id())
 	
 	if MouseModeManager.current_mouse_mode == MouseModeManager.MOUSE_MODE.ACTION:
 		select_action(selected_action)
 	
 	# Recalculate highlighting on the screen for the next turn
 	highlight_manager.redo_highlighting(false)
+	
+	# Update the UI elements
+	rpc("update_ui")
 	
 func enable_turn():
 	# Enable certain actions
@@ -181,11 +187,6 @@ func enable_turn():
 	# Update player's deployment points
 	if turn_manager.get_turn_num() > 1:
 		PlayerManager.offset_deployment_points(multiplayer.get_unique_id(), const_income)
-
-func reset_action_points():
-	var units = PlayerManager.get_units(multiplayer.get_unique_id())
-	for unit in units:
-		unit.reset_action_points()
 
 # Link Functions
 # --------------------
@@ -229,6 +230,17 @@ func peer_disconnected(id : int):
 func _on_new_game_turn():
 	if turn_manager.get_turn_num() > 1:
 		TeamManager.update_score(get_tile_matrix())
+
+# Remote Procedure Calls
+@rpc("any_peer", "call_local", "reliable")
+func update_ui():
+	game_ui.update_unit_grid()
+
+@rpc("any_peer", "call_local", "reliable")
+func reset_action_points(player_id : int):
+	var units = PlayerManager.get_units(player_id)
+	for unit in units:
+		unit.reset_action_points()
 
 # Setters
 # --------------------

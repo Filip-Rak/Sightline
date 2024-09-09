@@ -178,7 +178,6 @@ text = "Select Unit or Tile to display details"
 horizontal_alignment = 1
 
 [node name="UnitSelectionPanel" type="PanelContainer" parent="LowerSection/MiddlePanel"]
-visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 6.0
@@ -314,6 +313,7 @@ size_flags_vertical = 3
 text = "6"
 
 [node name="TileSelectionPanel" type="PanelContainer" parent="LowerSection/MiddlePanel"]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 6.0

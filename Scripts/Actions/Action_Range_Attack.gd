@@ -76,24 +76,10 @@ func perform_action(target : Tile):
 	if _available_tiles.find(target) == -1: return
 	
 	# Handle cooldowns here
-	# Reduce action points
-	# If set to -1 deplete them completely
-	if _ap_cost <= -1:
-		unit.offset_action_points(-Unit_Properties.get_action_points_max(unit.get_type()))
-		unit.set_can_attack(false)
-	else:
-		unit.offset_action_points(-_ap_cost)
-		if unit.get_action_points_left() == 0: 
-			unit.set_can_attack(false)
 		
-	# Apply attack on the net	
+	# Apply attack on the net
 	var defense_modifier = Tile_Properties.get_defense_modifier(target.get_type())
-	rpc("apply_attack", _ap_damage, _he_damage, target.get_path(), defense_modifier)
-	
-	# Trigger a function for further cleanup in game manager
-	var _stay_in_action = unit.get_action_points_left() > 0
-	super.on_action_finished(unit.get_can_attack(), multiplayer.get_unique_id(), false, false)
-
+	rpc("apply_attack", _ap_damage, _he_damage, target.get_path(), defense_modifier, unit.get_path())
 
 # Private Methods
 # --------------------
@@ -184,8 +170,19 @@ func _is_line_of_sight_blocked(origin: Vector3, target: Vector3, tile_matrix: Ar
 # Remote Procedure Calls
 # --------------------
 @rpc("any_peer", "call_local", "reliable")
-func apply_attack(ap_damage : float, he_damage : float, target_tile_path : NodePath, defense_mod : float):
+func apply_attack(ap_damage : float, he_damage : float, target_tile_path : NodePath, defense_mod : float, attacker_path : NodePath):
+	var attacker : Unit = get_node(attacker_path)
 	var target_tile : Tile = get_node(target_tile_path)
+	
+	# Handle unit's action points
+	# If set to -1 deplete them completely
+	if _ap_cost <= -1:
+		attacker.offset_action_points(-Unit_Properties.get_action_points_max(attacker.get_type()))
+		attacker.set_can_attack(false)
+	else:
+		attacker.offset_action_points(-_ap_cost)
+		if attacker.get_action_points_left() == 0: 
+			attacker.set_can_attack(false)
 	
 	# Get stacking defense multipliers
 	var bonus_he_resist : float = 0
@@ -215,6 +212,10 @@ func apply_attack(ap_damage : float, he_damage : float, target_tile_path : NodeP
 	# Destroy units
 	for unit : Unit in units_to_destroy:
 		unit.destroy_unit(_game_manager)
+		
+	# Trigger a function for further cleanup in game manager
+	var _stay_in_action = attacker.get_action_points_left() > 0
+	super.on_action_finished(attacker.get_can_attack(), multiplayer.get_unique_id(), false, false)
 	
 # Getters
 # --------------------

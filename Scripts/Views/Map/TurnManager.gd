@@ -165,7 +165,6 @@ func distribute_turn_data(player_id : int, given_time : float, turn_num : int):
 	current_turn_player_id = player_id
 	current_turn = turn_num
 	game_manager.game_ui.update_turn_ui(player_id, given_time, turn_num)
-	pass
 
 @rpc("any_peer", "call_local", "reliable")
 func send_signal_on_net(signal_name : String):
