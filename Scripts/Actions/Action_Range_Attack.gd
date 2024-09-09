@@ -187,11 +187,40 @@ func _is_line_of_sight_blocked(origin: Vector3, target: Vector3, tile_matrix: Ar
 func apply_attack(ap_damage : float, he_damage : float, target_tile_path : NodePath, defense_mod : float):
 	var target_tile : Tile = get_node(target_tile_path)
 	
+	# Get stacking defense multipliers
+	var bonus_he_resist : float = 0
+	var bonus_ap_resist : float = 0
+	
 	for unit : Unit in target_tile.get_units_in_tile():
-		unit.offset_hit_points(ap_damage, he_damage, defense_mod)
+		bonus_he_resist += Unit_Properties.get_he_resistance(unit.get_type()) / 10
+		bonus_ap_resist += Unit_Properties.get_ap_resistance(unit.get_type()) / 10
+		
+	# Clamp bonus defense modifier
+	bonus_he_resist = clamp(bonus_he_resist, 0.0, 0.3)
+	bonus_ap_resist = clamp(bonus_ap_resist, 0.0, 0.3)
+	
+	# Store units for destruction
+	var units_to_destroy : Array = []
+	
+	# Calc damage
+	var final_ap = ap_damage * (1 - bonus_ap_resist)
+	var final_he = he_damage * (1 - bonus_he_resist)
+	
+	# Apply damage
+	for unit : Unit in target_tile.get_units_in_tile():
+		unit.offset_hit_points(final_ap, final_he, defense_mod)
 		if unit.get_hit_points_left() <= 0:
-			unit.destroy_unit(_game_manager)
-
+			units_to_destroy.append(unit)
+	
+	# Destroy units
+	for unit : Unit in units_to_destroy:
+		unit.destroy_unit(_game_manager)
+	
+	print ("FINAL AP: %s" % final_ap)
+	print ("RESIST AP: %s" % bonus_ap_resist)
+	print ("FINAL HE: %s" % final_he)
+	print ("HE RESIST: %s" % bonus_he_resist)
+	
 # Getters
 # --------------------
 static func get_internal_name() -> String:
