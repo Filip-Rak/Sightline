@@ -216,11 +216,6 @@ func apply_attack(ap_damage : float, he_damage : float, target_tile_path : NodeP
 	for unit : Unit in units_to_destroy:
 		unit.destroy_unit(_game_manager)
 	
-	print ("FINAL AP: %s" % final_ap)
-	print ("RESIST AP: %s" % bonus_ap_resist)
-	print ("FINAL HE: %s" % final_he)
-	print ("HE RESIST: %s" % bonus_he_resist)
-	
 # Getters
 # --------------------
 static func get_internal_name() -> String:
