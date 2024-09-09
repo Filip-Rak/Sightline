@@ -193,10 +193,6 @@ func deselect_inspection():
 
 func select_in_ui(unit : Unit):
 	MouseModeManager.handle_inspection(unit)
-	
-	# I am pretty sure I should do it like that
-	# But I am tired and don't care
-	MouseModeManager.current_mouse_mode = MouseModeManager.MOUSE_MODE.STANDARD
 
 func update_buy_menu():
 	var hbox
@@ -341,7 +337,6 @@ func _set_up_tile_details(tile : Tile):
 	else:
 		tile_selection_owner.visible = false
 		
-
 # Links
 # --------------------
 func _on_action_button_down(action : Action, unit : Unit):
