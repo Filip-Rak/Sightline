@@ -41,7 +41,8 @@ static var _type_properties = {
 				Action_Spawn.new(2, 2),
 				Action_Move.new("AT MOVE"),
 				Action_Range_Attack.new("AT ATTACK", "", 1, 1, 60, 20, -1, false),
-				Action_Range_Attack.new("ATGM ATTACK", "", 2, 1, 40, 15)
+				Action_Range_Attack.new("ATGM ATTACK", "", 2, 1, 40, 15),
+				Action_Range_Attack.new("ATGM ATTACK 2", "", 3, 1, 30, 15)
 			]
 	},
 	unit_type.IMV: 

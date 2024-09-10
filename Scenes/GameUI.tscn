@@ -9,13 +9,14 @@ draw_center = false
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d5pqr"]
 draw_center = false
 
-[node name="GameUI" type="CanvasLayer" node_paths=PackedStringArray("player_turn_label", "turn_num_label", "time_left_label", "_deploy_button", "buy_menu", "inspection_panel_empty", "unit_selection_panel", "unit_selection_name", "unit_selection_action", "unit_selection_hp", "unit_selection_sight", "unit_selection_res", "unit_selection_owner", "tile_selection_panel", "tile_selection_name", "tile_selection_defense", "tile_selection_movement", "tile_selection_spawn", "tile_selection_value", "tile_selection_owner", "unit_grid_container", "debug_crosshair", "debug_rect", "player_name_label", "team_name_label", "score_vbox")]
+[node name="GameUI" type="CanvasLayer" node_paths=PackedStringArray("_deploy_button", "buy_menu", "player_turn_label", "turn_num_label", "time_left_label", "lower_section_hbox", "inspection_panel_empty", "unit_selection_panel", "unit_selection_name", "unit_selection_action", "unit_selection_hp", "unit_selection_sight", "unit_selection_res", "unit_selection_owner", "tile_selection_panel", "tile_selection_name", "tile_selection_defense", "tile_selection_movement", "tile_selection_spawn", "tile_selection_value", "tile_selection_owner", "unit_grid_container", "debug_crosshair", "debug_rect", "player_name_label", "team_name_label", "score_vbox")]
 script = ExtResource("1_5uulx")
+_deploy_button = NodePath("LowerSection/DeployPanel/MarginContainer/VBoxContainer/DeployButton")
+buy_menu = NodePath("BuyMenu")
 player_turn_label = NodePath("LowerSection/TurnPanel/MarginContainer/VBoxContainer/HBoxContainer/PlayerTurnLabel")
 turn_num_label = NodePath("LowerSection/TurnPanel/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/TurnNumLabel")
 time_left_label = NodePath("LowerSection/TurnPanel/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/TimeLeftLabel")
-_deploy_button = NodePath("LowerSection/DeployPanel/MarginContainer/VBoxContainer/DeployButton")
-buy_menu = NodePath("BuyMenu")
+lower_section_hbox = NodePath("LowerSection")
 inspection_panel_empty = NodePath("LowerSection/MiddlePanel/InspectionPanel")
 unit_selection_panel = NodePath("LowerSection/MiddlePanel/UnitSelectionPanel")
 unit_selection_name = NodePath("LowerSection/MiddlePanel/UnitSelectionPanel/HBoxContainer/UnitDetails/HBoxContainer/MarginContainer/VBoxContainer/UnitSelName")
@@ -37,6 +38,7 @@ debug_rect = NodePath("Debug/ReferenceRect")
 player_name_label = NodePath("UpperRighSection/NameContainer/MarginContainer/VBoxContainer/PlayerNameLabel")
 team_name_label = NodePath("UpperRighSection/NameContainer/MarginContainer/VBoxContainer/TeamNameLabel")
 score_vbox = NodePath("UpperRighSection/ScoreContainer/MarginContainer/VBoxContainer/ScoreVbox")
+_tooltip_show_time_delay = 0.3
 
 [node name="UpperRighSection" type="VBoxContainer" parent="." groups=["ui_mask"]]
 anchors_preset = 1

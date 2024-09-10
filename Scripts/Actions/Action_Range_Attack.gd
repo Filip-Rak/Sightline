@@ -20,15 +20,8 @@ var _available_tiles : Array
 # --------------------
 func _init(display_name : String, description : String, attack_range : int, attack_min_range : int, ap_damage : float, he_damage : float, ap_cost : int = -1, ap_required : bool = true, respects_LOS : bool = true, needs_spot : bool = true):
 	# Super class
-	self._display_name = display_name
-	self._description = description
-	self._ap_cost = ap_cost
-	self._ap_required = ap_required
-	self._usage_limit = 0
-	self._cooldown = 0
-	self._starts_on_cooldown = false
-	self._uses_left = 0
-	
+	super._init(display_name, description, ap_cost, 0, 0)
+
 	# Child class
 	_attack_range = attack_range
 	_attack_min_range = attack_min_range
@@ -36,6 +29,7 @@ func _init(display_name : String, description : String, attack_range : int, atta
 	_he_damage = he_damage
 	_respects_LOS = respects_LOS
 	_needs_spot = needs_spot
+	self._ap_required = ap_required
 
 # Public Methods
 # --------------------

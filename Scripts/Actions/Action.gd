@@ -7,6 +7,7 @@ class_name Action
 
 # Other scripts
 var _game_manager : Game_Manager
+var _tooltip_instance : Action_Tooltip
 
 # Visual
 var _display_name : String = "action_base_class_display_name"
@@ -39,6 +40,10 @@ func _init(display_name : String, description : String, ap_cost : int, usage_lim
 		self._last_use_turn = 0
 	else:
 		_last_use_turn = -1000
+		
+	# Set up the tooltip
+	_tooltip_instance = preload("res://Scenes/action_tooltip.tscn").instantiate()
+	_tooltip_instance.set_up_tooltip(_display_name, _description)
 
 # Protected Methods 
 # --------------------
@@ -125,3 +130,8 @@ func get_cooldown_left() -> int:
 # --------------------
 func set_game_manager(gm : Game_Manager):
 	_game_manager = gm
+
+# Getters
+# --------------------
+func get_tooltip_instance() -> Action_Tooltip:
+	return _tooltip_instance

@@ -1,0 +1,39 @@
+[gd_scene load_steps=2 format=3 uid="uid://cs4krkqoc5kjo"]
+
+[ext_resource type="Script" path="res://Scripts/Views/Map/Action_Tooltip.gd" id="1_7a6xb"]
+
+[node name="ActionTooltip" type="PanelContainer" node_paths=PackedStringArray("_display_name_label", "_description_label")]
+custom_minimum_size = Vector2(300, 200)
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_7a6xb")
+_display_name_label = NodePath("MarginContainer/VBoxContainer/DisplayName")
+_description_label = NodePath("MarginContainer/VBoxContainer/Description")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="DisplayName" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Action Display Name"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Description" type="RichTextLabel" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+text = "Action Description"
+fit_content = true

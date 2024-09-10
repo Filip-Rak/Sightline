@@ -8,14 +8,17 @@ class_name Game_UI
 # Scripts
 @export var game_manager : Game_Manager
 
+# Buy menu
+@export var _deploy_button : Button
+@export var buy_menu : PanelContainer
+
 # Turn panel
 @export var player_turn_label : Label
 @export var turn_num_label : Label
 @export var time_left_label : Label
 
-# Buy menu
-@export var _deploy_button : Button
-@export var buy_menu : PanelContainer
+# Lower Section
+@export var lower_section_hbox : HBoxContainer
 
 # Middle panel
 @export var inspection_panel_empty : PanelContainer
@@ -52,6 +55,11 @@ class_name Game_UI
 var game_in_progress = false
 var _tracked_unit : Unit
 var _tracked_tile : Tile
+
+# Tooltip
+var _tooltip_timer : SceneTreeTimer = null
+@export var _tooltip_show_time_delay : float = 0.5
+@export var _tooltip_pos_gap : int = 4	# Hbox.separation has been deleted with 4.2 so it's a constant
 
 # Ready Functions
 # --------------------
@@ -233,6 +241,7 @@ func _set_up_unit_details(unit : Unit):
 	var ac_left = unit.get_action_points_left()
 	if PlayerManager.get_team_id(unit.get_player_owner_id()) != PlayerManager.get_my_team_id():
 		ac_left = "?"
+		
 	var ac_max = Unit_Properties.get_action_points_max(unit.get_type())
 	unit_selection_action.text = "Action: %s/%s" % [ac_left, ac_max]
 	
@@ -269,6 +278,8 @@ func _set_up_action_buttons(unit : Unit):
 		# Disconnect any existing connections to avoid duplicates
 		if button.is_connected("button_down", _on_action_button_down):
 			button.disconnect("button_down", _on_action_button_down)
+			button.disconnect("mouse_entered", _on_action_button_mouse_entered)
+			button.disconnect("mouse_exited", _on_action_button_mouse_exited)
 		
 		# Check if there's an action for this button index
 		if i < actions.size():
@@ -279,6 +290,8 @@ func _set_up_action_buttons(unit : Unit):
 			
 			# Connect the button's "button_down" signal to function, passing the action as an argument
 			button.connect("button_down", Callable(self, "_on_action_button_down").bind(action, unit))
+			button.connect("mouse_entered", Callable(self, "_on_action_button_mouse_entered").bind(button, action))
+			button.connect("mouse_exited", Callable(self, "_on_action_button_mouse_exited").bind(action))
 			
 			# Enable the button since it has an assigned action
 			button.disabled = false
@@ -306,14 +319,13 @@ func _set_up_unit_grid_container(tile : Tile):
 		var ap_left = unit.get_action_points_left()
 		var display_name = Unit_Properties.get_display_name(unit.get_type())
 		var hp_left = unit.get_hit_points_left()
-		var unit_text = "%d|%s|%d" % [ap_left, display_name, hp_left]
+		var unit_text = "%d|%s|%d" % [ap_left, display_name, ceil(hp_left)]
 		
 		# Make a change for different team
 		if PlayerManager.get_team_id(unit._player_owner_id) != PlayerManager.get_my_team_id():
-			unit_text = "%s|%d" % [display_name, hp_left]
+			unit_text = "%s|%d" % [display_name, ceil(hp_left)]
 		
 		unit_button.text = unit_text
-		
 		unit_grid_container.add_child(unit_button, true)
 
 func _set_up_tile_details(tile : Tile):
@@ -404,6 +416,33 @@ func _on_unit_sel_tile_button():
 func _on_tile_data_changed():
 	_set_up_tile_details(_tracked_tile)
 	_set_up_unit_grid_container(_tracked_tile)
+
+func _on_action_button_mouse_entered(button : Button, action : Action):
+	# Create and start the timer when the mouse enters
+	_tooltip_timer = get_tree().create_timer(_tooltip_show_time_delay)  # Delay in seconds
+	_tooltip_timer.connect("timeout", Callable(self, "_on_tooltip_timeout").bind(button, action))
+
+func _on_tooltip_timeout(button : Button, action : Action):
+	# Get the tooltip
+	var tooltip : Action_Tooltip = action.get_tooltip_instance()
+	tooltip.position.y = unit_selection_panel.global_position.y - tooltip.size.y - _tooltip_pos_gap
+	tooltip.position.x = button.global_position.x
+	
+	# Add to the tree, making the tooltip visible
+	add_child(tooltip)
+
+func _on_action_button_mouse_exited(action : Action):
+	# Stop the timer and remove tooltip if it was visible
+	if _tooltip_timer && _tooltip_timer.is_connected("timeout",_on_tooltip_timeout):
+		_tooltip_timer.disconnect("timeout", _on_tooltip_timeout)
+		_tooltip_timer = null
+	
+	# Get the tooltip
+	var tooltip : Action_Tooltip = action.get_tooltip_instance()
+	
+	# Remove the tooltip from tree, making it invisible
+	if tooltip.is_inside_tree():
+		remove_child(tooltip)
 
 # Utility
 # --------------------

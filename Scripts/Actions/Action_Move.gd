@@ -16,7 +16,6 @@ var available_tiles : Array
 # --------------------
 
 func _init(display_name : String = "", description : String = ""):
-	
 	# Check if a custom name and description are not given
 	if display_name == "": display_name = _DISPLAY_NAME
 	if description == "": description = _DESCRIPTION
