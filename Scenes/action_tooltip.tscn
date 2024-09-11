@@ -2,13 +2,14 @@
 
 [ext_resource type="Script" path="res://Scripts/Views/Map/Action_Tooltip.gd" id="1_7a6xb"]
 
-[node name="ActionTooltip" type="PanelContainer" node_paths=PackedStringArray("_display_name_label", "_description_label")]
-custom_minimum_size = Vector2(300, 200)
+[node name="ActionTooltip" type="PanelContainer" node_paths=PackedStringArray("_display_name_label", "_description_label", "_vbox")]
+custom_minimum_size = Vector2(350, 200)
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("1_7a6xb")
 _display_name_label = NodePath("MarginContainer/VBoxContainer/DisplayName")
 _description_label = NodePath("MarginContainer/VBoxContainer/Description")
+_vbox = NodePath("MarginContainer/VBoxContainer")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -35,5 +36,10 @@ mouse_filter = 2
 [node name="Description" type="RichTextLabel" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 mouse_filter = 2
-text = "Action Description"
+bbcode_enabled = true
+text = "A multiline actiond description with many words"
 fit_content = true
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2

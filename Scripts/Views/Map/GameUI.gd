@@ -422,14 +422,24 @@ func _on_action_button_mouse_entered(button : Button, action : Action):
 	_tooltip_timer = get_tree().create_timer(_tooltip_show_time_delay)  # Delay in seconds
 	_tooltip_timer.connect("timeout", Callable(self, "_on_tooltip_timeout").bind(button, action))
 
-func _on_tooltip_timeout(button : Button, action : Action):
+func _on_tooltip_timeout(button: Button, action: Action):
 	# Get the tooltip
-	var tooltip : Action_Tooltip = action.get_tooltip_instance()
+	var tooltip: Action_Tooltip = action.get_tooltip_instance()
+	
+	# Calculate the size
+	_position_tooltip(tooltip, button)
+	
+	# Add the tooltip to the tree, to make it visible
+	add_child(tooltip)
+	
+	# If the size has changed, then recalculate tooltip's position
+	if !tooltip.is_connected("resized", _position_tooltip):
+		tooltip.connect("resized", Callable(self, "_position_tooltip").bind(tooltip, button))
+	
+func _position_tooltip(tooltip: Action_Tooltip, button: Button):
+	# Now that the size has been updated, set the correct position
 	tooltip.position.y = unit_selection_panel.global_position.y - tooltip.size.y - _tooltip_pos_gap
 	tooltip.position.x = button.global_position.x
-	
-	# Add to the tree, making the tooltip visible
-	add_child(tooltip)
 
 func _on_action_button_mouse_exited(action : Action):
 	# Stop the timer and remove tooltip if it was visible

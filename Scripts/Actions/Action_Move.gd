@@ -15,16 +15,16 @@ var available_tiles : Array
 # Constructor
 # --------------------
 
-func _init(display_name : String = "", description : String = ""):
-	# Check if a custom name and description are not given
-	if display_name == "": display_name = _DISPLAY_NAME
-	if description == "": description = _DESCRIPTION
-	
+func _init(display_name : String = _DISPLAY_NAME, description : String = _DESCRIPTION):
 	# Initiliaze parent's constructor
 	var ap_cost = 0
 	var usage_limit = 0
 	var cooldown = 0
 	super._init(display_name, description, ap_cost, usage_limit, cooldown)
+	_add_tooltip_info()
+
+func _add_tooltip_info():
+	_tooltip_instance.add_label("[i]Action's cost is based on terrain[/i]")
 
 # Public Methods
 # --------------------
@@ -68,7 +68,6 @@ func perform_action(target):
 
 # Remote Procedure Calls
 # --------------------
-
 @rpc("any_peer", "call_local", "reliable")
 func _move_unit(path_to_unit : NodePath, route : Array, caller_id : int):
 	var tile_matrix : Array = _game_manager.get_tile_matrix()

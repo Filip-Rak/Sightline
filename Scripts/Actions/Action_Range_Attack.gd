@@ -30,6 +30,30 @@ func _init(display_name : String, description : String, attack_range : int, atta
 	_respects_LOS = respects_LOS
 	_needs_spot = needs_spot
 	self._ap_required = ap_required
+	_add_tooltip_info()
+
+func _add_tooltip_info():
+	_tooltip_instance.add_label("Range: %s" % _attack_range)
+	if _attack_min_range > 1:
+		_tooltip_instance.add_label("Minimal range: %s" % _attack_min_range)
+	
+	_tooltip_instance.add_label("AP Damage: %s" % _ap_damage)
+	_tooltip_instance.add_label("HE Damage: %s" % _he_damage)
+	
+	if _ap_cost <= -1:
+		_tooltip_instance.add_label("[i]Depletes Action Points[/i]")
+	else:
+		_tooltip_instance.add_label("Cost: " % _ap_cost)
+		
+	if !_ap_required:
+		_tooltip_instance.add_label("[i]Can be used without action points[/i]")
+	
+	if !_respects_LOS:
+		_tooltip_instance.add_label("[i]Attacks indirectly[/i]")	
+		
+	if !_needs_spot:
+		_tooltip_instance.add_label("[i]Does not require spot[/i]")
+	
 
 # Public Methods
 # --------------------

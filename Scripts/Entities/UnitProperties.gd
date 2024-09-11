@@ -23,8 +23,20 @@ static var _type_properties = {
 		"scene": preload("res://Assets/Units/player_unit_infantry.tscn"),
 		"actions" : [
 				Action_Spawn.new(1, 5),
-				Action_Move.new("INF MOVE"),
-				Action_Range_Attack.new("INF ATTACK", "", 1, 1, 5, 30, -1, false)
+				Action_Move.new(
+					"Walk",
+					"Motostrelki march across the battlefield, bracing themselves for next assault."
+				),
+				Action_Range_Attack.new(
+					"Suppresive Fire", 
+					"Motostrelki fire a barrage of 7.62mm rounds, maintaining pressure on the enemy.", 
+					1, 1, 5, 30, -1, false
+				),
+					Action_Range_Attack.new(
+					"RPG Vystrel", 
+					"Motostrelki fire a light RPG-18 anti-tank rocket. Effective at close range but lacking the punch to deal with heavy armor.", 
+					1, 1, 25, 5, -1, false
+				)
 			]
 	},
 	unit_type.AT_INFANTRY: 
@@ -39,10 +51,25 @@ static var _type_properties = {
 		"scene": preload("res://Assets/Units/player_unit_AT_infantry.tscn"),
 		"actions" : [
 				Action_Spawn.new(2, 2),
-				Action_Move.new("AT MOVE"),
-				Action_Range_Attack.new("AT ATTACK", "", 1, 1, 60, 20, -1, false),
-				Action_Range_Attack.new("ATGM ATTACK", "", 2, 1, 40, 15),
-				Action_Range_Attack.new("ATGM ATTACK 2", "", 3, 1, 30, 15)
+				Action_Move.new(
+					"Advance",
+					"Panzergrenadiers execute a coordinated advance, preparing to combat with hostile armored elements."
+				),
+				Action_Range_Attack.new(
+					"Tactical Fire", 
+					"Panzergrenadiers unleash precise and controlled fire from their G36 rifles, leveraging their superior training and coordination.", 
+					1, 1, 8, 20, -1, false
+				),
+				Action_Range_Attack.new(
+					"PzF 3 Fire", 
+					"Deploying the Panzerfaust 3, Panzergrenadiers launch an anti-tank rocket, capable of punching through even well-armored vehicles.", 
+					1, 1, 60, 15, -1, false
+				),
+				Action_Range_Attack.new(
+					"Milan Strike", 
+					"A Milan anti-tank missile is fired, capable of engaging targets at longer range but with lower destructive potential.", 
+					3, 1, 30, 20
+				),
 			]
 	},
 	unit_type.IMV: 
@@ -57,8 +84,15 @@ static var _type_properties = {
 		"scene": preload("res://Assets/Units/player_unit_IMV.tscn"),
 		"actions" : [
 				Action_Spawn.new(2, 2),
-				Action_Move.new("IMV MOVE"),
-				Action_Range_Attack.new("MG ATTACK", "", 2, 1, 10, 20)
+				Action_Move.new(
+					"Fast Move",
+					"The HMMWV speeds across the terrain, deploying swiftly to key locations."
+				),
+				Action_Range_Attack.new(
+					"Suppresive Fire", 
+					"The HMMWV's mounted M2 Browning machine gun rakes the enemy position with 50 cal. rounds, providing suppressive fire over longer ranges.", 
+					2, 1, 15, 25
+				)
 			]
 	},
 	unit_type.IFV: 
@@ -73,8 +107,16 @@ static var _type_properties = {
 		"scene": preload("res://Assets/Units/player_unit_IFV.tscn"),
 		"actions" : [
 				Action_Spawn.new(5, 1, 2),
-				Action_Move.new("IFV MOVE"),
-				Action_Range_Attack.new("AUTOCANNON ATTACK", "", 3, 1, 40, 30)
+				Action_Move.new(
+					"Move Up",
+					"The Bradley IFV moves up, preparing to provide fire support against infantry and armor elements alike."
+				),
+				Action_Range_Attack.new
+				(
+					"Bushmaster Burst", 
+					"The Bradley's M242 Bushmaster autocannon unleashes a stream of 25mm rounds, tearing through infantry and light vehicles with deadly precision.", 
+					3, 1, 40, 45
+				)
 			]
 	},
 }
