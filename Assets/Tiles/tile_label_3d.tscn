@@ -9,7 +9,7 @@ viewport_path = NodePath("SubViewport")
 viewport_path = NodePath("InfoSprite/SubViewport")
 
 [node name="TileLabel3D" type="Sprite3D" node_paths=PackedStringArray("_unit_vbox", "_shared_unit_label", "_unit_viewport", "_info_sprite", "_info_label")]
-transform = Transform3D(0.12, 0, 0, 0, 0.12, 0, 0, 0, 0.12, 0, 0.25, 0)
+transform = Transform3D(0.12, 0, 0, 0, 0.12, 0, 0, 0, 0.12, 0, 0.35, 0)
 billboard = 1
 double_sided = false
 no_depth_test = true

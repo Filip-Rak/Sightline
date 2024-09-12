@@ -11,6 +11,7 @@ class_name Game_UI
 # Buy menu
 @export var _deploy_button : Button
 @export var buy_menu : PanelContainer
+@export var buy_menu_vbox : VBoxContainer
 
 # Turn panel
 @export var player_turn_label : Label
@@ -59,7 +60,12 @@ var _tracked_tile : Tile
 # Tooltip
 var _tooltip_timer : SceneTreeTimer = null
 @export var _tooltip_show_time_delay : float = 0.5
-@export var _tooltip_pos_gap : int = 4	# Hbox.separation has been deleted with 4.2 so it's a constant
+@export var _tooltip_pos_gap : int = 4 # Hbox.separation has been deleted with 4.2 so it's a constant
+
+# Buy Menu
+@export var _buy_menu_width_icon_limit = 2
+@export var _buy_menu_category_padding = 20
+var _buy_menu_entires : Array = []
 
 # Ready Functions
 # --------------------
@@ -96,18 +102,57 @@ func set_UI():
 	_set_element_activity(inspection_panel_empty, true)
 
 func populate_buy_menu():
-	var hbox
-	for child in buy_menu.get_children():
-		if child is HBoxContainer:
-			hbox = child
-			break
-
-	for unit_type in Unit_Properties.get_spawnable_types():
-		var button = Button.new()
-		button.text = _prepare_buy_button_string(unit_type)
-		button.set_meta("type", unit_type)
-		button.connect("button_down", Callable(self, "_on_unit_buy_button_pressed").bind(unit_type))
-		hbox.add_child(button, true)
+	# Clear the vbox from placeholders
+	for child in buy_menu_vbox.get_children():
+		child.queue_free()
+	
+	# Fill the vbox with new elements
+	var categories = Unit_Properties.unit_category.keys()
+	var index_j : int = 1
+	for category_string in categories:
+		# Access the integer value of the enum using the key
+		var category_int = Unit_Properties.unit_category[category_string]
+		
+		# Create a label for a category
+		var label : Label = Label.new()
+		label.text = Unit_Properties.get_cat_display_name(category_int)
+		buy_menu_vbox.add_child(label)
+		
+		# Create a separator 
+		var separator : HSeparator = HSeparator.new()
+		buy_menu_vbox.add_child(separator)
+		
+		# Add units of the category
+		var unit_types = Unit_Properties.get_spawnable_units_of_category(category_int)
+		var last_hbox = HBoxContainer.new()
+		buy_menu_vbox.add_child(last_hbox)
+		
+		var index_i : int = 1
+		for unit_type in unit_types:
+			var button = Button.new()
+			button.text = _prepare_buy_button_string(unit_type)
+			button.set_meta("type", unit_type)
+			button.connect("button_down", Callable(self, "_on_unit_buy_button_pressed").bind(unit_type))
+			
+			# Save the reference
+			_buy_menu_entires.append(button)
+			
+			# Make a second row of icons (buttons) when limit is reached
+			if index_i % (_buy_menu_width_icon_limit + 1) == 0:
+				last_hbox = HBoxContainer.new()
+				buy_menu_vbox.add_child(last_hbox)
+			
+			# Add icon / button to the tree
+			last_hbox.add_child(button, true)
+			index_i += 1
+			
+		# Add padding before the next category
+		if index_j < categories.size():
+			var padding = Control.new()
+			padding.custom_minimum_size.y = _buy_menu_category_padding
+			buy_menu_vbox.add_child(padding)
+		
+		index_j += 1
 
 func _prepare_buy_button_string(type : Unit_Properties.unit_type) -> String:
 	var spawn_action : Action_Spawn = Unit_Properties.get_action(type, Action_Spawn.get_internal_name())
@@ -203,15 +248,9 @@ func select_in_ui(unit : Unit):
 	MouseModeManager.handle_inspection(unit)
 
 func update_buy_menu():
-	var hbox
-	for child in buy_menu.get_children():
-		if child is HBoxContainer:
-			hbox = child
-			break
-			
-	for child in hbox.get_children():
-		if child is Button:
-			child.text = _prepare_buy_button_string(child.get_meta("type"))
+	# Update all of the button strings in the menu
+	for entry : Button in _buy_menu_entires:
+		entry.text = _prepare_buy_button_string(entry.get_meta("type"))
 
 func update_unit_grid():
 	if _tracked_tile:
@@ -386,7 +425,7 @@ func _on_unit_buy_button_pressed(unit_type : int):
 			game_manager.set_mouse_selection(unit_type)
 			game_manager.select_action(spawn_action)
 	else:
-		print("_on_unit_buy_button_pressed() -> Unit not spawnable")
+		printerr("_on_unit_buy_button_pressed() -> Unit not spawnable")
 
 func _on_deployment_points_update():
 	var new_val : float = PlayerManager.get_deployment_points(multiplayer.get_unique_id())

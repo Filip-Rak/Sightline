@@ -23,10 +23,11 @@ static var _type_properties = {
 		"range_bonus": 0,
 		"movement_cost" : 1,
 		"accesible_to": [
-			Unit_Properties.unit_type.INFANTRY,
-			Unit_Properties.unit_type.AT_INFANTRY,
-			Unit_Properties.unit_type.IMV,
-			Unit_Properties.unit_type.IFV,
+			Unit_Properties.unit_type.MOTOSTRELKI,
+			Unit_Properties.unit_type.PANZERGRENADIERS,
+			Unit_Properties.unit_type.HMMWV,
+			Unit_Properties.unit_type.M2A3,
+			Unit_Properties.unit_type.BMP2,
 			]
 	},
 	tile_type.WATER: 
@@ -37,7 +38,8 @@ static var _type_properties = {
 		"range_bonus": 1,
 		"movement_cost" : 3,
 		"accesible_to": [
-			Unit_Properties.unit_type.IFV,
+			Unit_Properties.unit_type.M2A3,
+			Unit_Properties.unit_type.BMP2,
 			]
 	},
 	tile_type.FOREST: 
@@ -48,10 +50,11 @@ static var _type_properties = {
 		"range_bonus": 0,
 		"movement_cost" : 3,
 		"accesible_to": [
-			Unit_Properties.unit_type.INFANTRY,
-			Unit_Properties.unit_type.AT_INFANTRY,
-			Unit_Properties.unit_type.IMV,
-			Unit_Properties.unit_type.IFV,
+			Unit_Properties.unit_type.MOTOSTRELKI,
+			Unit_Properties.unit_type.PANZERGRENADIERS,
+			Unit_Properties.unit_type.HMMWV,
+			Unit_Properties.unit_type.M2A3,
+			Unit_Properties.unit_type.BMP2,
 			]
 	},
 	tile_type.MOUNTAIN: 
@@ -73,10 +76,11 @@ static var _type_properties = {
 		"range_bonus": 1,
 		"movement_cost" : 1,
 		"accesible_to": [
-			Unit_Properties.unit_type.INFANTRY,
-			Unit_Properties.unit_type.AT_INFANTRY,
-			Unit_Properties.unit_type.IMV,
-			Unit_Properties.unit_type.IFV,
+			Unit_Properties.unit_type.MOTOSTRELKI,
+			Unit_Properties.unit_type.PANZERGRENADIERS,
+			Unit_Properties.unit_type.HMMWV,
+			Unit_Properties.unit_type.M2A3,
+			Unit_Properties.unit_type.BMP2,
 			]
 	},
 	tile_type.TOWN: 
@@ -87,10 +91,11 @@ static var _type_properties = {
 		"range_bonus": 1,
 		"movement_cost" : 2,
 		"accesible_to": [
-			Unit_Properties.unit_type.INFANTRY,
-			Unit_Properties.unit_type.AT_INFANTRY,
-			Unit_Properties.unit_type.IMV,
-			Unit_Properties.unit_type.IFV,
+			Unit_Properties.unit_type.MOTOSTRELKI,
+			Unit_Properties.unit_type.PANZERGRENADIERS,
+			Unit_Properties.unit_type.HMMWV,
+			Unit_Properties.unit_type.M2A3,
+			Unit_Properties.unit_type.BMP2,
 			]
 	},		
 	tile_type.RIVER: 
@@ -101,7 +106,8 @@ static var _type_properties = {
 		"range_bonus": 0,
 		"movement_cost" : 3,
 		"accesible_to": [
-			Unit_Properties.unit_type.IFV,
+			Unit_Properties.unit_type.M2A3,
+			Unit_Properties.unit_type.BMP2,
 			]
 	},		
 	tile_type.BRIDGE: 
@@ -112,10 +118,11 @@ static var _type_properties = {
 		"range_bonus": 0,
 		"movement_cost" : 1,
 		"accesible_to": [
-			Unit_Properties.unit_type.INFANTRY,
-			Unit_Properties.unit_type.AT_INFANTRY,
-			Unit_Properties.unit_type.IMV,
-			Unit_Properties.unit_type.IFV,
+			Unit_Properties.unit_type.MOTOSTRELKI,
+			Unit_Properties.unit_type.PANZERGRENADIERS,
+			Unit_Properties.unit_type.HMMWV,
+			Unit_Properties.unit_type.M2A3,
+			Unit_Properties.unit_type.BMP2,
 			]
 	},
 }

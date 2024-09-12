@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://Scripts/Views/Map/Action_Tooltip.gd" id="1_7a6xb"]
 
 [node name="ActionTooltip" type="PanelContainer" node_paths=PackedStringArray("_display_name_label", "_description_label", "_vbox")]
-custom_minimum_size = Vector2(350, 200)
+custom_minimum_size = Vector2(350, 100)
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("1_7a6xb")

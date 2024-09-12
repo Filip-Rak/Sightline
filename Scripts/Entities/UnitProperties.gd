@@ -2,18 +2,37 @@ extends Node
 
 class_name Unit_Properties
 
+# Categories
+enum unit_category{
+	INFANTRY,
+	VEHICLE
+}
+
+static var _category_properties = {
+	unit_category.INFANTRY:
+		{
+			"display_name": "Infantry",
+		},
+		unit_category.VEHICLE:
+		{
+			"display_name": "Vehicles",
+		},
+}
+
 # Type-specific properties
 enum unit_type{
-	INFANTRY,
-	AT_INFANTRY,
-	IMV,
-	IFV
+	MOTOSTRELKI,
+	PANZERGRENADIERS,
+	HMMWV,
+	M2A3,
+	BMP2
 }
 
 static var _type_properties = {
-	unit_type.INFANTRY: 
+	unit_type.MOTOSTRELKI: 
 	{ 
 		"display_name": "Motostrelki",
+		"category" : unit_category.INFANTRY,
 		"action_points": 1,
 		"sight_range": 3,
 		"hit_points_max": 100,
@@ -39,9 +58,10 @@ static var _type_properties = {
 				)
 			]
 	},
-	unit_type.AT_INFANTRY: 
+	unit_type.PANZERGRENADIERS: 
 	{ 
 		"display_name": "Panzergrenadiers",
+		"category" : unit_category.INFANTRY,
 		"action_points": 1,
 		"sight_range": 3,
 		"hit_points_max": 100,
@@ -56,25 +76,26 @@ static var _type_properties = {
 					"Panzergrenadiers execute a coordinated advance, preparing to combat with hostile armored elements."
 				),
 				Action_Range_Attack.new(
-					"Tactical Fire", 
+					"Suppresive Fire", 
 					"Panzergrenadiers unleash precise and controlled fire from their G36 rifles, leveraging their superior training and coordination.", 
-					1, 1, 8, 20, -1, false
+					1, 1, 5, 20, -1, false
 				),
 				Action_Range_Attack.new(
 					"PzF 3 Fire", 
-					"Deploying the Panzerfaust 3, Panzergrenadiers launch an anti-tank rocket, capable of punching through even well-armored vehicles.", 
+					"Deploying the formidable Panzerfaust 3, Panzergrenadiers launch an anti-tank rocket, capable of punching through even well-armored vehicles.", 
 					1, 1, 60, 15, -1, false
 				),
 				Action_Range_Attack.new(
 					"Milan Strike", 
-					"A Milan anti-tank missile is fired, capable of engaging targets at longer range but with lower destructive potential.", 
+					"Panzergrenadiers fire a Milan anti-tank missile, capable of engaging targets at longer range but with lower destructive potential.", 
 					3, 1, 30, 20
 				),
 			]
 	},
-	unit_type.IMV: 
+	unit_type.HMMWV: 
 	{ 
 		"display_name": "HMMWV",
+		"category" : unit_category.VEHICLE,
 		"action_points": 3,
 		"sight_range": 1,
 		"hit_points_max": 100,
@@ -91,13 +112,14 @@ static var _type_properties = {
 				Action_Range_Attack.new(
 					"Suppresive Fire", 
 					"The HMMWV's mounted M2 Browning machine gun rakes the enemy position with 50 cal. rounds, providing suppressive fire over longer ranges.", 
-					2, 1, 15, 25
+					2, 1, 10, 25
 				)
 			]
 	},
-	unit_type.IFV: 
+	unit_type.M2A3: 
 	{ 
 		"display_name": "M2A3 Bradley IFV",
+		"category" : unit_category.VEHICLE,
 		"action_points": 2,
 		"sight_range": 2,
 		"hit_points_max": 100,
@@ -109,13 +131,38 @@ static var _type_properties = {
 				Action_Spawn.new(5, 1, 2),
 				Action_Move.new(
 					"Move Up",
-					"The Bradley IFV moves up, preparing to provide fire support against infantry and armor elements alike."
+					"The Bradley IFV moves up to provide fire support against infantry and armored elements alike."
 				),
 				Action_Range_Attack.new
 				(
 					"Bushmaster Burst", 
 					"The Bradley's M242 Bushmaster autocannon unleashes a stream of 25mm rounds, tearing through infantry and light vehicles with deadly precision.", 
-					3, 1, 40, 45
+					3, 1, 40, 35
+				)
+			]
+	},	
+	unit_type.BMP2: 
+	{ 
+		"display_name": "BMP-2",
+		"category" : unit_category.VEHICLE,
+		"action_points": 2,
+		"sight_range": 2,
+		"hit_points_max": 60,
+		"he_resistance" : 0.7,
+		"ap_resistance" : 0.0,
+		"can_be_transported": false,
+		"scene": preload("res://Assets/Units/player_unit_BMP.tscn"),
+		"actions" : [
+				Action_Spawn.new(3, 1, 2),
+				Action_Move.new(
+					"Advance",
+					"The BMP-2 moves into position, offering mobility and light firepower support for infantry."
+				),
+				Action_Range_Attack.new
+				(
+					"2A42 Burst", 
+					"The BMP-2's 30mm 2A42 autocannon fires a rapid burst of armor-piercing and high-explosive rounds, effective against infantry and lightly armored vehicles.", 
+					2, 1, 40, 25
 				)
 			]
 	},
@@ -165,7 +212,22 @@ static func get_ap_resistance(u_type : unit_type) -> float:
 static func get_he_resistance(u_type : unit_type) -> float:
 	return _type_properties[u_type]["he_resistance"]
 
+static func get_unit_category(u_type : unit_type) -> unit_category:
+	return _type_properties[u_type]["category"]
+
+static func get_cat_display_name(c_type : unit_category) -> String:
+	return _category_properties[c_type]["display_name"]
+
 # For all types
+static func get_spawnable_units_of_category(category : unit_category) -> Array:
+	var units : Array = []
+	
+	for u_type in get_spawnable_types():
+		if _type_properties[u_type]["category"] == category:
+			units.append(u_type)
+			
+	return units
+
 static func get_spawnable_types() -> Array:
 	var spawnable_types : Array = []
 	

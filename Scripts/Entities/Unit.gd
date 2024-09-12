@@ -6,7 +6,7 @@ class_name Unit
 # --------------------
 
 # Exported settings
-@export var _type : Unit_Properties.unit_type = Unit_Properties.unit_type.IMV
+@export var _type : Unit_Properties.unit_type = Unit_Properties.unit_type.values()[0]
 @export var _unit_label : Unit_Label_3D
 @export var _visual_element : Node3D
 @export var _collision_shape : CollisionShape3D
