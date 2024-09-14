@@ -157,14 +157,14 @@ func get_player_num() -> int:
 func get_player_connected(id : int) -> bool:
 	return players[id]["connected"]
 
-func get_teammates_ids(id : int) -> Array:
-	var team_id = get_team_id(id)
+func get_teammates_ids(starting_player_id : int) -> Array:
+	var team_id = get_team_id(starting_player_id)
 	var teammates : Array = [] 
 	
 	for player_id : int in players:
-		if players[player_id]["team_id"] == team_id:
+		if players[player_id]["team_id"] == team_id && player_id != starting_player_id:
 			teammates.append(player_id)
-			
+
 	return teammates
 
 func get_deployment_points(player_id : int) -> float:

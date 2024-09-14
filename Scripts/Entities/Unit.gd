@@ -19,16 +19,21 @@ var _matrix_tile_position : Vector3
 var _player_owner_id : int
 var _transported_unit : Unit
 
-# Ready Functions
+# Constructor
 # --------------------
-func _ready():
+func _init():
 	# Signals
 	add_user_signal("unit_details_changed")
 	
+# Ready Functions
+# --------------------
+func _ready():
 	# Basic values
 	_action_points_left = Unit_Properties.get_action_points_max(_type)
 	_can_attack = true
 	_hit_points_left = Unit_Properties.get_hit_points_max(_type)
+	
+	# Set up the label
 	if _unit_label:
 		_unit_label._unit_label_content.set_and_update(self, _unit_label)
 		_unit_label.force_update_viewport_size()
@@ -140,6 +145,7 @@ func get_can_attack() -> bool:
 # --------------------
 func set_player_owner(id : int): 
 	_player_owner_id = id
+	emit_signal("unit_details_changed")
 	
 # Remember to put y on 0!
 func set_matrix_tile_position(new_position : Vector3): 
