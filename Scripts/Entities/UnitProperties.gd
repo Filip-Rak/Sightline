@@ -36,8 +36,8 @@ static var _type_properties = {
 		"action_points": 1,
 		"sight_range": 3,
 		"hit_points_max": 100,
-		"he_resistance" : 0.0,
-		"ap_resistance" : 0.9,
+		"he_mod" : 1,
+		"ap_mod" : 0.1,
 		"can_be_transported": true,
 		"scene": preload("res://Assets/Units/player_unit_infantry.tscn"),
 		"actions" : [
@@ -65,8 +65,8 @@ static var _type_properties = {
 		"action_points": 1,
 		"sight_range": 3,
 		"hit_points_max": 100,
-		"he_resistance" : 0.0,
-		"ap_resistance" : 0.9,
+		"he_mod" : 1,
+		"ap_mod" : 0.1,
 		"can_be_transported": true,
 		"scene": preload("res://Assets/Units/player_unit_AT_infantry.tscn"),
 		"actions" : [
@@ -99,8 +99,8 @@ static var _type_properties = {
 		"action_points": 3,
 		"sight_range": 1,
 		"hit_points_max": 100,
-		"he_resistance" : 0.5,
-		"ap_resistance" : 0.0,
+		"he_mod" : 0.5,
+		"ap_mod" : 1,
 		"can_be_transported": false,
 		"scene": preload("res://Assets/Units/player_unit_IMV.tscn"),
 		"actions" : [
@@ -123,8 +123,8 @@ static var _type_properties = {
 		"action_points": 2,
 		"sight_range": 2,
 		"hit_points_max": 100,
-		"he_resistance" : 0.9,
-		"ap_resistance" : 0.0,
+		"he_mod" : 0.1,
+		"ap_mod" : 1,
 		"can_be_transported": false,
 		"scene": preload("res://Assets/Units/player_unit_IFV.tscn"),
 		"actions" : [
@@ -148,8 +148,8 @@ static var _type_properties = {
 		"action_points": 2,
 		"sight_range": 2,
 		"hit_points_max": 60,
-		"he_resistance" : 0.7,
-		"ap_resistance" : 0.0,
+		"he_mod" : 0.3,
+		"ap_mod" : 1,
 		"can_be_transported": false,
 		"scene": preload("res://Assets/Units/player_unit_BMP.tscn"),
 		"actions" : [
@@ -206,11 +206,11 @@ static func get_action(u_type : unit_type, internal_name : String) -> Action:
 static func get_display_name(u_type : unit_type) -> String:
 	return _type_properties[u_type]["display_name"]
 
-static func get_ap_resistance(u_type : unit_type) -> float:
-	return _type_properties[u_type]["ap_resistance"]
+static func get_ap_mod(u_type : unit_type) -> float:
+	return _type_properties[u_type]["ap_mod"]
 	
-static func get_he_resistance(u_type : unit_type) -> float:
-	return _type_properties[u_type]["he_resistance"]
+static func get_he_mod(u_type : unit_type) -> float:
+	return _type_properties[u_type]["he_mod"]
 
 static func get_unit_category(u_type : unit_type) -> unit_category:
 	return _type_properties[u_type]["category"]

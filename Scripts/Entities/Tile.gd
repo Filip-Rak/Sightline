@@ -13,6 +13,13 @@ class_name Tile
 var _matrix_position : Vector3
 var _units_in_tile : Array
 var _support_calls : Array
+var _ap_stacking_mod : float = 1
+var _he_stacking_mod : float = 1
+
+const _ap_stacking_min : float = 0.5
+const _he_stacking_min : float = 0.5
+const _ap_stacking_conversion : float = 0.1
+const _he_stacking_conversion : float = 0.1
 
 # Ready Functions
 func _ready():
@@ -23,7 +30,7 @@ func _ready():
 	if _tile_label:
 		_tile_label.update_info_label(_point_value, _team_id)
 
-# Methods
+# Public Methods
 # --------------------
 func add_unit_to_tile(unit : Unit):
 	# Update Array
@@ -40,6 +47,9 @@ func add_unit_to_tile(unit : Unit):
 		# Disable the spawn
 		_is_a_spawn = false
 	
+	# Add unit's modifiers to the pool
+	_update_stacking_mod()
+	
 	# Update the label above tile
 	if _tile_label:
 		_tile_label.update_label(_units_in_tile)
@@ -50,8 +60,15 @@ func add_unit_to_tile(unit : Unit):
 	emit_signal("tile_data_changed")
 
 func remove_unit_from_tile(unit : Unit):
+	# Make sure the onit is in the tile
+	var array_pos = _units_in_tile.find(unit)
+	if array_pos == -1: return
+	
 	# Update Array
-	_units_in_tile.erase(unit)
+	_units_in_tile.remove_at(array_pos)
+	
+	# Substract unit's modifiers from the pool
+	_update_stacking_mod()
 	
 	# Update the label above tile
 	if _tile_label:
@@ -68,6 +85,20 @@ func has_enemy():
 			return true
 			
 	return false
+	
+# Private Methods
+# --------------------
+func _update_stacking_mod():
+	var new_ap_mod : float = 1
+	var new_he_mod : float = 1
+	
+	if _units_in_tile.size() >= 2:
+		for unit in _units_in_tile:
+			new_ap_mod -= (1 - Unit_Properties.get_ap_mod(unit.get_type())) * _ap_stacking_conversion
+			new_he_mod -= (1 - Unit_Properties.get_he_mod(unit.get_type())) * _he_stacking_conversion
+	
+	_ap_stacking_mod = clamp(new_ap_mod, _ap_stacking_min, 1)
+	_he_stacking_mod = clamp(new_he_mod, _he_stacking_min, 1)
 	
 # Setters
 # --------------------
@@ -96,3 +127,9 @@ func get_units_in_tile() -> Array:
 
 func get_support_calls() -> Array:
 	return _support_calls
+
+func get_ap_stacking_mod() -> float:
+	return _ap_stacking_mod
+
+func get_he_stacking_mod() -> float:
+	return _he_stacking_mod

@@ -40,6 +40,7 @@ class_name Game_UI
 @export var tile_selection_movement : Label
 @export var tile_selection_spawn : Label
 @export var tile_selection_value : Label
+@export var tile_selection_stacking : Label
 @export var tile_selection_owner : Label
 @export var unit_grid_container : GridContainer
 
@@ -304,9 +305,9 @@ func _set_up_unit_details(unit : Unit):
 	unit_selection_sight.text = "Sight: %s" % sight
 	
 	# Resistances
-	var HE_res = Unit_Properties.get_he_resistance(unit.get_type()) 
-	var AP_res = Unit_Properties.get_ap_resistance(unit.get_type()) 
-	unit_selection_res.text = "RES: %.1f/%.1f" % [AP_res, HE_res]
+	var HE_mod = Unit_Properties.get_he_mod(unit.get_type()) 
+	var AP_mod = Unit_Properties.get_ap_mod(unit.get_type()) 
+	unit_selection_res.text = "Dmg: %.1f/%.1f" % [AP_mod, HE_mod]
 	
 	# Owner
 	var player_name = PlayerManager.get_player_name(unit.get_player_owner_id())
@@ -384,7 +385,7 @@ func _set_up_tile_details(tile : Tile):
 	
 	# Defense modifier
 	var def = Tile_Properties.get_defense_modifier(tile.get_type())
-	tile_selection_defense.text = "Defense: %.1f" % def
+	tile_selection_defense.text = "Base Dmg: %.1f" % def
 	
 	# Movement cost
 	var movement_cost = Tile_Properties.get_movement_cost(tile.get_type())
@@ -412,6 +413,18 @@ func _set_up_tile_details(tile : Tile):
 		tile_selection_owner.visible = true
 	else:
 		tile_selection_owner.visible = false
+		
+	# Stacking modifiers
+	var ap_mod = tile.get_ap_stacking_mod()
+	var he_mod = tile.get_he_stacking_mod()
+	
+	if ap_mod != 1 || he_mod != 1:
+		tile_selection_stacking.text = "Dmg: %0.2f/%0.2f" % [ap_mod * def, he_mod * def]
+		tile_selection_stacking.visible = true
+	else:
+		tile_selection_stacking.visible = false
+	
+	
 		
 # Links
 # --------------------

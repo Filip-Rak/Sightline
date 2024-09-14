@@ -27,14 +27,15 @@ func _init(cost : int, availability : int, spawn_cooldown : int = 0, initial_coo
 func get_available_targets() -> Dictionary:
 	# Check the requirements
 	
-	# If enugh points
+	# If enough points
 	if PlayerManager.get_deployment_points(multiplayer.get_unique_id()) < _unit_cost: return {}
+	
 	# If not to many deployed
 	if _usage_limit <= 0: return {}
+	
 	# If the cooldown expired
 	if super.get_cooldown_left() > 0: return {}
 		
-	
 	# Get tile_matrix
 	var tile_matrix = _game_manager.get_tile_matrix()
 	

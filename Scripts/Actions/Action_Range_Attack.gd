@@ -96,8 +96,7 @@ func perform_action(target : Tile):
 	# Handle cooldowns here
 		
 	# Apply attack on the net
-	var defense_modifier = Tile_Properties.get_defense_modifier(target.get_type())
-	rpc("apply_attack", _ap_damage, _he_damage, target.get_path(), defense_modifier, unit.get_path())
+	rpc("apply_attack", _ap_damage, _he_damage, target.get_path(), unit.get_path())
 
 # Private Methods
 # --------------------
@@ -188,7 +187,7 @@ func _is_line_of_sight_blocked(origin: Vector3, target: Vector3, tile_matrix: Ar
 # Remote Procedure Calls
 # --------------------
 @rpc("any_peer", "call_local", "reliable")
-func apply_attack(ap_damage : float, he_damage : float, target_tile_path : NodePath, defense_mod : float, attacker_path : NodePath):
+func apply_attack(ap_damage : float, he_damage : float, target_tile_path : NodePath, attacker_path : NodePath):
 	var attacker : Unit = get_node(attacker_path)
 	var target_tile : Tile = get_node(target_tile_path)
 	
@@ -202,28 +201,12 @@ func apply_attack(ap_damage : float, he_damage : float, target_tile_path : NodeP
 		if attacker.get_action_points_left() == 0: 
 			attacker.set_can_attack(false)
 	
-	# Get stacking defense multipliers
-	var bonus_he_resist : float = 0
-	var bonus_ap_resist : float = 0
-	
-	for unit : Unit in target_tile.get_units_in_tile():
-		bonus_he_resist += Unit_Properties.get_he_resistance(unit.get_type()) / 10
-		bonus_ap_resist += Unit_Properties.get_ap_resistance(unit.get_type()) / 10
-		
-	# Clamp bonus defense modifier
-	bonus_he_resist = clamp(bonus_he_resist, 0.0, 0.3)
-	bonus_ap_resist = clamp(bonus_ap_resist, 0.0, 0.3)
-	
 	# Store units for destruction
 	var units_to_destroy : Array = []
-	
-	# Calc damage
-	var final_ap = ap_damage * (1 - bonus_ap_resist)
-	var final_he = he_damage * (1 - bonus_he_resist)
-	
+
 	# Apply damage
 	for unit : Unit in target_tile.get_units_in_tile():
-		unit.offset_hit_points(final_ap, final_he, defense_mod)
+		unit.offset_hit_points(ap_damage, he_damage, target_tile)
 		if unit.get_hit_points_left() <= 0:
 			units_to_destroy.append(unit)
 	

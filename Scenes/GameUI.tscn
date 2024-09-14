@@ -9,7 +9,7 @@ draw_center = false
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d5pqr"]
 draw_center = false
 
-[node name="GameUI" type="CanvasLayer" node_paths=PackedStringArray("_deploy_button", "buy_menu", "buy_menu_vbox", "player_turn_label", "turn_num_label", "time_left_label", "lower_section_hbox", "inspection_panel_empty", "unit_selection_panel", "unit_selection_name", "unit_selection_action", "unit_selection_hp", "unit_selection_sight", "unit_selection_res", "unit_selection_owner", "tile_selection_panel", "tile_selection_name", "tile_selection_defense", "tile_selection_movement", "tile_selection_spawn", "tile_selection_value", "tile_selection_owner", "unit_grid_container", "debug_crosshair", "debug_rect", "player_name_label", "team_name_label", "score_vbox")]
+[node name="GameUI" type="CanvasLayer" node_paths=PackedStringArray("_deploy_button", "buy_menu", "buy_menu_vbox", "player_turn_label", "turn_num_label", "time_left_label", "lower_section_hbox", "inspection_panel_empty", "unit_selection_panel", "unit_selection_name", "unit_selection_action", "unit_selection_hp", "unit_selection_sight", "unit_selection_res", "unit_selection_owner", "tile_selection_panel", "tile_selection_name", "tile_selection_defense", "tile_selection_movement", "tile_selection_spawn", "tile_selection_value", "tile_selection_stacking", "tile_selection_owner", "unit_grid_container", "debug_crosshair", "debug_rect", "player_name_label", "team_name_label", "score_vbox")]
 script = ExtResource("1_5uulx")
 _deploy_button = NodePath("LowerSection/DeployPanel/MarginContainer/VBoxContainer/DeployButton")
 buy_menu = NodePath("BuyMenu")
@@ -30,8 +30,9 @@ tile_selection_panel = NodePath("LowerSection/MiddlePanel/TileSelectionPanel")
 tile_selection_name = NodePath("LowerSection/MiddlePanel/TileSelectionPanel/HBoxContainer/TileDetails/MarginContainer/VBoxContainer/TileSelName")
 tile_selection_defense = NodePath("LowerSection/MiddlePanel/TileSelectionPanel/HBoxContainer/TileDetails/MarginContainer/VBoxContainer/HBoxContainer/TileSelDef")
 tile_selection_movement = NodePath("LowerSection/MiddlePanel/TileSelectionPanel/HBoxContainer/TileDetails/MarginContainer/VBoxContainer/HBoxContainer/TileSelMove")
-tile_selection_spawn = NodePath("LowerSection/MiddlePanel/TileSelectionPanel/HBoxContainer/TileDetails/MarginContainer/VBoxContainer/HBoxContainer/TileSelSpawn")
+tile_selection_spawn = NodePath("LowerSection/MiddlePanel/TileSelectionPanel/HBoxContainer/TileDetails/MarginContainer/VBoxContainer/HBoxContainer2/TileSelSpawn")
 tile_selection_value = NodePath("LowerSection/MiddlePanel/TileSelectionPanel/HBoxContainer/TileDetails/MarginContainer/VBoxContainer/HBoxContainer/TileSelVal")
+tile_selection_stacking = NodePath("LowerSection/MiddlePanel/TileSelectionPanel/HBoxContainer/TileDetails/MarginContainer/VBoxContainer/HBoxContainer/TileSelStacking")
 tile_selection_owner = NodePath("LowerSection/MiddlePanel/TileSelectionPanel/HBoxContainer/TileDetails/MarginContainer/VBoxContainer/HBoxContainer2/TileSelOwner")
 unit_grid_container = NodePath("LowerSection/MiddlePanel/TileSelectionPanel/HBoxContainer/MarginContainer/Units/UnitGridContainer")
 debug_crosshair = NodePath("Debug/DebugCrosshair")
@@ -181,6 +182,7 @@ text = "Select Unit or Tile to display details"
 horizontal_alignment = 1
 
 [node name="UnitSelectionPanel" type="PanelContainer" parent="LowerSection/MiddlePanel"]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 6.0
@@ -316,7 +318,6 @@ size_flags_vertical = 3
 text = "6"
 
 [node name="TileSelectionPanel" type="PanelContainer" parent="LowerSection/MiddlePanel"]
-visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 6.0
@@ -328,7 +329,7 @@ layout_mode = 2
 [node name="TileDetails" type="PanelContainer" parent="LowerSection/MiddlePanel/TileSelectionPanel/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_stretch_ratio = 5.0
+size_flags_stretch_ratio = 2.0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_d5pqr")
 
@@ -358,22 +359,22 @@ size_flags_vertical = 3
 [node name="TileSelDef" type="Label" parent="LowerSection/MiddlePanel/TileSelectionPanel/HBoxContainer/TileDetails/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Defense: 1.5"
+text = "Defense: 1.50"
+
+[node name="TileSelStacking" type="Label" parent="LowerSection/MiddlePanel/TileSelectionPanel/HBoxContainer/TileDetails/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+text = "Stacking: 1.00/1.00"
+
+[node name="TileSelVal" type="Label" parent="LowerSection/MiddlePanel/TileSelectionPanel/HBoxContainer/TileDetails/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+text = "Value: 5"
 
 [node name="TileSelMove" type="Label" parent="LowerSection/MiddlePanel/TileSelectionPanel/HBoxContainer/TileDetails/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 10
 text = "Movement: 2"
-
-[node name="TileSelVal" type="Label" parent="LowerSection/MiddlePanel/TileSelectionPanel/HBoxContainer/TileDetails/MarginContainer/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 10
-text = "Value: 5"
-
-[node name="TileSelSpawn" type="Label" parent="LowerSection/MiddlePanel/TileSelectionPanel/HBoxContainer/TileDetails/MarginContainer/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 10
-text = "Spawn: Yes"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="LowerSection/MiddlePanel/TileSelectionPanel/HBoxContainer/TileDetails/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -383,8 +384,12 @@ size_flags_vertical = 3
 layout_mode = 2
 text = "Owner Team: 1"
 
+[node name="TileSelSpawn" type="Label" parent="LowerSection/MiddlePanel/TileSelectionPanel/HBoxContainer/TileDetails/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 10
+text = "Spawn: Yes"
+
 [node name="MarginContainer" type="MarginContainer" parent="LowerSection/MiddlePanel/TileSelectionPanel/HBoxContainer"]
-custom_minimum_size = Vector2(350, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/margin_left = 8
@@ -395,11 +400,9 @@ theme_override_constants/margin_bottom = 8
 [node name="Units" type="ScrollContainer" parent="LowerSection/MiddlePanel/TileSelectionPanel/HBoxContainer/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_stretch_ratio = 3.0
 
 [node name="UnitGridContainer" type="GridContainer" parent="LowerSection/MiddlePanel/TileSelectionPanel/HBoxContainer/MarginContainer/Units"]
 layout_mode = 2
-columns = 2
 
 [node name="TurnPanel" type="PanelContainer" parent="LowerSection"]
 layout_mode = 2

@@ -78,16 +78,17 @@ func offset_action_points(offset : int) -> bool:
 	return _action_points_left > 0
 
 # Returns 'true' if hp is above 0, 'false' if below or equal 0
-func offset_hit_points(ap_damage : float, he_damage : float, defense_mod : float = 2) -> bool:
+func offset_hit_points(ap_damage : float, he_damage : float, tile : Tile) -> bool:
 	# Calculate multipliers
-	var ap_multi = (1 - Unit_Properties.get_ap_resistance(_type))
-	var he_multi = (1 - Unit_Properties.get_he_resistance(_type))
-	var tile_multi = defense_mod
+	var unit_ap_mutli = Unit_Properties.get_ap_mod(self.get_type())
+	var unit_he_mutli = Unit_Properties.get_he_mod(self.get_type())
+	var tile_base_multi = Tile_Properties.get_defense_modifier(tile.get_type())
+	var tile_ap_multi = tile.get_ap_stacking_mod()
+	var tile_he_multi = tile.get_he_stacking_mod()
 	
 	# Update HP
-	# Currently, tile modifier is not used on ap damage
-	_hit_points_left -= ap_damage * ap_multi
-	_hit_points_left -= he_damage * he_multi * tile_multi
+	_hit_points_left -= ap_damage * tile_base_multi * tile_ap_multi * unit_ap_mutli
+	_hit_points_left -= he_damage * tile_base_multi * tile_he_multi * unit_he_mutli
 	
 	# Update UI
 	if _unit_label: 
