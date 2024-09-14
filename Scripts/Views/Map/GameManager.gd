@@ -114,17 +114,7 @@ func set_up(_parameters):
 	else:
 		Network.rpc_id(1, "send_ack", multiplayer.get_unique_id())
 
-func select_action(action_arg : Action):
-	# Execute only if player unit is selected
-	# This is a temporary measure because rn the UI is pernament
-	# This should be deleted with introduction of dynamic UI
-	# Since this fucntion would never be triggered without said UI element being available
-	# And such a button would only be available in a situation when the unit is indeed selected
-	if !(mouse_selection is Unit || mouse_selection is Unit_Properties.unit_type): return
-	if !(action_arg is Action): return
-	
-	MouseModeManager.set_mouse_mode(MouseModeManager.MOUSE_MODE.ACTION)
-	
+func select_action(action_arg : Action):	
 	# Discard all the previous highlits
 	# Order here is very important!
 	highlight_manager.clear_mouse_over_highlight() 
@@ -132,6 +122,22 @@ func select_action(action_arg : Action):
 	
 	# Save selected action for on click events
 	selected_action = action_arg
+	
+	# Execute only if player unit is selected
+	# This is a temporary measure because rn the UI is pernament
+	# This should be deleted with introduction of dynamic UI
+	# Since this fucntion would never be triggered without said UI element being available
+	# And such a button would only be available in a situation when the unit is indeed selected
+	# ----------------
+	# Hey, it's me again like 3 weeks later
+	# To be honest i do not remember if these comments even apply anymore
+	# And I can't bother to read them so I am just living them as is
+	
+	if !(mouse_selection is Unit || mouse_selection is Unit_Properties.unit_type): return
+	if !(action_arg is Action): return
+	if mouse_selection == null: return
+	
+	MouseModeManager.set_mouse_mode(MouseModeManager.MOUSE_MODE.ACTION)
 	
 	# Save targets
 	targets_and_costs = action_arg.get_available_targets()
@@ -267,3 +273,6 @@ func get_mouse_selection():
 
 func get_turn_manager() -> Turn_Manager:
 	return turn_manager
+
+func get_selected_action() -> Action:
+	return selected_action

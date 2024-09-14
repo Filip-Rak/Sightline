@@ -70,7 +70,7 @@ func perform_action(_target : Tile):
 	
 	# Clear all selections after spawning - consider not doing so for 'shift' effect
 	_game_manager.highlight_manager.clear_mouse_over_highlight()
-	_game_manager.highlight_manager.clear_mass_highlight()	
+	_game_manager.highlight_manager.clear_mass_highlight()
 	_game_manager.set_mouse_selection(null)
 
 	# Change mouse mode to inspect
@@ -78,6 +78,9 @@ func perform_action(_target : Tile):
 	
 	# Update the buy menu
 	_game_manager.game_ui.update_buy_menu()
+	
+	# Should add another condition here later for a 'shift' click
+	_game_manager.game_ui.open_buy_menu(false)
 
 # Remote Procedure Calls
 # --------------------

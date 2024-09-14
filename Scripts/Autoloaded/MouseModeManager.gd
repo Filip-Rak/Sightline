@@ -83,17 +83,46 @@ func handle_action(select):
 # Public Methods
 # --------------------
 func remove_selection():
-	# Iform UI
-	if game_ui: game_ui.deselect_inspection()
-			
-	# Clear highlighting and selected action
-	game_manager.highlight_manager.clear_mouse_over_highlight()
-	game_manager.highlight_manager.clear_mass_highlight()
-	game_manager.selected_action = null
-	game_manager.set_mouse_selection(null)
+	# Flags
+	var disable_insepction = false
+	var disable_buy_menu = false
+	var disable_action = false
 	
-	# Set Mouse Mode to Inspection
-	current_mouse_mode = MOUSE_MODE.INSPECTION
+	# Run checks for what should be disabled
+	var current_action : Action = game_manager.get_selected_action()
+	
+	# If the buy menu is open, check if player is spawning anything
+	if game_ui && game_ui.is_buy_menu_open():
+		# If not, only disable the buy menu
+		if current_action != null:
+			disable_action = true
+		else:
+			disable_buy_menu = true
+	
+	# Buy menu closed, action selected
+	elif current_action != null:
+		disable_action = true
+	
+	# Buy menu closed, no action selected
+	else:
+		disable_insepction = true
+	
+	
+	# Disable relevant things
+	if disable_buy_menu && game_ui != null:
+		game_ui.open_buy_menu(false)
+	
+	if disable_insepction && game_ui != null:
+		game_ui.deselect_inspection()
+		current_mouse_mode = MOUSE_MODE.INSPECTION
+	
+	if disable_action:
+		# Clear highlighting and selected action
+		game_manager.highlight_manager.clear_mouse_over_highlight()
+		game_manager.highlight_manager.clear_mass_highlight()
+		game_manager.selected_action = null
+		game_manager.set_mouse_selection(null)
+		current_mouse_mode = MOUSE_MODE.INSPECTION
 
 
 # Private Methods

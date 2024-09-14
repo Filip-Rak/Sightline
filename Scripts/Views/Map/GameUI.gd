@@ -193,7 +193,7 @@ func handle_UI_mask():
 	# Tell mouse to disable hit detection
 	MouseModeManager.set_suppress_raycast(mouse_in_mask)
 
-# External Control Functions
+# Public Methods
 # --------------------
 func update_turn_ui(player_id : int, _given_time : float, turn_num : int):
 	player_turn_label.text = PlayerManager.get_player_name(player_id)
@@ -255,6 +255,12 @@ func update_buy_menu():
 func update_unit_grid():
 	if _tracked_tile:
 		_set_up_unit_grid_container(_tracked_tile)
+
+func open_buy_menu(value : bool):
+	if !buy_menu: return
+	
+	# Set visibility of the buy menu
+	buy_menu.visible = value
 
 # Private Methods
 # --------------------
@@ -406,6 +412,7 @@ func _set_up_tile_details(tile : Tile):
 # Links
 # --------------------
 func _on_action_button_down(action : Action, unit : Unit):
+	open_buy_menu(false)
 	game_manager.mouse_selection = unit
 	game_manager.select_action(action)
 
@@ -414,10 +421,11 @@ func _on_end_turn_button_down():
 		game_manager.turn_manager.try_skip_turn()
 
 func _on_deploy_button_down():
-	if !buy_menu: return
-	
 	# Toggle visibility of the buy menu
-	buy_menu.visible = !buy_menu.visible
+	open_buy_menu(!buy_menu.visible)
+	
+	# Disable the active actions
+	game_manager.select_action(null)
 
 func _on_unit_buy_button_pressed(unit_type : int):
 	var spawn_action = Unit_Properties.get_action(unit_type, Action_Spawn.get_internal_name())
@@ -560,3 +568,9 @@ func _track_tile(new_track : Tile):
 			new_track.connect("tile_data_changed", _on_tile_data_changed)
 	
 	_tracked_tile = new_track
+
+
+# Getters
+# --------------------
+func is_buy_menu_open() -> bool:
+	return buy_menu.visible
