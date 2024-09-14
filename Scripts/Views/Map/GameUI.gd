@@ -219,6 +219,9 @@ func inspect_unit(unit : Unit):
 	_set_up_action_buttons(unit)
 
 func inspect_tile(tile : Tile):
+	# Deselct any current actions
+	game_manager.select_action(null)
+	
 	# Set visibility to panels
 	_set_element_activity(unit_selection_panel, false)
 	_set_element_activity(tile_selection_panel, true)
@@ -245,6 +248,7 @@ func deselect_inspection():
 	_track_tile(null)
 
 func select_in_ui(unit : Unit):
+	game_manager.select_action(null)
 	MouseModeManager.handle_inspection(unit)
 
 func update_buy_menu():
