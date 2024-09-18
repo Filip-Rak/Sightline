@@ -133,5 +133,5 @@ func set_game_manager(gm : Game_Manager):
 
 # Getters
 # --------------------
-func get_tooltip_instance() -> Action_Tooltip:
+func get_tooltip_instance(_unit : Unit) -> Action_Tooltip:
 	return _tooltip_instance

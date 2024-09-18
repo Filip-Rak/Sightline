@@ -488,7 +488,7 @@ func _on_action_button_mouse_entered(button : Button, action : Action):
 
 func _on_tooltip_timeout(button: Button, action: Action):
 	# Get the tooltip
-	var tooltip: Action_Tooltip = action.get_tooltip_instance()
+	var tooltip: Action_Tooltip = action.get_tooltip_instance(_tracked_unit)
 	
 	# Calculate the size
 	_position_tooltip(tooltip, button)
@@ -512,7 +512,7 @@ func _on_action_button_mouse_exited(action : Action):
 		_tooltip_timer = null
 	
 	# Get the tooltip
-	var tooltip : Action_Tooltip = action.get_tooltip_instance()
+	var tooltip : Action_Tooltip = action.get_tooltip_instance(_tracked_unit)
 	
 	# Remove the tooltip from tree, making it invisible
 	if tooltip.is_inside_tree():

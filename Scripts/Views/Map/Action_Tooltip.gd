@@ -18,9 +18,15 @@ func set_up_tooltip(display_name : String, description : String):
 # In the fucture this function could accept two types of string
 # One would be the 'stat', the other value
 # Making two labels instead of one, would allow for color coding
-func add_label(text : String):
+func add_dynamic_label(text : String) -> RichTextLabel:
 	var label : RichTextLabel = RichTextLabel.new()
 	label.bbcode_enabled = true
 	label.bbcode_text = text
 	label.fit_content = true
 	_vbox.add_child(label)
+	
+	return label
+	
+func add_label(text : String):
+	var _added_label = add_dynamic_label(text)
+	

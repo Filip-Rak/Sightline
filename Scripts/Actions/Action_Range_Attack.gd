@@ -16,6 +16,10 @@ var _ap_required : bool
 
 var _available_tiles : Array
 
+# Dynamic tooltip labels
+var uses_label : RichTextLabel
+var cooldown_label : RichTextLabel
+
 # Constructor
 # --------------------
 func _init(
@@ -53,6 +57,12 @@ func _add_tooltip_info():
 	
 	_tooltip_instance.add_label("AP Damage: %s" % _ap_damage)
 	_tooltip_instance.add_label("HE Damage: %s" % _he_damage)
+	
+	if _usage_limit > -1:
+		uses_label = _tooltip_instance.add_dynamic_label("Uses: %s" % [_usage_limit])
+		
+	if _cooldown > -1:
+		cooldown_label = _tooltip_instance.add_dynamic_label("Cooldown: %s" % [_cooldown])
 	
 	if _ap_cost <= -1:
 		_tooltip_instance.add_label("[i]Depletes Action Points[/i]")
@@ -242,3 +252,18 @@ func apply_attack(ap_damage : float, he_damage : float, target_tile_path : NodeP
 # --------------------
 static func get_internal_name() -> String:
 	return "Action_Range_Attack"
+	
+func get_tooltip_instance(unit : Unit) -> Action_Tooltip:	
+	# Update unit specific values
+	
+	if PlayerManager.get_team_id(unit._player_owner_id) == PlayerManager.get_my_team_id():
+		if _usage_limit > -1:
+			var uses_left = unit.get_action_uses_left(self._display_name)
+			uses_label.bbcode_text = "Uses: %s (%s)" % [uses_left, _usage_limit]
+		
+		if _cooldown > -1:
+			var cooldown_left = _cooldown - (_game_manager.turn_manager.get_turn_num() - unit.get_action_last_use_turn(self._display_name))
+			if cooldown_left < 0: cooldown_left = 0
+			cooldown_label.bbcode_text = "Cooldown: %s (%s)" % [cooldown_left, _cooldown]
+	
+	return _tooltip_instance
