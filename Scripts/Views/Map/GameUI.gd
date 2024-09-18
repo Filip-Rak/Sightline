@@ -60,6 +60,8 @@ var _tracked_tile : Tile
 
 # Tooltip
 var _tooltip_timer : SceneTreeTimer = null
+var _visible_tooltip_button : Button = null
+var _visible_tooltip_action : Action = null
 @export var _tooltip_show_time_delay : float = 0.5
 @export var _tooltip_pos_gap : int = 4 # Hbox.separation has been deleted with 4.2 so it's a constant
 
@@ -424,8 +426,6 @@ func _set_up_tile_details(tile : Tile):
 	else:
 		tile_selection_stacking.visible = false
 	
-	
-		
 # Links
 # --------------------
 func _on_action_button_down(action : Action, unit : Unit):
@@ -471,6 +471,10 @@ func _on_new_game_turn():
 func _on_unit_details_changed():
 	_set_up_unit_details(_tracked_unit)
 
+func _on_action_details_changed():
+	if _visible_tooltip_action && _visible_tooltip_button:
+		_on_tooltip_timeout(_visible_tooltip_button, _visible_tooltip_action)
+
 func _on_unit_sel_tile_button():
 	if _tracked_unit:
 		var pos = _tracked_unit.get_matrix_tile_position()
@@ -487,6 +491,10 @@ func _on_action_button_mouse_entered(button : Button, action : Action):
 	_tooltip_timer.connect("timeout", Callable(self, "_on_tooltip_timeout").bind(button, action))
 
 func _on_tooltip_timeout(button: Button, action: Action):
+	# Save selected
+	_visible_tooltip_action = action
+	_visible_tooltip_button = button
+	
 	# Get the tooltip
 	var tooltip: Action_Tooltip = action.get_tooltip_instance(_tracked_unit)
 	
@@ -499,13 +507,17 @@ func _on_tooltip_timeout(button: Button, action: Action):
 	# If the size has changed, then recalculate tooltip's position
 	if !tooltip.is_connected("resized", _position_tooltip):
 		tooltip.connect("resized", Callable(self, "_position_tooltip").bind(tooltip, button))
-	
+
 func _position_tooltip(tooltip: Action_Tooltip, button: Button):
 	# Now that the size has been updated, set the correct position
 	tooltip.position.y = unit_selection_panel.global_position.y - tooltip.size.y - _tooltip_pos_gap
 	tooltip.position.x = button.global_position.x
 
 func _on_action_button_mouse_exited(action : Action):
+	# Reset selected
+	_visible_tooltip_action = null
+	_visible_tooltip_button = null
+	
 	# Stop the timer and remove tooltip if it was visible
 	if _tooltip_timer && _tooltip_timer.is_connected("timeout",_on_tooltip_timeout):
 		_tooltip_timer.disconnect("timeout", _on_tooltip_timeout)
@@ -558,6 +570,7 @@ func _track_unit(new_track : Unit):
 		
 		# Signals
 		_tracked_unit.disconnect("unit_details_changed", _on_unit_details_changed)
+		_tracked_unit.disconnect("action_details_changed", _on_action_details_changed)
 	
 	# Enable new selection
 	if is_instance_valid(new_track):
@@ -568,6 +581,7 @@ func _track_unit(new_track : Unit):
 		# Signals
 		if !new_track.is_connected("unit_details_changed", _on_unit_details_changed):
 			new_track.connect("unit_details_changed", _on_unit_details_changed)
+			new_track.connect("action_details_changed", _on_action_details_changed)
 	
 	# Save the selection
 	_tracked_unit = new_track

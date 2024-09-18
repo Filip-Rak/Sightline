@@ -27,6 +27,7 @@ var _action_states : Dictionary = {}
 func _init():
 	# Signals
 	add_user_signal("unit_details_changed")
+	add_user_signal("action_details_changed")
 	
 # Ready Functions
 # --------------------
@@ -128,10 +129,8 @@ func update_action_as_used(action_display_name : String, present_turn : int):
 		state["uses_left"] -= 1
 	else:
 		printerr("Unit.gd -> update_action_as_used: an action was added during runtime and won't be handled properly until restart!")
-		
 	
-	print ("---------- ACTION STATE TABLE ID: %s ----------" % multiplayer.get_unique_id())
-	print ("%s" % [state])
+	emit_signal("action_details_changed")
 
 # Getters
 # --------------------

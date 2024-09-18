@@ -255,7 +255,6 @@ static func get_internal_name() -> String:
 	
 func get_tooltip_instance(unit : Unit) -> Action_Tooltip:	
 	# Update unit specific values
-	
 	if PlayerManager.get_team_id(unit._player_owner_id) == PlayerManager.get_my_team_id():
 		if _usage_limit > -1:
 			var uses_left = unit.get_action_uses_left(self._display_name)
