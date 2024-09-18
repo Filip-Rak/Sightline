@@ -78,17 +78,17 @@ static var _type_properties = {
 				Action_Range_Attack.new(
 					"Suppresive Fire", 
 					"Panzergrenadiers unleash precise and controlled fire from their G36 rifles, leveraging their superior training and coordination.", 
-					1, 1, 5, 20, -1, false
+					1, 1, 5, 20, -1, -1, -1, false
 				),
 				Action_Range_Attack.new(
 					"PzF 3 Fire", 
 					"Deploying the formidable Panzerfaust 3, Panzergrenadiers launch an anti-tank rocket, capable of punching through even well-armored vehicles.", 
-					1, 1, 60, 15, -1, false
+					1, 1, 60, 15, -1, -1, -1, false
 				),
 				Action_Range_Attack.new(
 					"Milan Strike", 
 					"Panzergrenadiers fire a Milan anti-tank missile, capable of engaging targets at longer range but with lower destructive potential.", 
-					3, 1, 30, 20
+					3, 1, 30, 20, 4, 2
 				),
 			]
 	},

@@ -19,6 +19,9 @@ var _matrix_tile_position : Vector3
 var _player_owner_id : int
 var _transported_unit : Unit
 
+# [action_name] "last_use_turn" : int, "uses_left" : int
+var _action_states : Dictionary = {}
+
 # Constructor
 # --------------------
 func _init():
@@ -32,6 +35,14 @@ func _ready():
 	_action_points_left = Unit_Properties.get_action_points_max(_type)
 	_can_attack = true
 	_hit_points_left = Unit_Properties.get_hit_points_max(_type)
+	
+	# Set up cooldowns
+	var actions : Array = Unit_Properties.get_actions(self._type)
+	for action : Action in actions:
+		_action_states[action.get_display_name()] = {
+			"last_use_turn": -action.get_cooldown(),
+			"uses_left": action.get_usage_limit()
+		}
 	
 	# Set up the label
 	if _unit_label:
@@ -110,6 +121,18 @@ func reset_action_points():
 		
 	emit_signal("unit_details_changed")
 
+func update_action_as_used(action_display_name : String, present_turn : int):
+	var state = _action_states[action_display_name]
+	if state:
+		state["last_use_turn"] = present_turn
+		state["uses_left"] -= 1
+	else:
+		printerr("Unit.gd -> update_action_as_used: an action was added during runtime and won't be handled properly until restart!")
+		
+	
+	print ("---------- ACTION STATE TABLE ID: %s ----------" % multiplayer.get_unique_id())
+	print ("%s" % [state])
+
 # Getters
 # --------------------
 func get_type() -> Unit_Properties.unit_type:
@@ -141,6 +164,22 @@ func get_label() -> Unit_Label_3D:
 
 func get_can_attack() -> bool:
 	return _can_attack
+
+func get_action_last_use_turn(action_display_name : String) -> int: 
+	var state = _action_states[action_display_name]
+	if state:
+		return state["last_use_turn"]
+	else:
+		printerr("Unit.gd -> get_action_last_use_turn: an action was added during runtime and won't be handled properly until restart!")
+		return -404
+		
+func get_action_uses_left(action_display_name : String) -> int:
+	var state = _action_states[action_display_name]
+	if state:
+		return state["uses_left"]
+	else:
+		printerr("Unit.gd -> get_action_last_use_turn: an action was added during runtime and won't be handled properly until restart!")
+		return 404
 
 # Setters
 # --------------------

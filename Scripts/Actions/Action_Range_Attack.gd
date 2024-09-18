@@ -18,9 +18,23 @@ var _available_tiles : Array
 
 # Constructor
 # --------------------
-func _init(display_name : String, description : String, attack_range : int, attack_min_range : int, ap_damage : float, he_damage : float, ap_cost : int = -1, ap_required : bool = true, respects_LOS : bool = true, needs_spot : bool = true):
+func _init(
+	display_name : String, 
+	description : String, 
+	attack_range : int, 
+	attack_min_range : int, 
+	ap_damage : float, 
+	he_damage : float, 
+	usage_limit : int = -1, 
+	cooldown : int = -1, 
+	ap_cost : int = -1, 
+	ap_required : bool = true, 
+	respects_LOS : bool = true, 
+	needs_spot : bool = true
+	):
+	
 	# Super class
-	super._init(display_name, description, ap_cost, 0, 0)
+	super._init(display_name, description, ap_cost, usage_limit, cooldown)
 
 	# Child class
 	_attack_range = attack_range
@@ -67,6 +81,11 @@ func get_available_targets() -> Dictionary:
 	# Run checks
 	if !unit.get_can_attack(): return {"tiles" : [], "costs" : []}
 	if _ap_required && unit.get_action_points_left() <= 0: return {"tiles" : [], "costs" : []}
+	if _usage_limit > -1 && unit.get_action_uses_left(self.get_display_name()) <= 0: return {"tiles" : [], "costs" : []}
+	
+	if _cooldown > -1:
+		if _game_manager.turn_manager.get_turn_num() - unit.get_action_last_use_turn(self.get_display_name()) < _cooldown: 
+			return {"tiles" : [], "costs" : []}
 	
 	# Check if the unit belongs to the player
 	if unit.get_player_owner_id() != multiplayer.get_unique_id(): 
@@ -93,8 +112,6 @@ func perform_action(target : Tile):
 	# Make sure the selected target is within legal targets
 	if _available_tiles.find(target) == -1: return
 	
-	# Handle cooldowns here
-		
 	# Apply attack on the net
 	rpc("apply_attack", _ap_damage, _he_damage, target.get_path(), unit.get_path())
 
@@ -200,6 +217,9 @@ func apply_attack(ap_damage : float, he_damage : float, target_tile_path : NodeP
 		attacker.offset_action_points(-_ap_cost)
 		if attacker.get_action_points_left() == 0: 
 			attacker.set_can_attack(false)
+			
+	# Handle cooldown and usage limit
+	attacker.update_action_as_used(self._display_name, _game_manager.turn_manager.get_turn_num())
 	
 	# Store units for destruction
 	var units_to_destroy : Array = []
