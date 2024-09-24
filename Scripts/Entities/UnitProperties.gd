@@ -49,12 +49,12 @@ static var _type_properties = {
 				Action_Range_Attack.new(
 					"Suppresive Fire", 
 					"Motostrelki fire a barrage of 7.62mm rounds, maintaining pressure on the enemy.", 
-					1, 1, 5, 30, -1, false
+					1, 1, 5, 30, -1, -1, -1, false
 				),
 					Action_Range_Attack.new(
 					"RPG Vystrel", 
 					"Motostrelki fire a light RPG-18 anti-tank rocket. Effective at close range but lacking the punch to deal with heavy armor.", 
-					1, 1, 25, 5, -1, false
+					1, 1, 25, 5, -1, -1, -1, false
 				)
 			]
 	},
