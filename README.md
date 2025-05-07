@@ -9,8 +9,8 @@ While the game is incomplete and relatively bare in terms of content and polish,
 It features a functional turn & team systems, unit mechanics, fully-featured RTS-style camera and a tile-based map with line-of-sight considerations.
 
 ## Authors
-- [Filip](https://github.com/Filip-Rak) – Design, game systems, networking, UI, and most of the content.
-- [Nopee](https://github.com/fakeNopee) – Made a few (very basic) unit models and provided moral support by being vaguely around.
+- [Filip](https://github.com/Filip-Rak) - Design, game systems, networking, UI, and most of the content.
+- [Nopee](https://github.com/fakeNopee) - Made a few (very basic) unit models and provided moral support by being vaguely around.
 
 ## Features
   - ### Camera
@@ -39,5 +39,18 @@ It features a functional turn & team systems, unit mechanics, fully-featured RTS
   - **Defense modifiers** influence incoming damage — towns and forests offer better protection.
   - **Range bonuses** are granted by elevation (e.g., hills) or open sightlines (e.g., water).
   - **Unit-specific accessibility** – some units can't cross rivers or mountains, while infantry are more versatile in complex terrain.
-  - **Choke points** emerge naturally through water and bridges, rewarding smart positioning.
+  - **Choke points** are created naturally by rivers and bridges, encouraging deliberate movement and positioning.
+    
+  - ### Turn System
+
+  Sightline uses a traditional, server-driven turn-based system built to support both local and online multiplayer. At the start of the game, turn order is randomized (with plans to support more refined methods in the future). Each player takes their turn in sequence, with game state updates synchronized across the network.
+
+  The system currently supports:
+  - **Fixed turn timers** – with the option to disable or expand to dynamic timers later.
+  - **Automatic turn transitions** – turns advance when the timer expires or a player ends their turn.
+  - **Multiplayer-safe logic** – all state changes are handled server-side and replicated to clients.
+  - **Disconnection handling** – the game gracefully skips turns or reorders when a player drops.
+  - **Manual turn skipping (disabled timer)** – for less strict games allowing players to take all the time they need.
+
+  The turn system is designed with extensibility in mind, forming a solid base for future features like dynamic pacing or interrupt-based actions.
 
