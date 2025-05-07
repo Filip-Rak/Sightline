@@ -147,6 +147,7 @@ Sightline is built entirely using free and open-source tools, with all gameplay 
 - **Engine:** [Godot 4.2.2 (stable)](https://godotengine.org/) – used for all gameplay, networking, UI, and rendering.
 - **Language:** GDScript – core gameplay systems, UI, multiplayer logic, and AI pathfinding written in GDScript.
 - **3D Models:** [Blender](https://www.blender.org/) – used for creating placeholder unit models.
+- **Texturing:** [Substance Painter](https://substance3d.adobe.com/) – used to texture and bake the handful of models used in the prototype.
 - **Multiplayer:** Godot High-Level Multiplayer API (ENet) – used for server-hosted peer communication, RPCs, and state sync.
 
 ## Code Structure
@@ -212,8 +213,43 @@ Sightline's codebase is organized around modular systems. Distinct scripts contr
   
   The interface is fully mouse-driven, with keyboard input primarily used for camera control and quick canceling.
 
-  - ### Local multiplayer.
+  ### Local Multiplayer
+  Sightline launches into a debug menu that allows for quick local multiplayer testing.
   
-  - ### Online multiplayer.
-  - 
-  - 
+  Steps to play locally with two players:
+  1. **Launch two instances** of the game.
+  2. Remember to pick teams for both players (1-4), otherwise it will default to 1.
+  3. In one instance, click the **"Host"** button — this becomes the game host.
+  4. In the second instance, click the **"Join"** button — it will automatically connect to the host via default settings (no need to enter address or port).
+  5. Both players should now appear in the player list.
+  6. Either player can press **"Start Game"** to begin the match.
+  
+  Each player can select a **name** and **team** from the menu before starting.
+  
+  Want to test the game alone?  
+  You can skip hosting entirely — just click **"Start Game"** in the main menu to launch a solo session.
+
+  ### Non-Local Multiplayer
+  To simulate a local network between remote machines, use a virtual LAN service such as [Radmin VPN](https://www.radmin-vpn.com/)
+  
+  Once all players are connected to the same virtual network:
+  1. Have one player **Host** the game (just like in local play).
+  2. Other players enter the **host’s virtual IP address** and click **Join**.
+  3. Once everyone is connected, the game can be started from either instance.
+  
+  Note: Port forwarding is *not* required when using VPN tools like Radmin. However, performance and stability may vary depending on network quality.
+  This is a workaround, not a production-grade online system - but it works well for testing and casual play.
+
+## License
+This project is licensed under the **Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)** license.
+
+That means you're free to:
+- Look at the code and learn from it.
+- Fork it, experiment, remix, or build on it non-commercially.
+- Share it with attribution.
+
+But **you may not**:
+- Use it for commercial purposes without permission.
+- Remove or falsify credit to the original authors.
+
+See the full license [here](https://creativecommons.org/licenses/by-nc/4.0/).
