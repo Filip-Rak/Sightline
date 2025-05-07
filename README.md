@@ -238,8 +238,8 @@ Sightline is built entirely using free and open-source tools, with all gameplay 
   Download `zip` from [Releases]() section.
   
   **To play:**
-  2. Extract the zip and run `Sightline.exe` (keep the folder structure intact).
-  3. The game will launch directly into the debug menu for immediate local or LAN play.
+  1. Extract the zip and run `Sightline.exe` (keep the folder structure intact).
+  2. The game will launch directly into the debug menu for immediate local or LAN play.
   
   ---
   
