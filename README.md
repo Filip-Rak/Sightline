@@ -10,7 +10,7 @@ It features a functional turn & team systems, unit mechanics, fully-featured RTS
 
 ## Authors
 - [Filip](https://github.com/Filip-Rak) - Design, game systems, networking, UI, and most of the content.
-- [Nopee](https://github.com/fakeNopee) - Made a few (very basic) unit models and provided moral support by being vaguely around.
+- [Nopee](https://github.com/fakeNopee) - Made unit and tile models, as well as provided moral support by being vaguely around.
 
 ## Features
   - ### Camera
@@ -182,10 +182,36 @@ Sightline's codebase is organized around modular systems. Distinct scripts contr
   - Contain helpers for map traversal, enemy detection, and general-purpose logic
 
 ## How to play
-  - ### Game Rules.
-
-  - ### Controls.
+  ### Game Rules
+  While there is currently no formal win condition, players compete to accumulate points and outmaneuver opponents through smart use of terrain and units.
   
+  Core rules and mechanics:
+  - **Turn-based play** – each player takes their turn in sequence; turns are either timed or manual depending on match setup.
+  - **Point income** – every turn, each team gains 5 base points, used to deploy new units.
+  - **Tile control** – certain tiles provide conquest points when controlled. A tile is considered "controlled" by the last team to have a unit visit it.
+  - **Score accumulation** – at the end of each round (full turn cycle), all teams are awarded points based on the total value of tiles they control. These points are tracked on the leaderboard.
+  - **Unit deployment** – reinforcements can be purchased and deployed at spawn points, provided the tile is under uncontested control.
+  - **Spawn point contesting** – if an enemy team moves a unit onto a spawn point tile, it loses the spawn status forever.
+  - **Combat** – players can only attack units belonging to opposing teams.
+  
+  ### Controls
+  #### Camera Controls
+  - **Move camera** – `W`, `A`, `S`, `D`.
+  - **Rotate camera** – Hold `MMB` or `LCTRL` + mouse drag.
+  - **Zoom camera** – Scroll wheel.
+  - **Edge pan camera** – Move mouse to screen edges while holding `LSHIFT`.
+  
+  #### Gameplay Controls
+  - **Select unit/tile** – Left Click.
+  - **Use action (select target tile/unit)** – Right Click.
+  - **Cancel current selection/action/buy menu** – `ESC` (in that order).
+  
+  #### UI Interaction
+  - **Click buttons (e.g., End Turn, Actions, Buy Menu)** – Left Click.
+  - **Hover for tooltip** – Hover over action buttons briefly.
+  
+  The interface is fully mouse-driven, with keyboard input primarily used for camera control and quick canceling.
+
   - ### Local multiplayer.
   
   - ### Online multiplayer.
