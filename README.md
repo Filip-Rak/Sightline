@@ -1,16 +1,35 @@
 # Sightline 
 A turn-based multiplayer strategy prototype with a modern military theme, built in Godot 4.
 
+## Table of Contents
+
+- [Features](#features)
+  - [Camera](#camera)
+  - [Map](#map)
+  - [Turn System](#turn-system)
+  - [Team System](#team-system)
+  - [Unit Actions](#unit-actions)
+  - [Game UI](#game-ui)
+  - [Multiplayer](#multiplayer)
+  - [Units](#units)
+- [How to Play](#how-to-play)
+  - [Game Rules](#game-rules)
+  - [Controls](#controls)
+  - [Local Multiplayer](#local-multiplayer)
+  - [Non-Local Multiplayer](#non-local-multiplayer)
+- [Installation](#installation)
+- [Tech Stack](#tech-stack)
+- [Code Structure](#code-structure)
+- [Authors](#authors)
+- [License](#license)
+
+
 ## Overview
 **Sightline** is a prototype of a modern military-themed, turn-based multiplayer strategy game developed entirely in my free time as a personal hobby project. 
 The main goal behind the project was to explore and learn the process of building larger-scale games - particularly focusing on networking, multiplayer systems, and working within the Godot 4 engine.
 
 While the game is incomplete and relatively bare in terms of content and polish, it is fully playable and supports both local and non-local multiplayer. 
 It features a functional turn & team systems, unit mechanics, fully-featured RTS-style camera and a tile-based map with line-of-sight considerations.
-
-## Authors
-- [Filip](https://github.com/Filip-Rak) - Design, game systems, networking, UI, and most of the content.
-- [Nopee](https://github.com/fakeNopee) - Made unit and tile models, as well as provided moral support by being vaguely around.
 
 ## Features
   - ### Camera
@@ -149,39 +168,7 @@ Sightline is built entirely using free and open-source tools, with all gameplay 
 - **3D Models:** [Blender](https://www.blender.org/) – used for creating placeholder unit models.
 - **Texturing:** [Substance Painter](https://substance3d.adobe.com/) – used to texture and bake the handful of models used in the prototype.
 - **Multiplayer:** Godot High-Level Multiplayer API (ENet) – used for server-hosted peer communication, RPCs, and state sync.
-
-## Code Structure
-
-Sightline's codebase is organized around modular systems. Distinct scripts contribute to the overall architecture as follows:
-
-- **Core Game Systems**
-  - `GameManager.gd`, `TurnManager.gd`, `TeamManager.gd`, `StateMachine.gd`, `PlayerManager.gd`
-  - Handle global game flow, player data, turn logic, and team coordination
-
-- **Units & Combat**
-  - `Unit.gd`, `UnitProperties.gd`, `unit_label3D.gd`, `unit_label_content.gd`
-  - Define unit stats, actions, visual labeling, and in-game behavior
-
-- **Tiles & Map Logic**
-  - `Tile.gd`, `TileProperties.gd`, `MapLoader.gd`, `tile_label_3d.gd`
-  - Manage map generation, tile properties (LOS, defense), and in-game labeling
-
-- **Camera & Input**
-  - `PlayerCamera.gd`, `DebugCamera.gd`, `MouseModeManager.gd`
-  - Provide RTS-style camera control and input modes (inspection, action, etc.)
-
-- **UI & Interaction**
-  - `GameUI.gd`, `Action_Tooltip.gd`, `HighlightManager.gd`
-  - Handle the user interface, tooltips, dynamic highlights, and contextual elements
-
-- **Networking**
-  - `Network.gd`, `DebugLobby.gd`
-  - Set up client/server logic, handle connection/disconnection, and player data sync
-
-- **Utilities & Support**
-  - `Utility.gd`, `PathFinding.gd`
-  - Contain helpers for map traversal, enemy detection, and general-purpose logic
-
+  
 ## How to play
   ### Game Rules
   While there is currently no formal win condition, players compete to accumulate points and outmaneuver opponents through smart use of terrain and units.
@@ -239,6 +226,44 @@ Sightline's codebase is organized around modular systems. Distinct scripts contr
   
   Note: Port forwarding is *not* required when using VPN tools like Radmin. However, performance and stability may vary depending on network quality.
   This is a workaround, not a production-grade online system - but it works well for testing and casual play.
+
+## Installation
+
+
+## Code Structure
+Sightline's codebase is organized around modular systems. Distinct scripts contribute to the overall architecture as follows:
+
+- **Core Game Systems**
+  - `GameManager.gd`, `TurnManager.gd`, `TeamManager.gd`, `StateMachine.gd`, `PlayerManager.gd`
+  - Handle global game flow, player data, turn logic, and team coordination
+
+- **Units & Combat**
+  - `Unit.gd`, `UnitProperties.gd`, `unit_label3D.gd`, `unit_label_content.gd`
+  - Define unit stats, actions, visual labeling, and in-game behavior
+
+- **Tiles & Map Logic**
+  - `Tile.gd`, `TileProperties.gd`, `MapLoader.gd`, `tile_label_3d.gd`
+  - Manage map generation, tile properties (LOS, defense), and in-game labeling
+
+- **Camera & Input**
+  - `PlayerCamera.gd`, `DebugCamera.gd`, `MouseModeManager.gd`
+  - Provide RTS-style camera control and input modes (inspection, action, etc.)
+
+- **UI & Interaction**
+  - `GameUI.gd`, `Action_Tooltip.gd`, `HighlightManager.gd`
+  - Handle the user interface, tooltips, dynamic highlights, and contextual elements
+
+- **Networking**
+  - `Network.gd`, `DebugLobby.gd`
+  - Set up client/server logic, handle connection/disconnection, and player data sync
+
+- **Utilities & Support**
+  - `Utility.gd`, `PathFinding.gd`
+  - Contain helpers for map traversal, enemy detection, and general-purpose logic
+
+## Authors
+- [Filip](https://github.com/Filip-Rak) - Design, game systems, networking, UI, and most of the content.
+- [Nopee](https://github.com/fakeNopee) - Made unit and tile models, as well as provided moral support by being vaguely around.
 
 ## License
 This project is licensed under the **Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)** license.
