@@ -23,8 +23,21 @@ It features a functional turn & team systems, unit mechanics, fully-featured RTS
     - **Smooth transitions** – all movement and zooming is interpolated for a responsive, polished feel.
       
   - ### Map
-    The game features a 3D, rectangular map made of tiles. Each tile has the following properties:
-    - **Controlling team** - the team which has the tile under control.
-    - **Value** - the amount of points the team is rewarder each turn for holding the tile.
-    - **Spawn** - A tile *can* be a spawn, allowing the controlling team to buy reinforcements. 
-      
+
+  Sightline uses a tile-based map where each tile type influences gameplay through movement cost, visibility, and combat modifiers. The terrain system encourages tactical positioning and unit-type awareness.
+  
+  Each tile has the following properties:
+  - **Controlling team** – the team currently holding the tile.
+  - **Value** – the number of points awarded to the controlling team each turn.
+  - **Spawn** – tiles may serve as spawn points, allowing the team to purchase reinforcements.
+  - **Tile type** – defines both the tile’s appearance and how units interact with it.
+
+  Terrain features include:
+  - **Tile types**: Plains, Water, Forest, Mountain, Hill, Town, River, and Bridge.
+  - **Line of sight** is blocked by certain terrain (e.g., forests, hills, towns), impacting visibility and engagement ranges.
+  - **Movement cost** varies, simulating terrain difficulty — rivers and forests are harder to traverse.
+  - **Defense modifiers** influence incoming damage — towns and forests offer better protection.
+  - **Range bonuses** are granted by elevation (e.g., hills) or open sightlines (e.g., water).
+  - **Unit-specific accessibility** – some units can't cross rivers or mountains, while infantry are more versatile in complex terrain.
+  - **Choke points** emerge naturally through water and bridges, rewarding smart positioning.
+
