@@ -180,3 +180,14 @@ Sightline's codebase is organized around modular systems. Distinct scripts contr
 - **Utilities & Support**
   - `Utility.gd`, `PathFinding.gd`
   - Contain helpers for map traversal, enemy detection, and general-purpose logic
+
+## How to play
+  - ### Game Rules.
+
+  - ### Controls.
+  
+  - ### Local multiplayer.
+  
+  - ### Online multiplayer.
+  - 
+  - 
