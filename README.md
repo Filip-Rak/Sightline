@@ -229,6 +229,37 @@ Sightline is built entirely using free and open-source tools, with all gameplay 
 
 ## Installation
 
+  There are two ways to run the game:
+  
+  ---
+  
+  ### Option 1: Download Executable *(coming soon)*
+  
+  Once a pre-built version is available, it will be listed under the [Releases](https://github.com/your-repo/releases) section.
+  
+  **To play:**
+  1. Download the latest `.zip` or `.exe` release.
+  2. Extract (if needed) and run the executable.
+  3. The game will launch directly into the debug menu for immediate local or LAN play.
+  
+  ---
+  
+  ### Option 2: Run from Source (Godot)
+  
+  If you prefer working with the raw project files.
+  
+  **Requirements:**
+  - [Godot 4](https://godotengine.org/download/)
+  > The project was developed in Godot 4.2.2, but it should run fine in any Godot 4.x version. If you encounter compatibility issues, try using the original 4.2.2 release.
+  
+  **Steps:**
+  1. Clone or fork this repository.
+  2. Open the project folder in Godot.
+  3. Press **F5** or click **Run Project** to launch.
+  
+  This will start the debug lobby where you can immediately test the game locally, solo, or via LAN (see [How to Play](#how-to-play) for multiplayer setup).
+  
+  > Note: The project was built as a learning prototype. Some features may be incomplete or unpolished, and a mouse is recommended for full control of the camera and UI.
 
 ## Code Structure
 Sightline's codebase is organized around modular systems. Distinct scripts contribute to the overall architecture as follows:
