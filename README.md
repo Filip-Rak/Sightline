@@ -88,3 +88,95 @@ It features a functional turn & team systems, unit mechanics, fully-featured RTS
       - **Flexible design** – the system supports planned features like enemy zone-of-control checks and visibility-based restrictions.
     
       This system supports tactical depth by requiring players to think about not just where a unit can go, but what risks are involved in each step.
+      
+  - ### Game UI
+    Sightline features a custom-built, context-sensitive user interface designed for turn-based strategy gameplay. The UI adapts to the current selection, provides quick access to key mechanics, and supports both player feedback and interaction in multiplayer sessions.
+    
+    Core features include:
+    - **Contextual inspection panels** – separate panels display detailed stats and actions for selected units or tiles
+    - **Turn info and timers** – current turn, player, and remaining time are always visible
+    - **Unit action buttons** – available unit actions are presented with interactive tooltips and cooldown/status tracking
+    - **Dynamic buy menu** – allows teams to deploy reinforcements based on spawn tiles and available points, sorted by category
+    - **Score tracking** – live team score display in the UI, updated at the start of each turn
+    - **Mouse interaction filtering** – raycast suppression when hovering UI elements ensures gameplay clarity
+    - **Tooltip system** – delayed tooltips with contextual positioning for action buttons and unit abilities
+    
+    The interface is designed to be both informative and functional, helping players quickly interpret game state and execute actions.
+
+  - ### Multiplayer
+  
+    Sightline supports both local and online multiplayer, with peer-to-peer communication handled via Godot’s high-level multiplayer API (ENet). Players can host or join games, with all essential gameplay systems (turns, units, tile control, UI updates) synchronized across the network.
+    
+    Multiplayer functionality includes:
+    - **LAN/Direct IP hosting** – simple setup for hosting and joining matches.
+    - **Networked turn system** – player turns are synchronized and tracked server-side.
+    - **Real-time state updates** – unit actions, tile control, and player data are replicated across all clients.
+    - **Basic disconnection handling** – dropped players are accounted for, and turn order adapts accordingly.
+    
+    The multiplayer system is functional but remains one of the rougher parts of the project — it’s split across multiple files and still lacks deeper abstraction or polish. Despite that, it provided valuable experience in building and troubleshooting real-time networking in Godot.
+
+  - ### Units
+
+    Sightline features a diverse roster of units organized into categories like Infantry and Vehicles, each with unique stats, abilities, and battlefield roles. The unit system is designed to be fully modular, with individual instances tracking their own action points, cooldowns, and health.
+    
+    Each unit is defined through two layers:
+    - **Unit class** – tracks in-game state (AP, HP, cooldowns, position, player ownership)
+    - **Unit properties** – defines static characteristics (actions, stats, category, modifiers)
+    
+    Key features include:
+    - **Action point system** – units have limited actions per turn, affecting both movement and attacks.
+    - **Custom loadouts** – each unit has its own set of actions (e.g., suppressive fire, AT rockets), instantiated from shared action classes.
+    - **Stat-based combat** – units have AP/HE damage resistances and terrain-dependent defense modifiers.
+    - **Transport compatibility** – infantry can be carried by capable vechicles (yet to be fully implemented).
+    - **Vision system** – each unit has a defined sight range, which affects tactical awareness.
+    - **Unit roles and categories** – units are grouped into roles (e.g., Motostrelki as light infantry, M2A3 Bradley IFV as heavy armor) with meaningful gameplay differences.
+    
+    Example units:
+    - **Motostrelki** – flexible infantry with rifles and light RPGs.
+    - **Panzergrenadiers** – well-equipped infantry with access to ATGMs and strong suppressive fire.
+    - **HMMWV** – a fast recon vehicle with suppressive fire capability.
+    - **BMP-2** – lightly armored IFV offering decent firepower against soft targets.
+    - **M2A3 Bradley** – a durable IFV with autocannon support focusing on dealing with armored threats.
+    
+    This layered system makes it easy to add new units or rebalance existing ones, and supports a wide range of tactical scenarios.
+
+## Tech Stack
+
+Sightline is built entirely using free and open-source tools, with all gameplay logic and systems developed from scratch.
+
+- **Engine:** [Godot 4.2.2 (stable)](https://godotengine.org/) – used for all gameplay, networking, UI, and rendering.
+- **Language:** GDScript – core gameplay systems, UI, multiplayer logic, and AI pathfinding written in GDScript.
+- **3D Models:** [Blender](https://www.blender.org/) – used for creating placeholder unit models.
+- **Multiplayer:** Godot High-Level Multiplayer API (ENet) – used for server-hosted peer communication, RPCs, and state sync.
+
+## Code Structure
+
+Sightline's codebase is organized around modular systems. Distinct scripts contribute to the overall architecture as follows:
+
+- **Core Game Systems**
+  - `GameManager.gd`, `TurnManager.gd`, `TeamManager.gd`, `StateMachine.gd`, `PlayerManager.gd`
+  - Handle global game flow, player data, turn logic, and team coordination
+
+- **Units & Combat**
+  - `Unit.gd`, `UnitProperties.gd`, `unit_label3D.gd`, `unit_label_content.gd`
+  - Define unit stats, actions, visual labeling, and in-game behavior
+
+- **Tiles & Map Logic**
+  - `Tile.gd`, `TileProperties.gd`, `MapLoader.gd`, `tile_label_3d.gd`
+  - Manage map generation, tile properties (LOS, defense), and in-game labeling
+
+- **Camera & Input**
+  - `PlayerCamera.gd`, `DebugCamera.gd`, `MouseModeManager.gd`
+  - Provide RTS-style camera control and input modes (inspection, action, etc.)
+
+- **UI & Interaction**
+  - `GameUI.gd`, `Action_Tooltip.gd`, `HighlightManager.gd`
+  - Handle the user interface, tooltips, dynamic highlights, and contextual elements
+
+- **Networking**
+  - `Network.gd`, `DebugLobby.gd`
+  - Set up client/server logic, handle connection/disconnection, and player data sync
+
+- **Utilities & Support**
+  - `Utility.gd`, `PathFinding.gd`
+  - Contain helpers for map traversal, enemy detection, and general-purpose logic
