@@ -189,7 +189,6 @@ Sightline is built entirely using free and open-source tools, with all gameplay 
   - **Unit deployment** – reinforcements can be purchased and deployed at spawn points, provided the tile is under uncontested control.
   - **Spawn point contesting** – if an enemy team moves a unit onto a spawn point tile, it loses the spawn status forever.
   - **Combat** – players can only attack units belonging to opposing teams.
-  - 
   
   ### Controls
   #### Camera Controls
