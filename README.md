@@ -173,7 +173,6 @@ Sightline is built entirely using free and open-source tools, with all gameplay 
 - **Engine:** [Godot 4.2.2 (stable)](https://godotengine.org/) – used for all gameplay, networking, UI, and rendering.
 - **Language:** GDScript – core gameplay systems, UI, multiplayer logic, and AI pathfinding written in GDScript.
 - **3D Models:** [Blender](https://www.blender.org/) – used for creating placeholder unit models.
-- **Texturing:** [Substance Painter](https://substance3d.adobe.com/) – used to texture and bake the handful of models used in the prototype.
 - **Multiplayer:** Godot high-level multiplayer API (ENet) – used for server-hosted peer communication, RPCs, and state sync.
   
 ## How to play
