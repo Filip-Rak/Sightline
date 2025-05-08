@@ -155,7 +155,7 @@ It features a functional turn & team systems, unit mechanics, fully-featured RTS
     - **Transport compatibility** – infantry can be carried by capable vechicles (yet to be fully implemented).
     - **Vision system** – each unit has a defined sight range, which affects tactical awareness.
     - **Unit roles and categories** – units are grouped into roles (e.g., Motostrelki as light infantry, M2A3 Bradley IFV as heavy armor) with meaningful gameplay differences.
-    - - **Stacking defense bonus** – multiple friendly units can occupy the same tile, sharing damage but also benefiting from each other’s resistances. For example, infantry units like Motostrelki (with high AP resistance) and vehicles like the M2A3 Bradley IFV (with strong HE resistance) can protect one another when stacked. While all units on the tile will take damage during an attack, smart combinations can reduce the overall impact, simulating cover and combined-arms synergy.
+    - **Stacking defense bonus** – multiple friendly units can occupy the same tile, sharing damage but also benefiting from each other’s resistances. For example, infantry units like Motostrelki (with high AP resistance) and vehicles like the M2A3 Bradley IFV (with strong HE resistance) can protect one another when stacked. While all units on the tile will take damage during an attack, smart combinations can reduce the overall impact, simulating cover and combined-arms synergy.
 
     
     Example units:
