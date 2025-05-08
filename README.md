@@ -1,6 +1,8 @@
 # Sightline 
 A turn-based multiplayer strategy prototype with a modern military theme, built in Godot 4.
 
+![Game screenshot](Media/01_eye-catch.png)
+
 ## Table of Contents
 
 - [Features](#features)
@@ -42,8 +44,9 @@ It features a functional turn & team systems, unit mechanics, fully-featured RTS
     - **Smooth transitions** – all movement and zooming is interpolated for a responsive, polished feel.
       
   - ### Map
-
     Sightline uses a tile-based map where each tile type influences gameplay through movement cost, visibility, and combat modifiers. The terrain system encourages tactical positioning and unit-type awareness.
+
+    ![Tile Closeup](Media/02_tile.png)
   
     Each tile has the following properties:
     - **Controlling team** – the team currently holding the tile.
@@ -61,8 +64,9 @@ It features a functional turn & team systems, unit mechanics, fully-featured RTS
     - **Choke points** are created naturally by rivers and bridges, encouraging deliberate movement and positioning.
     
   - ### Turn System
-
     Sightline uses a traditional, server-driven turn-based system built to support both local and online multiplayer. At the start of the game, turn order is randomized (with plans to support more refined methods in the future). Each player takes their turn in sequence, with game state updates synchronized across the network.
+
+    ![Active turn](Media/03_turn_timer.png)
 
     The system currently supports:
     - **Fixed turn timers** - with the option to disable or expand to dynamic timers later.
@@ -86,8 +90,9 @@ It features a functional turn & team systems, unit mechanics, fully-featured RTS
     This system supports future features like alliances, shared resources, or team-based objectives.
 
   - ### Unit Actions
-  
     Each unit in Sightline is built around a modular action system. All actions inherit from a common base class, allowing flexible extension of unit behaviors. This structure makes it easy to define, reuse, and balance core mechanics like movement, attacks, and deployment.
+
+    ![Motostrelki's actions](Media/04_action.png)
     
     The action system supports:
     - **Action inheritance** – all actions derive from a base `Action` class, which provides shared behavior such as AP cost, cooldowns, and targeting logic.
@@ -123,8 +128,9 @@ It features a functional turn & team systems, unit mechanics, fully-featured RTS
     The interface is designed to be both informative and functional, helping players quickly interpret game state and execute actions.
 
   - ### Multiplayer
-  
     Sightline supports both local and online multiplayer, with peer-to-peer communication handled via Godot’s high-level multiplayer API (ENet). Players can host or join games, with all essential gameplay systems (turns, units, tile control, UI updates) synchronized across the network.
+
+    ![Debug lobby](Media/05_lobby.png)
     
     Multiplayer functionality includes:
     - **LAN/Direct IP hosting** – simple setup for hosting and joining matches.
