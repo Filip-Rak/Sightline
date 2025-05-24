@@ -79,6 +79,8 @@ It features a functional turn & team systems, unit mechanics, fully-featured RTS
 
   - ### Team system
     Teams in Sightline are created dynamically at the start of each match based on player assignments. Each team tracks its own members, tile ownership, and score independently, allowing for both solo and cooperative gameplay structures.
+
+    ![Score](Media/06_score.png)
     
     Key features include:
     - **Dynamic team generation** – teams are automatically created based on player configuration
