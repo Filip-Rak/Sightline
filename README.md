@@ -35,7 +35,7 @@ It features a functional turn & team systems, unit mechanics, fully-featured RTS
 
 ## Features
   - ### Camera
-    Sightline features a RTS-style camera system. The camera offers a range of features commonly found in real-time strategy games allowing for smooth experience.
+    Sightline features a RTS-style camera system. The camera offers a range of features commonly found in real-time strategy games allowing for a smooth experience.
 
     - **Positional movement** – move the camera using keyboard input, speed dynamically scaling based on zoom level.
     - **Edge-based panning** – pan the camera by moving the mouse near screen edges, enabled while holding `LShift` key.
@@ -152,12 +152,11 @@ It features a functional turn & team systems, unit mechanics, fully-featured RTS
     - **Action point system** – units have limited actions per turn, affecting both movement and attacks.
     - **Custom loadouts** – each unit has its own set of actions (e.g., suppressive fire, AT rockets), instantiated from shared action classes.
     - **Stat-based combat** – units have AP/HE damage resistances and terrain-dependent defense modifiers.
-    - **Transport compatibility** – infantry can be carried by capable vechicles (yet to be fully implemented).
+    - **Transport compatibility** – infantry can be carried by capable vehicles (yet to be fully implemented).
     - **Vision system** – each unit has a defined sight range, which affects tactical awareness.
     - **Unit roles and categories** – units are grouped into roles (e.g., Motostrelki as light infantry, M2A3 Bradley IFV as heavy armor) with meaningful gameplay differences.
     - **Stacking defense bonus** – multiple friendly units can occupy the same tile, sharing damage but also benefiting from each other’s resistances. For example, infantry units like Motostrelki (with high AP resistance) and vehicles like the M2A3 Bradley IFV (with strong HE resistance) can protect one another when stacked. While all units on the tile will take damage during an attack, smart combinations can reduce the overall impact, simulating cover and combined-arms synergy.
 
-    
     Example units:
     - **Motostrelki** – flexible infantry with rifles and light RPGs.
     - **Panzergrenadiers** – well-equipped infantry with access to ATGMs and strong suppressive fire.
@@ -174,15 +173,14 @@ Sightline is built entirely using free and open-source tools, with all gameplay 
 - **Engine:** [Godot 4.2.2 (stable)](https://godotengine.org/) – used for all gameplay, networking, UI, and rendering.
 - **Language:** GDScript – core gameplay systems, UI, multiplayer logic, and AI pathfinding written in GDScript.
 - **3D Models:** [Blender](https://www.blender.org/) – used for creating placeholder unit models.
-- **Texturing:** [Substance Painter](https://substance3d.adobe.com/) – used to texture and bake the handful of models used in the prototype.
-- **Multiplayer:** Godot High-Level Multiplayer API (ENet) – used for server-hosted peer communication, RPCs, and state sync.
+- **Multiplayer:** Godot high-level multiplayer API (ENet) – used for server-hosted peer communication, RPCs, and state sync.
   
 ## How to play
   ### Game Rules
   While there is currently no formal win condition, players compete to accumulate points and outmaneuver opponents through smart use of terrain and units.
   
   Core rules and mechanics:
-  - **Turn-based play** – each player takes their turn in sequence; turns are either timed or manual depending on match setup.
+  - **Turn-based play** – each player takes their turn in sequence; turns can be either timed or manual depending on match setup.
   - **Point income** – every turn, each team gains 5 base points, used to deploy new units.
   - **Tile control** – certain tiles provide conquest points when controlled. A tile is considered "controlled" by the last team to have a unit visit it.
   - **Score accumulation** – at the end of each round (full turn cycle), all teams are awarded points based on the total value of tiles they control. These points are tracked on the leaderboard.
@@ -204,12 +202,12 @@ Sightline is built entirely using free and open-source tools, with all gameplay 
   
   #### UI Interaction
   - **Click buttons (e.g., End Turn, Actions, Buy Menu)** – Left Click.
-  - **Hover for tooltip** – Hover over action buttons briefly.
+  - **Show tooltip** – Hover over action buttons briefly.
   
   The interface is fully mouse-driven, with keyboard input primarily used for camera control and quick canceling.
 
   ### Local Multiplayer
-  Sightline launches into a debug menu that allows for quick local multiplayer testing.
+  Sightline launches into a debug menu that allows quick local multiplayer testing.
   
   Steps to play locally with two players:
   1. **Launch two instances** of the game.
